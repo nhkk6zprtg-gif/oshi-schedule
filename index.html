@@ -4,65 +4,338 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>配信スケジュール</title>
+  <meta name="theme-color" content="#090a0c">
+  <title>STREAM SCHEDULE</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090a0c;
+      --panel: #141518;
+      --line: #303237;
+      --silver: #d9dce2;
+      --muted: #9296a0;
+      --white: #f7f7f8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at top, #25272d 0%, #090a0c 48%);
+      color: var(--white);
+      font-family: -apple-system, BlinkMacSystemFont,
+        "Helvetica Neue", sans-serif;
+      line-height: 1.7;
+    }
+
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .container {
+      width: min(100% - 36px, 620px);
+      margin: 0 auto;
+      padding: 30px 0 48px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #c9cdd4;
+      box-shadow: 0 0 9px #c9cdd4;
+    }
+
+    .hero {
+      padding: 42px 0 32px;
+    }
+
+    .eyebrow {
+      color: #aeb2bb;
+      font-size: 11px;
+      letter-spacing: 4px;
+    }
+
+    h1 {
+      margin: 12px 0 8px;
+      font-size: clamp(30px, 8vw, 43px);
+      line-height: 1.2;
+      letter-spacing: 1px;
+      font-weight: 750;
+    }
+
+    .hero p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin: 30px 0 14px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 17px;
+      letter-spacing: 1px;
+    }
+
+    .section-heading span {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    .feature-card {
+      padding: 22px 19px;
+      background: linear-gradient(145deg, #202126, #111215);
+      border: 1px solid #41444b;
+      border-radius: 18px;
+      box-shadow: 0 14px 34px #00000035;
+    }
+
+    .card-label {
+      color: #bfc3cb;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+    }
+
+    .feature-card h3 {
+      margin: 10px 0 7px;
+      font-size: 21px;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .youtube-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 50px;
+      margin-top: 20px;
+      padding: 12px 16px;
+      border: 1px solid #e0e2e7;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #f0f1f3, #bfc3cb);
+      color: #101114;
+      font-size: 13px;
+      font-weight: 750;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .youtube-button:active {
+      opacity: 0.75;
+    }
+
+    .schedule-list {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #111215;
+    }
+
+    .day-row {
+      display: grid;
+      grid-template-columns: 66px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 15px 16px;
+      border-bottom: 1px solid #292b30;
+    }
+
+    .day-row:last-child {
+      border-bottom: none;
+    }
+
+    .day-name {
+      color: #d7dae0;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .day-info {
+      min-width: 0;
+    }
+
+    .day-info strong {
+      display: block;
+      color: #f0f1f3;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .day-info span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .footer {
+      margin-top: 38px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: #777b84;
+      font-size: 10px;
+      text-align: center;
+      letter-spacing: 1.5px;
+    }
+
+    @media (min-width: 600px) {
+      .container {
+        padding-top: 42px;
+      }
+
+      .hero {
+        padding-top: 56px;
+      }
+
+      .feature-card {
+        padding: 28px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>配信スケジュール</h1>
-  <p>配信予定を確認できるサイトです。</p>
+  <main class="container">
+    <header class="topbar">
+      <span>OFFICIAL SCHEDULE</span>
+      <span class="status">
+        <span class="dot"></span>
+        STREAM INFO
+      </span>
+    </header>
 
-<section style="margin-top:32px; text-align:left;">
+    <section class="hero">
+      <div class="eyebrow">WELCOME TO MY STREAM</div>
+      <h1>STREAM<br>SCHEDULE</h1>
+      <p>配信スケジュール・最新のお知らせ</p>
+    </section>
 
-  <h2 style="color:#d8c5ff; font-size:20px;">📺 配信スケジュール</h2>
+    <section>
+      <div class="section-heading">
+        <h2>配信予定</h2>
+        <span>STREAM INFO</span>
+      </div>
 
-  <div style="background:#20212d; border:1px solid #39394b; border-radius:16px; padding:18px; margin-top:16px;">
+      <div class="feature-card">
+        <div class="card-label">LATEST INFORMATION</div>
+        <h3>次回の配信をチェック</h3>
+        <p>
+          最新の配信日時や配信内容は、
+          YouTubeチャンネルで確認できます。
+        </p>
+        <a
+          class="youtube-button"
+          href="https://youtube.com/@kanae?si=6EmHW7nULWDlHmYB"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          YouTubeチャンネルを見る　↗
+        </a>
+      </div>
+    </section>
 
-    <p style="color:#d8c5ff; font-size:13px; margin-top:0;">STREAM SCHEDULE</p>
+    <section>
+      <div class="section-heading">
+        <h2>週間スケジュール</h2>
+        <span>WEEKLY SCHEDULE</span>
+      </div>
 
-    <h3 style="color:#ffffff; margin-bottom:8px;">配信予定をチェック</h3>
+      <div class="schedule-list">
+        <div class="day-row">
+          <div class="day-name">MON</div>
+          <div class="day-info">
+            <strong>月曜日</strong>
+            <span>配信予定はYouTubeで確認</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">TUE</div>
+          <div class="day-info">
+            <strong>火曜日</strong>
+            <span>配信予定はYouTubeで確認</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">WED</div>
+          <div class="day-info">
+            <strong>水曜日</strong>
+            <span>配信予定はYouTubeで確認</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">THU</div>
+          <div class="day-info">
+            <strong>木曜日</strong>
+            <span>配信予定はYouTubeで確認</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">FRI</div>
+          <div class="day-info">
+            <strong>金曜日</strong>
+            <span>配信予定はYouTubeで確認</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">SAT</div>
+          <div class="day-info">
+            <strong>土曜日</strong>
+            <span>配信予定はYouTubeで確認</span>
+          </div>
+        </div>
+        <div class="day-row">
+          <div class="day-name">SUN</div>
+          <div class="day-info">
+            <strong>日曜日</strong>
+            <span>配信予定はYouTubeで確認</span>
+          </div>
+        </div>
+      </div>
 
-    <p style="color:#b8b8c9; font-size:14px;">最新の配信予定は、YouTubeチャンネルで確認できます。</p>
+      <p class="note">
+        ※曜日ごとの実際の配信予定は、まだ自動取得していません。
+      </p>
+    </section>
 
-    <a href="https://youtube.com/@kanae?si=6EmHW7nULWDlHmYB" target="_blank" style="display:block; text-align:center; background:#d8c5ff; color:#17151f; padding:12px; border-radius:10px; text-decoration:none; font-weight:bold;">YouTubeチャンネルを見る</a>
-
-  </div>
-
-</section>
-<style>
-
-body {
-
-  margin: 0;
-
-  padding: 30px 20px;
-
-  background: #11121a;
-
-  color: #f5f5fa;
-
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-
-  text-align: center;
-
-}
-
-h1 {
-
-  margin-top: 50px;
-
-  color: #d8c5ff;
-
-  font-size: 28px;
-
-}
-
-p {
-
-  color: #b8b8c9;
-
-  line-height: 1.8;
-
-}
-
-</style>
+    <footer class="footer">
+      STREAM SCHEDULE ・ OFFICIAL PAGE
+    </footer>
+  </main>
 </body>
 </html>
