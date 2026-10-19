@@ -3,340 +3,297 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080808">
-<title>KANAE | STREAM SCHEDULE</title>
+<meta name="theme-color" content="#101010">
+<title>STREAM SCHEDULE</title>
+
 <style>
 :root {
-  color-scheme: dark;
-  --bg: #080808;
-  --panel: #111;
+  --bg: #090909;
+  --panel: #151515;
+  --line: #353535;
   --silver: #c9c9c9;
-  --muted: #858585;
-  --line: #343434;
-  --white: #f5f5f5;
+  --text: #f4f4f4;
+  --muted: #999;
 }
+
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+
 body {
   margin: 0;
   background:
-    radial-gradient(ellipse at 50% 0%, #363636 0%, #171717 22%, transparent 56%),
-    #080808;
-  color: var(--white);
+    radial-gradient(ellipse at top, #292929 0%, #111 38%, #080808 80%);
+  color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
     "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
-  letter-spacing: .06em;
   min-height: 100vh;
 }
-a { color: inherit; text-decoration: none; }
-.container { width: min(100% - 34px, 880px); margin: auto; }
+
 header {
-  padding: 48px 0 38px;
+  padding: 42px 20px 30px;
   text-align: center;
-  border-bottom: 1px solid #444;
-  position: relative;
+  border-bottom: 1px solid #303030;
+  background: linear-gradient(180deg, #202020, #111);
 }
-header::after {
-  content: "";
-  display: block;
-  width: 70px;
-  height: 2px;
-  margin: 28px auto 0;
-  background: linear-gradient(90deg, transparent, #eee, transparent);
-}
+
 .eyebrow {
   color: #aaa;
-  font-size: 9px;
-  letter-spacing: .48em;
-}
-h1 {
-  margin: 20px 0 8px;
-  font-size: clamp(34px, 9vw, 56px);
-  font-weight: 300;
-  letter-spacing: .22em;
-  text-indent: .22em;
-  text-shadow: 0 0 28px #ffffff20;
-}
-.subtitle {
-  color: #ccc;
-  font-size: 11px;
-  letter-spacing: .42em;
-}
-.header-caption {
-  margin-top: 16px;
-  color: #777;
-  font-size: 9px;
-  letter-spacing: .2em;
-}
-.channel-link {
-  display: inline-block;
-  margin-top: 25px;
-  padding: 13px 27px;
-  border: 1px solid #777;
-  background: linear-gradient(135deg, #ffffff0b, #ffffff01);
+  letter-spacing: 5px;
   font-size: 10px;
-  letter-spacing: .16em;
-  transition: .25s;
+  margin-bottom: 13px;
 }
-.channel-link:hover {
-  background: #ddd;
-  color: #090909;
+
+h1 {
+  margin: 0;
+  font-size: clamp(25px, 7vw, 38px);
+  font-weight: 500;
+  letter-spacing: 4px;
 }
-main { padding: 40px 0 56px; }
-.section { margin-bottom: 48px; }
+
+.header-line {
+  width: 52px;
+  height: 1px;
+  background: #aaa;
+  margin: 20px auto 0;
+}
+
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 28px 16px 55px;
+}
+
+section { margin-bottom: 42px; }
+
 .section-heading {
   display: flex;
   align-items: center;
-  gap: 13px;
-  margin-bottom: 21px;
+  gap: 12px;
+  margin-bottom: 18px;
 }
-.number {
-  color: #999;
-  font-size: 11px;
-  letter-spacing: .18em;
-}
-h2 {
+
+.section-heading h2 {
   margin: 0;
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: .17em;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 2px;
 }
+
+.section-heading span {
+  color: #999;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
 .section-heading::after {
   content: "";
   height: 1px;
+  background: #383838;
   flex: 1;
-  background: linear-gradient(90deg, #666, #292929);
 }
-.section-caption {
-  color: #777;
-  font-size: 9px;
-  letter-spacing: .16em;
-  margin: -11px 0 18px;
-}
-.status {
-  padding: 28px 16px;
+
+.card {
+  background: linear-gradient(135deg, #1b1b1b, #101010);
   border: 1px solid var(--line);
-  background: #101010;
-  color: #aaa;
-  text-align: center;
-  font-size: 12px;
-  line-height: 1.9;
+  border-radius: 8px;
+  overflow: hidden;
 }
+
 .stream-card {
-  position: relative;
   display: grid;
-  grid-template-columns: 44% 1fr;
-  gap: 22px;
-  padding: 14px;
-  margin-bottom: 16px;
-  border: 1px solid #3a3a3a;
-  background: linear-gradient(125deg, #1c1c1c, #101010 55%, #0b0b0b);
-  box-shadow: 0 12px 30px #00000050;
-  transition: border-color .2s, transform .2s;
+  grid-template-columns: minmax(110px, 38%) 1fr;
+  gap: 15px;
+  padding: 13px;
+  margin-bottom: 12px;
 }
-.stream-card:hover {
-  border-color: #888;
-  transform: translateY(-2px);
-}
-.thumbnail-link { display: block; align-self: center; }
-.thumbnail {
-  display: block;
+
+.thumb {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  background: #222;
-  filter: saturate(.8);
+  background: #292929;
+  border-radius: 4px;
 }
+
 .stream-info {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-width: 0;
-  padding: 5px 4px;
-}
-.live-label {
-  display: flex;
-  align-items: center;
   gap: 9px;
-  color: #c9c9c9;
-  font-size: 9px;
-  letter-spacing: .2em;
-  margin-bottom: 13px;
 }
-.live-label::before {
-  content: "";
-  width: 16px;
-  height: 1px;
-  background: #ccc;
-}
+
 .stream-title {
-  font-size: 15px;
-  line-height: 1.8;
+  color: #f5f5f5;
+  font-size: 14px;
+  line-height: 1.6;
   overflow-wrap: anywhere;
-  margin-bottom: 13px;
 }
-.date-label {
-  color: #777;
-  font-size: 9px;
-  letter-spacing: .15em;
-  margin-bottom: 5px;
-}
+
 .stream-date {
-  color: #e1e1e1;
+  color: #bbb;
   font-size: 12px;
-  line-height: 1.9;
+  line-height: 1.5;
 }
-.watch-link {
+
+.stream-link {
   display: inline-block;
-  align-self: flex-start;
-  margin-top: 17px;
-  padding: 0 0 5px;
-  border-bottom: 1px solid #888;
+  width: fit-content;
+  padding: 7px 12px;
+  border: 1px solid #666;
+  border-radius: 3px;
   color: #eee;
-  font-size: 9px;
-  letter-spacing: .13em;
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 1px;
 }
-.watch-link::after { content: "  ↗"; }
+
+.stream-link:hover {
+  background: #eee;
+  color: #111;
+}
+
+.empty {
+  padding: 28px 12px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+  border: 1px dashed #393939;
+  border-radius: 6px;
+  line-height: 1.8;
+}
+
+.month-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 1px 12px;
+  margin-bottom: 14px;
+  scrollbar-width: thin;
+}
+
+.month-tab {
+  flex: 0 0 auto;
+  border: 1px solid #454545;
+  border-radius: 4px;
+  background: #151515;
+  color: #aaa;
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.month-tab.active {
+  color: #111;
+  background: linear-gradient(135deg, #eee, #aaa);
+  border-color: #ddd;
+  font-weight: 600;
+}
+
+.archive-count {
+  color: #999;
+  font-size: 11px;
+  margin: 0 0 13px;
+}
+
 .week-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  border-top: 1px solid #414141;
-  border-left: 1px solid #414141;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
 }
+
 .week-day {
-  min-width: 0;
-  padding: 20px 1px 18px;
+  border: 1px solid #333;
+  background: #151515;
+  border-radius: 5px;
+  padding: 15px 10px;
   text-align: center;
-  border-right: 1px solid #414141;
-  border-bottom: 1px solid #414141;
-  background: linear-gradient(145deg, #191919, #0d0d0d);
 }
-.week-day .en {
+
+.week-en {
   display: block;
-  color: #888;
-  font-size: 9px;
-  letter-spacing: .08em;
-}
-.week-day .ja {
-  display: block;
-  margin-top: 10px;
-  color: #ddd;
+  color: #999;
   font-size: 10px;
-  letter-spacing: 0;
-  white-space: nowrap;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
 }
-.week-day.today {
-  background: linear-gradient(145deg, #454545, #202020);
-  box-shadow: inset 0 2px #eee;
+
+.week-ja {
+  font-size: 13px;
 }
-.week-day.today .en { color: #eee; }
-.week-day.today .ja { color: #fff; }
-.note {
-  color: #777;
-  font-size: 10px;
-  line-height: 1.9;
-  margin-top: 14px;
-}
-#updated {
-  text-align: center;
-  overflow-wrap: anywhere;
-  padding: 15px 0;
-  border-top: 1px solid #292929;
-  font-size: 9px;
-  letter-spacing: .13em;
-}
+
 footer {
-  padding: 27px 16px 34px;
-  border-top: 1px solid #333;
-  color: #777;
-  font-size: 9px;
   text-align: center;
-  letter-spacing: .2em;
+  color: #777;
+  border-top: 1px solid #292929;
+  padding: 22px 12px;
+  font-size: 10px;
+  letter-spacing: 1px;
 }
-.footer-mark {
-  display: block;
-  margin-bottom: 12px;
-  color: #aaa;
-  font-size: 14px;
-  letter-spacing: .4em;
+
+@media (min-width: 600px) {
+  .week-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  main { padding-top: 38px; }
 }
-@media (max-width: 480px) {
-  .container { width: calc(100% - 28px); }
-  header { padding: 38px 0 27px; }
-  header::after { margin-top: 23px; }
-  h1 { font-size: clamp(30px, 9vw, 43px); }
-  main { padding-top: 30px; }
-  .section { margin-bottom: 39px; }
-  .section-heading { gap: 10px; }
-  h2 { font-size: 13px; letter-spacing: .12em; }
-  .stream-card {
-    grid-template-columns: 1fr;
-    gap: 13px;
-    padding: 11px;
-  }
-  .thumbnail { aspect-ratio: 16 / 9; }
-  .stream-info { padding: 5px 4px 7px; }
-  .stream-title { font-size: 14px; }
-  .week-day { padding: 16px 0; }
-  .week-day .en { font-size: 8px; }
-  .week-day .ja { font-size: 9px; }
+
+@media (max-width: 380px) {
+  .stream-card { grid-template-columns: 1fr; }
+  .thumb { max-height: 200px; }
 }
 </style>
 </head>
+
 <body>
 <header>
-  <div class="container">
-    <div class="eyebrow">OFFICIAL STREAM INFORMATION</div>
-    <h1 id="channel-name">KANAE</h1>
-    <div class="subtitle">STREAM SCHEDULE</div>
-    <div class="header-caption">配信スケジュール</div>
-    <a class="channel-link" href="https://youtube.com/@kanae"
-       target="_blank" rel="noopener">YOUTUBE CHANNEL ↗</a>
-  </div>
+  <div class="eyebrow">OFFICIAL STREAM INFORMATION</div>
+  <h1>STREAM SCHEDULE</h1>
+  <div class="header-line"></div>
 </header>
 
-<main class="container">
-  <section class="section">
+<main>
+  <section>
     <div class="section-heading">
-      <span class="number">01</span>
       <h2>UPCOMING STREAMS</h2>
+      <span>配信予定</span>
     </div>
-    <p class="section-caption">NEXT STREAM · 配信予定</p>
-    <div id="streams" aria-live="polite">
-      <div class="status">配信予定を読み込んでいます…</div>
+    <div id="upcoming-list">
+      <div class="empty">配信予定を読み込み中...</div>
     </div>
   </section>
 
-  <section class="section">
+  <section>
     <div class="section-heading">
-      <span class="number">02</span>
-      <h2>WEEKLY SCHEDULE</h2>
+      <h2>PAST STREAMS</h2>
+      <span>過去の配信</span>
     </div>
-    <p class="section-caption">WEEK AT A GLANCE · 曜日一覧</p>
-    <div class="week-grid" id="week-grid"></div>
-    <p class="note">
-      ※ 曜日の一覧です。曜日ごとの配信時間は、情報が登録されている場合のみ表示できます。
-    </p>
+    <div id="month-tabs" class="month-tabs"></div>
+    <div id="archive-list">
+      <div class="empty">過去の配信を読み込み中...</div>
+    </div>
   </section>
 
-  <div class="note" id="updated"></div>
+  <section>
+    <div class="section-heading">
+      <h2>WEEKLY SCHEDULE</h2>
+      <span>週間スケジュール</span>
+    </div>
+    <div id="week-grid" class="week-grid"></div>
+  </section>
 </main>
 
 <footer>
-  <span class="footer-mark">K</span>
-  STREAM SCHEDULE · DARK SILVER EDITION
+  <div id="updated">SCHEDULE DATA</div>
+  <div style="margin-top:8px;">STREAM SCHEDULE</div>
 </footer>
 
 <script>
 const DATA_URL =
   "https://raw.githubusercontent.com/nhkk6zprtg-gif/oshi-schedule/main/schedule.json";
 
-const streamsEl = document.getElementById("streams");
-const updatedEl = document.getElementById("updated");
-const weekGrid = document.getElementById("week-grid");
+const $ = (id) => document.getElementById(id);
 
 function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
+  return String(value ?? "").replace(/[&<>"']/g, (char) => ({
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
@@ -346,6 +303,7 @@ function escapeHTML(value) {
 }
 
 function formatDate(value) {
+  if (!value) return "日時未定";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "日時未定";
 
@@ -358,94 +316,152 @@ function formatDate(value) {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false
-  }).format(date);
+  }).format(date).replace(/\//g, ".");
 }
 
-function renderStreams(streams) {
-  const now = Date.now();
-  const upcoming = (streams || [])
-    .filter(stream => {
-      const date = new Date(stream.scheduledAt).getTime();
-      return Number.isFinite(date) && date > now;
-    })
-    .sort((a, b) =>
-      new Date(a.scheduledAt) - new Date(b.scheduledAt)
-    );
+function monthKey(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+    month: "2-digit"
+  }).formatToParts(date);
+  const year = parts.find(p => p.type === "year").value;
+  const month = parts.find(p => p.type === "month").value;
+  return `${year}-${month}`;
+}
 
-  if (!upcoming.length) {
-    streamsEl.innerHTML =
-      '<div class="status">現在、確認できる配信予定はありません。</div>';
+function monthLabel(key) {
+  const [year, month] = key.split("-");
+  return `${year}年${Number(month)}月`;
+}
+
+function streamCard(stream) {
+  const title = escapeHTML(stream.title || "配信");
+  const date = escapeHTML(formatDate(stream.scheduledAt));
+  const url = /^https:\/\/www\.youtube\.com\/watch\?v=[\w-]+$/.test(stream.url || "")
+    ? stream.url
+    : (stream.videoId
+        ? `https://www.youtube.com/watch?v=${encodeURIComponent(stream.videoId)}`
+        : "https://www.youtube.com/@kanae");
+
+  const thumbnail = /^https?:\/\//i.test(stream.thumbnail || "")
+    ? stream.thumbnail
+    : "";
+
+  return `
+    <article class="card stream-card">
+      <img class="thumb" src="${escapeHTML(thumbnail)}"
+        alt="" loading="lazy"
+        onerror="this.style.visibility='hidden'">
+      <div class="stream-info">
+        <div class="stream-title">${title}</div>
+        <div class="stream-date">${date}</div>
+        <a class="stream-link" href="${escapeHTML(url)}"
+          target="_blank" rel="noopener noreferrer">WATCH ON YOUTUBE ↗</a>
+      </div>
+    </article>`;
+}
+
+function renderUpcoming(streams) {
+  const list = $("upcoming-list");
+  if (!streams.length) {
+    list.innerHTML = '<div class="empty">現在、公開されている配信予定はありません。</div>';
+    return;
+  }
+  list.innerHTML = streams.map(streamCard).join("");
+}
+
+function renderArchives(streams) {
+  const tabs = $("month-tabs");
+  const list = $("archive-list");
+
+  const validStreams = streams.filter(stream => monthKey(stream.scheduledAt));
+  const groups = {};
+
+  validStreams.forEach(stream => {
+    const key = monthKey(stream.scheduledAt);
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(stream);
+  });
+
+  const months = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+
+  if (!months.length) {
+    tabs.innerHTML = "";
+    list.innerHTML = '<div class="empty">過去の配信データはまだありません。</div>';
     return;
   }
 
-  streamsEl.innerHTML = upcoming.map(stream => {
-    const thumbnail = stream.thumbnail
-      ? `<img class="thumbnail"
-          src="${escapeHTML(stream.thumbnail)}"
-          alt="" loading="lazy">`
-      : '<div class="thumbnail"></div>';
+  tabs.innerHTML = months.map((month, index) => `
+    <button class="month-tab ${index === 0 ? "active" : ""}"
+      type="button" data-month="${month}">
+      ${monthLabel(month)}
+    </button>
+  `).join("");
 
-    return `
-      <article class="stream-card">
-        <a class="thumbnail-link"
-           href="${escapeHTML(stream.url)}"
-           target="_blank" rel="noopener">
-          ${thumbnail}
-        </a>
-        <div class="stream-info">
-          <div class="live-label">SCHEDULED STREAM</div>
-          <div class="stream-title">${escapeHTML(stream.title)}</div>
-          <div class="date-label">STREAM DATE / 配信日時</div>
-          <div class="stream-date">
-            ${escapeHTML(formatDate(stream.scheduledAt))}
-            <br>JST / 日本時間
-          </div>
-          <a class="watch-link"
-             href="${escapeHTML(stream.url)}"
-             target="_blank" rel="noopener">WATCH ON YOUTUBE</a>
-        </div>
-      </article>`;
-  }).join("");
+  function showMonth(month) {
+    tabs.querySelectorAll(".month-tab").forEach(tab => {
+      tab.classList.toggle("active", tab.dataset.month === month);
+    });
+
+    const items = groups[month].slice().sort((a, b) =>
+      (b.scheduledAt || "").localeCompare(a.scheduledAt || "")
+    );
+
+    list.innerHTML = `
+      <div class="archive-count">${monthLabel(month)} ・ ${items.length}件</div>
+      ${items.map(streamCard).join("")}`;
+  }
+
+  tabs.querySelectorAll(".month-tab").forEach(tab => {
+    tab.addEventListener("click", () => showMonth(tab.dataset.month));
+  });
+
+  showMonth(months[0]);
 }
 
 function renderWeek(days) {
-  const today = new Date().getDay();
-  const todayIndex = (today + 6) % 7;
+  const grid = $("week-grid");
+  const fallback = [
+    ["月曜日", "MON"], ["火曜日", "TUE"], ["水曜日", "WED"],
+    ["木曜日", "THU"], ["金曜日", "FRI"], ["土曜日", "SAT"],
+    ["日曜日", "SUN"]
+  ];
 
-  weekGrid.innerHTML = (days || []).map((day, index) => `
-    <div class="week-day ${index === todayIndex ? "today" : ""}">
-      <span class="en">${escapeHTML(day.dayEn)}</span>
-      <span class="ja">${escapeHTML(day.day)}</span>
+  const items = Array.isArray(days) && days.length
+    ? days.map(day => [day.day || "", day.dayEn || ""])
+    : fallback;
+
+  grid.innerHTML = items.map(day => `
+    <div class="week-day">
+      <span class="week-en">${escapeHTML(day[1])}</span>
+      <span class="week-ja">${escapeHTML(day[0])}</span>
     </div>
   `).join("");
 }
 
 async function loadSchedule() {
   try {
-    const response = await fetch(
-      DATA_URL + "?t=" + Date.now(),
-      { cache: "no-store" }
-    );
-    if (!response.ok) throw new Error("配信データを読み込めませんでした");
+    const response = await fetch(DATA_URL + "?t=" + Date.now());
+    if (!response.ok) throw new Error("データ取得に失敗しました");
 
     const data = await response.json();
 
-    if (data.channel && data.channel.title) {
-      document.getElementById("channel-name").textContent =
-        data.channel.title;
-    }
-
-    renderStreams(data.streams);
+    renderUpcoming(Array.isArray(data.streams) ? data.streams : []);
+    renderArchives(Array.isArray(data.pastStreams) ? data.pastStreams : []);
     renderWeek(data.weeklySchedule);
 
-    if (data.updatedAt) {
-      updatedEl.textContent =
-        "DATA UPDATED · " + formatDate(data.updatedAt);
-    }
+    $("updated").textContent = data.updatedAt
+      ? "最終更新：" + formatDate(data.updatedAt)
+      : "SCHEDULE DATA";
   } catch (error) {
-    streamsEl.innerHTML =
-      '<div class="status">配信情報を読み込めませんでした。時間をおいて再度ご確認ください。</div>';
-    console.error(error);
+    $("upcoming-list").innerHTML =
+      '<div class="empty">配信データを読み込めませんでした。時間をおいて再度お試しください。</div>';
+    $("archive-list").innerHTML =
+      '<div class="empty">過去の配信データを読み込めませんでした。</div>';
+    renderWeek([]);
   }
 }
 
