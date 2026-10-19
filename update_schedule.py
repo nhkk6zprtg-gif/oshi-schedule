@@ -1,3 +1,4 @@
+
 import json
 import os
 import urllib.parse
@@ -27,9 +28,56 @@ def load_existing():
         return {}
 
 
+def get_video_details(video_ids):
+    details = {}
+
+    unique_ids = list(dict.fromkeys(video_ids))
+
+    for start in range(0, len(unique_ids), 50):
+        batch = unique_ids[start:start + 50]
+
+        if not batch:
+            continue
+
+        result = youtube_api(
+            "videos",
+            {
+                "part": "snippet,liveStreamingDetails",
+                "id": ",".join(batch),
+            },
+        )
+
+        for item in result.get("items", []):
+            details[item["id"]] = item
+
+    return details
+
+
+def make_stream(video_id, item, date_value):
+    snippet = item.get("snippet", {})
+    thumbnails = snippet.get("thumbnails", {})
+
+    thumbnail = (
+        thumbnails.get("high", {}).get("url")
+        or thumbnails.get("medium", {}).get("url")
+        or thumbnails.get("default", {}).get("url", "")
+    )
+
+    return {
+        "videoId": video_id,
+        "title": snippet.get("title", "配信"),
+        "description": snippet.get("description", ""),
+        "thumbnail": thumbnail,
+        "scheduledAt": date_value,
+        "url": f"https://www.youtube.com/watch?v={video_id}",
+    }
+
+
 def main():
     old_data = load_existing()
+    now = datetime.now(timezone.utc)
 
+    # チャンネル情報を取得
     channel_data = youtube_api(
         "channels",
         {
@@ -39,12 +87,12 @@ def main():
     )
 
     channels = channel_data.get("items", [])
+
     if not channels:
         raise RuntimeError(f"YouTubeチャンネルが見つかりません: {HANDLE}")
 
     channel = channels[0]
     channel_id = channel["id"]
-
     uploads_playlist = (
         channel["contentDetails"]["relatedPlaylists"]["uploads"]
     )
@@ -63,18 +111,18 @@ def main():
     )
 
     upcoming_ids = [
-        item["id"]["videoId"]
-        for item in upcoming_data.get("items", [])
-        if item.get("id", {}).get("videoId")
+        entry["id"]["videoId"]
+        for entry in upcoming_data.get("items", [])
+        if entry.get("id", {}).get("videoId")
     ]
 
-    # チャンネルの動画一覧から過去の配信候補を取得
+    # チャンネルの動画一覧から過去の動画候補を取得
     archive_ids = []
     page_token = None
 
     for _ in range(ARCHIVE_PAGES):
         params = {
-            "part": "snippet",
+            "part": "snippet,contentDetails",
             "playlistId": uploads_playlist,
             "maxResults": 50,
         }
@@ -90,101 +138,115 @@ def main():
                 archive_ids.append(video_id)
 
         page_token = page.get("nextPageToken")
+
         if not page_token:
             break
 
-    # APIの動画詳細取得は一度に最大50件
-    all_ids = list(dict.fromkeys(upcoming_ids + archive_ids))
-    details = {}
+    # 配信済みのライブ配信を検索
+    completed_ids = []
+    page_token = None
 
-    for start in range(0, len(all_ids), 50):
-        batch = all_ids[start:start + 50]
+    for _ in range(ARCHIVE_PAGES):
+        params = {
+            "part": "snippet",
+            "channelId": channel_id,
+            "type": "video",
+            "eventType": "completed",
+            "order": "date",
+            "maxResults": 50,
+        }
 
-        result = youtube_api(
-            "videos",
-            {
-                "part": "snippet,liveStreamingDetails",
-                "id": ",".join(batch),
-            },
-        )
+        if page_token:
+            params["pageToken"] = page_token
 
-        for item in result.get("items", []):
-            details[item["id"]] = item
+        page = youtube_api("search", params)
 
+        for entry in page.get("items", []):
+            video_id = entry.get("id", {}).get("videoId")
+            if video_id:
+                completed_ids.append(video_id)
+
+        page_token = page.get("nextPageToken")
+
+        if not page_token:
+            break
+
+    completed_id_set = set(completed_ids)
+    all_archive_ids = list(dict.fromkeys(archive_ids + completed_ids))
+    all_ids = list(dict.fromkeys(upcoming_ids + all_archive_ids))
+
+    # 動画の詳細を取得
+    details = get_video_details(all_ids)
+
+    # 今後の配信予定を作成
     upcoming = []
 
     for video_id in upcoming_ids:
         item = details.get(video_id)
+
         if not item:
             continue
 
-        snippet = item.get("snippet", {})
         live = item.get("liveStreamingDetails", {})
         scheduled_at = live.get("scheduledStartTime")
 
         if not scheduled_at:
             continue
 
-        upcoming.append({
-            "videoId": video_id,
-            "title": snippet.get("title", "配信予定"),
-            "description": snippet.get("description", ""),
-            "thumbnail": (
-                snippet.get("thumbnails", {})
-                .get("high", {})
-                .get("url", "")
-            ),
-            "scheduledAt": scheduled_at,
-            "url": f"https://www.youtube.com/watch?v={video_id}",
-        })
+        try:
+            stream_time = datetime.fromisoformat(
+                scheduled_at.replace("Z", "+00:00")
+            )
+        except ValueError:
+            continue
 
-    # 過去の配信を蓄積
-    saved_archives = {
-        item.get("videoId", item.get("url", "")): item
-        for item in old_data.get("pastStreams", [])
-    }
+        if stream_time > now:
+            upcoming.append(make_stream(video_id, item, scheduled_at))
 
-    for video_id in archive_ids:
+    upcoming.sort(key=lambda stream: stream["scheduledAt"])
+
+    # 既に保存済みの過去配信を保持
+    saved_archives = {}
+
+    for stream in old_data.get("pastStreams", []):
+        video_id = stream.get("videoId")
+
+        if not video_id:
+            url = stream.get("url", "")
+            video_id = url.split("v=")[-1] if "v=" in url else ""
+
+        if video_id:
+            saved_archives[video_id] = stream
+
+    # 新しい過去配信を追加・更新
+    for video_id in all_archive_ids:
         item = details.get(video_id)
+
         if not item:
             continue
 
         live = item.get("liveStreamingDetails", {})
         actual_start = live.get("actualStartTime")
 
-        # 実際に開始されたライブ配信だけを対象にする
+        # 配信済み検索で見つかったライブは公開日時も補助的に利用
+        if not actual_start and video_id in completed_id_set:
+            actual_start = item.get("snippet", {}).get("publishedAt")
+
+        # 通常の動画は過去配信として登録しない
         if not actual_start:
             continue
 
-        snippet = item.get("snippet", {})
-        saved_archives[video_id] = {
-            "videoId": video_id,
-            "title": snippet.get("title", "過去の配信"),
-            "description": snippet.get("description", ""),
-            "thumbnail": (
-                snippet.get("thumbnails", {})
-                .get("high", {})
-                .get("url", "")
-            ),
-            "scheduledAt": actual_start,
-            "url": f"https://www.youtube.com/watch?v={video_id}",
-        }
+        saved_archives[video_id] = make_stream(
+            video_id,
+            item,
+            actual_start,
+        )
 
     past_streams = list(saved_archives.values())
     past_streams.sort(
         key=lambda stream: stream.get("scheduledAt", ""),
         reverse=True,
     )
-
-    # 過去の配信が誤って未来の予定に混ざらないようにする
-    now = datetime.now(timezone.utc)
-    upcoming = [
-        stream for stream in upcoming
-        if datetime.fromisoformat(
-            stream["scheduledAt"].replace("Z", "+00:00")
-        ) > now
-    ]
-    upcoming.sort(key=lambda stream: stream["scheduledAt"])
 
     output = {
         "channel": {
@@ -211,6 +273,7 @@ def main():
 
     print(f"今後の配信予定: {len(upcoming)} 件")
     print(f"保存済みの過去配信: {len(past_streams)} 件")
+    print(f"今回検索した配信済みライブ: {len(completed_ids)} 件")
 
 
 if __name__ == "__main__":
