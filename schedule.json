@@ -1,0 +1,47 @@
+{
+  "channel": {
+    "id": "UCspv01oxUFf_MTSipURRhkA",
+    "title": "Kanae Channel",
+    "url": "https://youtube.com/@kanae"
+  },
+  "updatedAt": "2026-10-19T19:45:22.461809+00:00",
+  "streams": [
+    {
+      "title": "ふりーちゃっと",
+      "description": "______ ◇ お知らせ / Information ￣￣￣￣￣￣￣￣￣￣￣￣ ◇ 叶 1st full album 「藍」 https://kanae.lantis.jp/ ...",
+      "thumbnail": "https://i.ytimg.com/vi/9WY3dRIZ76w/hqdefault_live.jpg",
+      "scheduledAt": "2021-07-08T14:02:02Z",
+      "url": "https://www.youtube.com/watch?v=9WY3dRIZ76w"
+    }
+  ],
+  "weeklySchedule": [
+    {
+      "day": "月曜日",
+      "dayEn": "MON"
+    },
+    {
+      "day": "火曜日",
+      "dayEn": "TUE"
+    },
+    {
+      "day": "水曜日",
+      "dayEn": "WED"
+    },
+    {
+      "day": "木曜日",
+      "dayEn": "THU"
+    },
+    {
+      "day": "金曜日",
+      "dayEn": "FRI"
+    },
+    {
+      "day": "土曜日",
+      "dayEn": "SAT"
+    },
+    {
+      "day": "日曜日",
+      "dayEn": "SUN"
+    }
+  ]
+}
