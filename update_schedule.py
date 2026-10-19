@@ -1,4 +1,3 @@
-
 import json
 import os
 import urllib.parse
@@ -11,6 +10,7 @@ API_BASE = "https://www.googleapis.com/youtube/v3"
 
 
 def youtube_api(endpoint, params):
+    params = dict(params)
     params["key"] = API_KEY
     url = f"{API_BASE}/{endpoint}?{urllib.parse.urlencode(params)}"
 
@@ -48,13 +48,41 @@ def main():
         },
     )
 
+    video_ids = [
+        item["id"]["videoId"]
+        for item in upcoming_data.get("items", [])
+        if item.get("id", {}).get("videoId")
+    ]
+
+    video_details = {}
+
+    if video_ids:
+        details_data = youtube_api(
+            "videos",
+            {
+                "part": "snippet,liveStreamingDetails",
+                "id": ",".join(video_ids),
+            },
+        )
+
+        video_details = {
+            item["id"]: item
+            for item in details_data.get("items", [])
+        }
+
     streams = []
 
-    for item in upcoming_data.get("items", []):
-        video_id = item["id"].get("videoId")
-        snippet = item.get("snippet", {})
+    for video_id in video_ids:
+        item = video_details.get(video_id)
 
-        if not video_id:
+        if not item:
+            continue
+
+        snippet = item.get("snippet", {})
+        live_details = item.get("liveStreamingDetails", {})
+        scheduled_at = live_details.get("scheduledStartTime")
+
+        if not scheduled_at:
             continue
 
         streams.append(
@@ -64,10 +92,12 @@ def main():
                 "thumbnail": snippet.get("thumbnails", {})
                     .get("high", {})
                     .get("url", ""),
-                "scheduledAt": snippet.get("publishedAt", ""),
+                "scheduledAt": scheduled_at,
                 "url": f"https://www.youtube.com/watch?v={video_id}",
             }
         )
+
+    streams.sort(key=lambda stream: stream["scheduledAt"])
 
     output = {
         "channel": {
