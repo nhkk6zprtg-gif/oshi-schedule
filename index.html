@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090909">
+<meta name="theme-color" content="#080808">
 <title>KANAE | STREAM SCHEDULE</title>
 <style>
 :root {
   color-scheme: dark;
-  --bg: #090909;
-  --panel: #141414;
+  --bg: #080808;
+  --panel: #111;
   --silver: #c9c9c9;
-  --muted: #888;
-  --line: #333;
+  --muted: #858585;
+  --line: #343434;
   --white: #f5f5f5;
 }
 * { box-sizing: border-box; }
@@ -20,78 +20,98 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   background:
-    radial-gradient(ellipse at 50% 0%, #303030 0%, transparent 48%),
-    var(--bg);
+    radial-gradient(ellipse at 50% 0%, #363636 0%, #171717 22%, transparent 56%),
+    #080808;
   color: var(--white);
-  font-family: -apple-system, BlinkMacSystemFont,
-    "Helvetica Neue", "Hiragino Kaku Gothic ProN",
-    "Noto Sans JP", sans-serif;
-  letter-spacing: .05em;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+    "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  letter-spacing: .06em;
   min-height: 100vh;
 }
 a { color: inherit; text-decoration: none; }
-.container {
-  width: min(100% - 32px, 850px);
-  margin: 0 auto;
-}
+.container { width: min(100% - 34px, 880px); margin: auto; }
 header {
-  padding: 48px 0 34px;
+  padding: 48px 0 38px;
   text-align: center;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid #444;
+  position: relative;
+}
+header::after {
+  content: "";
+  display: block;
+  width: 70px;
+  height: 2px;
+  margin: 28px auto 0;
+  background: linear-gradient(90deg, transparent, #eee, transparent);
 }
 .eyebrow {
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: .4em;
+  color: #aaa;
+  font-size: 9px;
+  letter-spacing: .48em;
 }
 h1 {
-  margin: 16px 0 7px;
-  font-size: clamp(32px, 8vw, 50px);
+  margin: 20px 0 8px;
+  font-size: clamp(34px, 9vw, 56px);
   font-weight: 300;
   letter-spacing: .22em;
+  text-indent: .22em;
+  text-shadow: 0 0 28px #ffffff20;
 }
 .subtitle {
-  color: var(--silver);
+  color: #ccc;
   font-size: 11px;
-  letter-spacing: .35em;
+  letter-spacing: .42em;
+}
+.header-caption {
+  margin-top: 16px;
+  color: #777;
+  font-size: 9px;
+  letter-spacing: .2em;
 }
 .channel-link {
   display: inline-block;
   margin-top: 25px;
-  padding: 12px 25px;
+  padding: 13px 27px;
   border: 1px solid #777;
+  background: linear-gradient(135deg, #ffffff0b, #ffffff01);
   font-size: 10px;
-  letter-spacing: .15em;
-  transition: .2s;
+  letter-spacing: .16em;
+  transition: .25s;
 }
 .channel-link:hover {
-  background: var(--silver);
+  background: #ddd;
   color: #090909;
 }
-main { padding: 38px 0 55px; }
-.section { margin-bottom: 46px; }
+main { padding: 40px 0 56px; }
+.section { margin-bottom: 48px; }
 .section-heading {
   display: flex;
   align-items: center;
   gap: 13px;
-  margin-bottom: 20px;
+  margin-bottom: 21px;
 }
 .number {
   color: #999;
   font-size: 11px;
-  letter-spacing: .15em;
+  letter-spacing: .18em;
 }
 h2 {
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
-  letter-spacing: .15em;
+  letter-spacing: .17em;
 }
 .section-heading::after {
   content: "";
   height: 1px;
-  background: var(--line);
   flex: 1;
+  background: linear-gradient(90deg, #666, #292929);
+}
+.section-caption {
+  color: #777;
+  font-size: 9px;
+  letter-spacing: .16em;
+  margin: -11px 0 18px;
 }
 .status {
   padding: 28px 16px;
@@ -103,34 +123,51 @@ h2 {
   line-height: 1.9;
 }
 .stream-card {
+  position: relative;
   display: grid;
-  grid-template-columns: 42% 1fr;
-  gap: 20px;
-  padding: 15px;
-  margin-bottom: 14px;
-  border: 1px solid #383838;
-  background: linear-gradient(135deg, #1b1b1b, #0d0d0d);
-  transition: border-color .2s;
+  grid-template-columns: 44% 1fr;
+  gap: 22px;
+  padding: 14px;
+  margin-bottom: 16px;
+  border: 1px solid #3a3a3a;
+  background: linear-gradient(125deg, #1c1c1c, #101010 55%, #0b0b0b);
+  box-shadow: 0 12px 30px #00000050;
+  transition: border-color .2s, transform .2s;
 }
-.stream-card:hover { border-color: #999; }
+.stream-card:hover {
+  border-color: #888;
+  transform: translateY(-2px);
+}
+.thumbnail-link { display: block; align-self: center; }
 .thumbnail {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  background: #202020;
+  background: #222;
+  filter: saturate(.8);
 }
 .stream-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 0;
+  padding: 5px 4px;
 }
 .live-label {
-  color: #bbb;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #c9c9c9;
   font-size: 9px;
   letter-spacing: .2em;
-  margin-bottom: 12px;
+  margin-bottom: 13px;
+}
+.live-label::before {
+  content: "";
+  width: 16px;
+  height: 1px;
+  background: #ccc;
 }
 .stream-title {
   font-size: 15px;
@@ -138,33 +175,41 @@ h2 {
   overflow-wrap: anywhere;
   margin-bottom: 13px;
 }
+.date-label {
+  color: #777;
+  font-size: 9px;
+  letter-spacing: .15em;
+  margin-bottom: 5px;
+}
 .stream-date {
-  color: #ddd;
+  color: #e1e1e1;
   font-size: 12px;
   line-height: 1.9;
 }
 .watch-link {
+  display: inline-block;
   align-self: flex-start;
-  margin-top: 16px;
-  padding-bottom: 5px;
+  margin-top: 17px;
+  padding: 0 0 5px;
   border-bottom: 1px solid #888;
   color: #eee;
-  font-size: 10px;
-  letter-spacing: .1em;
+  font-size: 9px;
+  letter-spacing: .13em;
 }
+.watch-link::after { content: "  ↗"; }
 .week-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  border-top: 1px solid var(--line);
-  border-left: 1px solid var(--line);
+  border-top: 1px solid #414141;
+  border-left: 1px solid #414141;
 }
 .week-day {
   min-width: 0;
-  padding: 19px 2px;
+  padding: 20px 1px 18px;
   text-align: center;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: linear-gradient(145deg, #171717, #0e0e0e);
+  border-right: 1px solid #414141;
+  border-bottom: 1px solid #414141;
+  background: linear-gradient(145deg, #191919, #0d0d0d);
 }
 .week-day .en {
   display: block;
@@ -174,14 +219,17 @@ h2 {
 }
 .week-day .ja {
   display: block;
-  margin-top: 9px;
-  font-size: 11px;
+  margin-top: 10px;
+  color: #ddd;
+  font-size: 10px;
+  letter-spacing: 0;
   white-space: nowrap;
 }
 .week-day.today {
-  background: linear-gradient(145deg, #383838, #202020);
-  box-shadow: inset 0 2px #ddd;
+  background: linear-gradient(145deg, #454545, #202020);
+  box-shadow: inset 0 2px #eee;
 }
+.week-day.today .en { color: #eee; }
 .week-day.today .ja { color: #fff; }
 .note {
   color: #777;
@@ -192,31 +240,46 @@ h2 {
 #updated {
   text-align: center;
   overflow-wrap: anywhere;
+  padding: 15px 0;
+  border-top: 1px solid #292929;
+  font-size: 9px;
+  letter-spacing: .13em;
 }
 footer {
-  padding: 26px 16px 34px;
-  border-top: 1px solid var(--line);
+  padding: 27px 16px 34px;
+  border-top: 1px solid #333;
   color: #777;
   font-size: 9px;
   text-align: center;
-  letter-spacing: .16em;
+  letter-spacing: .2em;
+}
+.footer-mark {
+  display: block;
+  margin-bottom: 12px;
+  color: #aaa;
+  font-size: 14px;
+  letter-spacing: .4em;
 }
 @media (max-width: 480px) {
-  header { padding: 38px 0 30px; }
+  .container { width: calc(100% - 28px); }
+  header { padding: 38px 0 27px; }
+  header::after { margin-top: 23px; }
+  h1 { font-size: clamp(30px, 9vw, 43px); }
   main { padding-top: 30px; }
-  .section { margin-bottom: 38px; }
+  .section { margin-bottom: 39px; }
   .section-heading { gap: 10px; }
-  h2 { font-size: 14px; }
+  h2 { font-size: 13px; letter-spacing: .12em; }
   .stream-card {
     grid-template-columns: 1fr;
     gap: 13px;
-    padding: 12px;
+    padding: 11px;
   }
-  .stream-info { padding: 5px 3px 7px; }
+  .thumbnail { aspect-ratio: 16 / 9; }
+  .stream-info { padding: 5px 4px 7px; }
   .stream-title { font-size: 14px; }
-  .week-day { padding: 15px 0; }
+  .week-day { padding: 16px 0; }
   .week-day .en { font-size: 8px; }
-  .week-day .ja { font-size: 10px; letter-spacing: 0; }
+  .week-day .ja { font-size: 9px; }
 }
 </style>
 </head>
@@ -226,11 +289,9 @@ footer {
     <div class="eyebrow">OFFICIAL STREAM INFORMATION</div>
     <h1 id="channel-name">KANAE</h1>
     <div class="subtitle">STREAM SCHEDULE</div>
-    <a class="channel-link"
-       href="https://youtube.com/@kanae"
-       target="_blank" rel="noopener">
-      YOUTUBE CHANNEL ↗
-    </a>
+    <div class="header-caption">配信スケジュール</div>
+    <a class="channel-link" href="https://youtube.com/@kanae"
+       target="_blank" rel="noopener">YOUTUBE CHANNEL ↗</a>
   </div>
 </header>
 
@@ -240,6 +301,7 @@ footer {
       <span class="number">01</span>
       <h2>UPCOMING STREAMS</h2>
     </div>
+    <p class="section-caption">NEXT STREAM · 配信予定</p>
     <div id="streams" aria-live="polite">
       <div class="status">配信予定を読み込んでいます…</div>
     </div>
@@ -250,16 +312,20 @@ footer {
       <span class="number">02</span>
       <h2>WEEKLY SCHEDULE</h2>
     </div>
+    <p class="section-caption">WEEK AT A GLANCE · 曜日一覧</p>
     <div class="week-grid" id="week-grid"></div>
     <p class="note">
-      ※ 曜日ごとの配信時間は、情報が登録されている場合のみ表示できます。
+      ※ 曜日の一覧です。曜日ごとの配信時間は、情報が登録されている場合のみ表示できます。
     </p>
   </section>
 
   <div class="note" id="updated"></div>
 </main>
 
-<footer>STREAM SCHEDULE · DARK SILVER EDITION</footer>
+<footer>
+  <span class="footer-mark">K</span>
+  STREAM SCHEDULE · DARK SILVER EDITION
+</footer>
 
 <script>
 const DATA_URL =
@@ -297,7 +363,6 @@ function formatDate(value) {
 
 function renderStreams(streams) {
   const now = Date.now();
-
   const upcoming = (streams || [])
     .filter(stream => {
       const date = new Date(stream.scheduledAt).getTime();
@@ -322,22 +387,22 @@ function renderStreams(streams) {
 
     return `
       <article class="stream-card">
-        <a href="${escapeHTML(stream.url)}"
+        <a class="thumbnail-link"
+           href="${escapeHTML(stream.url)}"
            target="_blank" rel="noopener">
           ${thumbnail}
         </a>
         <div class="stream-info">
           <div class="live-label">SCHEDULED STREAM</div>
           <div class="stream-title">${escapeHTML(stream.title)}</div>
+          <div class="date-label">STREAM DATE / 配信日時</div>
           <div class="stream-date">
             ${escapeHTML(formatDate(stream.scheduledAt))}
             <br>JST / 日本時間
           </div>
           <a class="watch-link"
              href="${escapeHTML(stream.url)}"
-             target="_blank" rel="noopener">
-            WATCH ON YOUTUBE ↗
-          </a>
+             target="_blank" rel="noopener">WATCH ON YOUTUBE</a>
         </div>
       </article>`;
   }).join("");
@@ -361,10 +426,7 @@ async function loadSchedule() {
       DATA_URL + "?t=" + Date.now(),
       { cache: "no-store" }
     );
-
-    if (!response.ok) {
-      throw new Error("配信データを読み込めませんでした");
-    }
+    if (!response.ok) throw new Error("配信データを読み込めませんでした");
 
     const data = await response.json();
 
