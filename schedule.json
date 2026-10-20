@@ -4,7 +4,7 @@
     "title": "Kanae Channel",
     "url": "https://youtube.com/@kanae"
   },
-  "updatedAt": "2026-10-20T08:47:58.624024+00:00",
+  "updatedAt": "2026-10-20T08:51:53.369978+00:00",
   "streams": [
     {
       "videoId": "9WY3dRIZ76w",
@@ -401,7 +401,7 @@
       "actualStartTime": "2026-09-07T12:01:32Z",
       "actualEndTime": "2026-09-07T12:41:39Z",
       "durationSeconds": 2407,
-      "game": null,
+      "game": "Grand Theft Auto V",
       "url": "https://www.youtube.com/watch?v=4V7d7VqO_jE"
     },
     {
@@ -485,7 +485,7 @@
       "actualStartTime": "2026-08-29T14:03:25Z",
       "actualEndTime": "2026-08-29T14:51:30Z",
       "durationSeconds": 2885,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=b3XpWeHWJVU"
     },
     {
@@ -509,7 +509,7 @@
       "actualStartTime": "2026-08-24T12:01:33Z",
       "actualEndTime": "2026-08-24T14:52:36Z",
       "durationSeconds": 10263,
-      "game": null,
+      "game": "Among Us",
       "url": "https://www.youtube.com/watch?v=gx4NSkw3N6A"
     },
     {
@@ -533,7 +533,7 @@
       "actualStartTime": "2026-08-21T02:55:17Z",
       "actualEndTime": "2026-08-21T06:13:41Z",
       "durationSeconds": 11904,
-      "game": null,
+      "game": "Escape from Tarkov",
       "url": "https://www.youtube.com/watch?v=79d061q_vKk"
     },
     {
@@ -545,7 +545,7 @@
       "actualStartTime": "2026-08-18T01:50:37Z",
       "actualEndTime": "2026-08-18T08:02:29Z",
       "durationSeconds": 22312,
-      "game": null,
+      "game": "Escape from Tarkov",
       "url": "https://www.youtube.com/watch?v=dP9jc897P1M"
     },
     {
@@ -557,7 +557,7 @@
       "actualStartTime": "2026-08-17T13:15:32Z",
       "actualEndTime": "2026-08-17T17:18:28Z",
       "durationSeconds": 14576,
-      "game": null,
+      "game": "Escape from Tarkov",
       "url": "https://www.youtube.com/watch?v=OUx41TgYWfI"
     },
     {
@@ -593,7 +593,7 @@
       "actualStartTime": "2026-08-14T17:12:35Z",
       "actualEndTime": "2026-08-14T19:24:56Z",
       "durationSeconds": 7941,
-      "game": null,
+      "game": "Escape from Tarkov",
       "url": "https://www.youtube.com/watch?v=uJuQJOCl7UU"
     },
     {
@@ -689,7 +689,7 @@
       "actualStartTime": "2026-08-08T14:15:27Z",
       "actualEndTime": "2026-08-08T16:40:05Z",
       "durationSeconds": 8678,
-      "game": null,
+      "game": "Escape from Tarkov",
       "url": "https://www.youtube.com/watch?v=pIiMUEapNx0"
     },
     {
@@ -713,7 +713,7 @@
       "actualStartTime": "2026-08-05T14:08:36Z",
       "actualEndTime": "2026-08-05T16:11:57Z",
       "durationSeconds": 7401,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=uMvxC_xtGVc"
     },
     {
@@ -725,7 +725,7 @@
       "actualStartTime": "2026-08-05T09:32:24Z",
       "actualEndTime": "2026-08-05T11:01:40Z",
       "durationSeconds": 5356,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=cjYPh8vBHvQ"
     },
     {
@@ -737,7 +737,7 @@
       "actualStartTime": "2026-08-04T10:47:04Z",
       "actualEndTime": "2026-08-04T19:06:22Z",
       "durationSeconds": 29958,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=Qa-NgauVfWI"
     },
     {
@@ -749,7 +749,7 @@
       "actualStartTime": "2026-08-02T13:27:50Z",
       "actualEndTime": "2026-08-02T18:57:42Z",
       "durationSeconds": 19792,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=NxRpXTNNvOU"
     },
     {
@@ -773,7 +773,7 @@
       "actualStartTime": "2026-08-01T09:38:33Z",
       "actualEndTime": "2026-08-01T17:35:11Z",
       "durationSeconds": 28598,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=8ro2W50iRyU"
     },
     {
@@ -797,7 +797,7 @@
       "actualStartTime": "2026-07-29T09:05:43Z",
       "actualEndTime": "2026-07-29T18:38:27Z",
       "durationSeconds": 34364,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=Ci_wfReMxpw"
     },
     {
@@ -809,7 +809,7 @@
       "actualStartTime": "2026-07-28T09:21:13Z",
       "actualEndTime": "2026-07-28T18:58:51Z",
       "durationSeconds": 34658,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=VI48bGFb_gE"
     },
     {
@@ -821,7 +821,7 @@
       "actualStartTime": "2026-07-26T15:26:25Z",
       "actualEndTime": "2026-07-26T18:39:36Z",
       "durationSeconds": 11591,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=fmDCL2ygdqI"
     },
     {
@@ -833,7 +833,7 @@
       "actualStartTime": "2026-07-25T08:58:10Z",
       "actualEndTime": "2026-07-25T15:12:04Z",
       "durationSeconds": 22434,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=uQDRf9l2S30"
     },
     {
@@ -845,7 +845,7 @@
       "actualStartTime": "2026-07-24T09:21:12Z",
       "actualEndTime": "2026-07-24T19:04:45Z",
       "durationSeconds": 35013,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=iXluVfYM7wU"
     },
     {
@@ -857,7 +857,7 @@
       "actualStartTime": "2026-07-23T14:54:45Z",
       "actualEndTime": "2026-07-23T19:06:30Z",
       "durationSeconds": 15105,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=UQ2yVpwlyWk"
     },
     {
@@ -881,7 +881,7 @@
       "actualStartTime": "2026-07-23T09:04:01Z",
       "actualEndTime": "2026-07-23T11:28:27Z",
       "durationSeconds": 8666,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=-ttG-JIu7Pk"
     },
     {
@@ -893,7 +893,7 @@
       "actualStartTime": "2026-07-22T09:16:11Z",
       "actualEndTime": "2026-07-22T19:02:58Z",
       "durationSeconds": 35207,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=y_QcuTgY7pU"
     },
     {
@@ -905,7 +905,7 @@
       "actualStartTime": "2026-07-21T08:57:51Z",
       "actualEndTime": "2026-07-21T20:36:00Z",
       "durationSeconds": 41889,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=1IyrEYyxgXI"
     },
     {
@@ -917,7 +917,7 @@
       "actualStartTime": "2026-07-20T09:02:34Z",
       "actualEndTime": "2026-07-20T19:30:51Z",
       "durationSeconds": 37697,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=W4iQVGx27EA"
     },
     {
@@ -929,7 +929,7 @@
       "actualStartTime": "2026-07-19T08:58:25Z",
       "actualEndTime": "2026-07-19T20:33:35Z",
       "durationSeconds": 41710,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=yRMCPMbDLIY"
     },
     {
@@ -941,7 +941,7 @@
       "actualStartTime": "2026-07-18T11:00:09Z",
       "actualEndTime": "2026-07-18T21:04:01Z",
       "durationSeconds": 36232,
-      "game": null,
+      "game": "Rust",
       "url": "https://www.youtube.com/watch?v=RhmL6nqq8Mk"
     },
     {
@@ -2309,7 +2309,7 @@
       "actualStartTime": "2025-10-01T08:30:16Z",
       "actualEndTime": "2025-10-01T20:29:49Z",
       "durationSeconds": 43173,
-      "game": null,
+      "game": "ストリートファイター6",
       "url": "https://www.youtube.com/watch?v=D1aDqZznm6o"
     },
     {
@@ -2649,7 +2649,7 @@
       "actualStartTime": "2025-07-06T17:24:43Z",
       "actualEndTime": "2025-07-06T21:23:46Z",
       "durationSeconds": 14343,
-      "game": null,
+      "game": "Minecraft",
       "url": "https://www.youtube.com/watch?v=LQpObEcA8wQ"
     },
     {
@@ -3605,7 +3605,7 @@
       "actualStartTime": "2024-06-25T13:05:40Z",
       "actualEndTime": "2024-06-25T14:35:33Z",
       "durationSeconds": 5393,
-      "game": null,
+      "game": "Grand Theft Auto V",
       "url": "https://www.youtube.com/watch?v=Sy2iHvjHc-k"
     },
     {
@@ -3664,12 +3664,22 @@
   "monthlyGameHours": {
     "2026-10": [
       {
+        "game": "未分類",
+        "seconds": 159968,
+        "hours": 44.44
+      },
+      {
         "game": "モンスターハンター",
         "seconds": 38053,
         "hours": 10.57
       }
     ],
     "2026-09": [
+      {
+        "game": "未分類",
+        "seconds": 401270,
+        "hours": 111.46
+      },
       {
         "game": "League of Legends",
         "seconds": 15859,
@@ -3679,9 +3689,34 @@
         "game": "Apex Legends",
         "seconds": 12693,
         "hours": 3.53
+      },
+      {
+        "game": "Grand Theft Auto V",
+        "seconds": 2407,
+        "hours": 0.67
       }
     ],
     "2026-08": [
+      {
+        "game": "未分類",
+        "seconds": 197054,
+        "hours": 54.74
+      },
+      {
+        "game": "Rust",
+        "seconds": 93990,
+        "hours": 26.11
+      },
+      {
+        "game": "Escape from Tarkov",
+        "seconds": 65411,
+        "hours": 18.17
+      },
+      {
+        "game": "Among Us",
+        "seconds": 10263,
+        "hours": 2.85
+      },
       {
         "game": "Minecraft",
         "seconds": 9571,
@@ -3689,6 +3724,16 @@
       }
     ],
     "2026-07": [
+      {
+        "game": "Rust",
+        "seconds": 354566,
+        "hours": 98.49
+      },
+      {
+        "game": "未分類",
+        "seconds": 187618,
+        "hours": 52.12
+      },
       {
         "game": "League of Legends",
         "seconds": 41403,
@@ -3700,6 +3745,20 @@
         "hours": 3.62
       }
     ],
+    "2026-06": [
+      {
+        "game": "未分類",
+        "seconds": 120822,
+        "hours": 33.56
+      }
+    ],
+    "2026-05": [
+      {
+        "game": "未分類",
+        "seconds": 41103,
+        "hours": 11.42
+      }
+    ],
     "2026-04": [
       {
         "game": "Minecraft",
@@ -3707,9 +3766,28 @@
         "hours": 57.94
       },
       {
+        "game": "未分類",
+        "seconds": 45797,
+        "hours": 12.72
+      },
+      {
         "game": "Apex Legends",
         "seconds": 21948,
         "hours": 6.1
+      }
+    ],
+    "2026-03": [
+      {
+        "game": "未分類",
+        "seconds": 54996,
+        "hours": 15.28
+      }
+    ],
+    "2026-02": [
+      {
+        "game": "未分類",
+        "seconds": 445738,
+        "hours": 123.82
       }
     ],
     "2026-01": [
@@ -3719,12 +3797,22 @@
         "hours": 25.8
       },
       {
+        "game": "未分類",
+        "seconds": 36205,
+        "hours": 10.06
+      },
+      {
         "game": "Apex Legends",
         "seconds": 5884,
         "hours": 1.63
       }
     ],
     "2025-12": [
+      {
+        "game": "未分類",
+        "seconds": 108303,
+        "hours": 30.08
+      },
       {
         "game": "Minecraft",
         "seconds": 8595,
@@ -3738,6 +3826,11 @@
     ],
     "2025-11": [
       {
+        "game": "未分類",
+        "seconds": 23062,
+        "hours": 6.41
+      },
+      {
         "game": "VALORANT",
         "seconds": 18858,
         "hours": 5.24
@@ -3745,12 +3838,34 @@
     ],
     "2025-10": [
       {
+        "game": "未分類",
+        "seconds": 319498,
+        "hours": 88.75
+      },
+      {
+        "game": "ストリートファイター6",
+        "seconds": 43173,
+        "hours": 11.99
+      },
+      {
         "game": "League of Legends",
         "seconds": 42730,
         "hours": 11.87
       }
     ],
+    "2025-09": [
+      {
+        "game": "未分類",
+        "seconds": 74421,
+        "hours": 20.67
+      }
+    ],
     "2025-08": [
+      {
+        "game": "未分類",
+        "seconds": 131846,
+        "hours": 36.62
+      },
       {
         "game": "Apex Legends",
         "seconds": 18717,
@@ -3759,12 +3874,22 @@
     ],
     "2025-07": [
       {
+        "game": "未分類",
+        "seconds": 62326,
+        "hours": 17.31
+      },
+      {
         "game": "Minecraft",
-        "seconds": 26490,
-        "hours": 7.36
+        "seconds": 40833,
+        "hours": 11.34
       }
     ],
     "2025-06": [
+      {
+        "game": "未分類",
+        "seconds": 252024,
+        "hours": 70.01
+      },
       {
         "game": "ELDEN RING",
         "seconds": 45535,
@@ -3778,12 +3903,57 @@
         "hours": 16.86
       },
       {
+        "game": "未分類",
+        "seconds": 52797,
+        "hours": 14.67
+      },
+      {
         "game": "ストリートファイター6",
         "seconds": 7402,
         "hours": 2.06
       }
     ],
+    "2025-04": [
+      {
+        "game": "未分類",
+        "seconds": 98008,
+        "hours": 27.22
+      }
+    ],
+    "2025-03": [
+      {
+        "game": "未分類",
+        "seconds": 12901,
+        "hours": 3.58
+      }
+    ],
+    "2025-02": [
+      {
+        "game": "未分類",
+        "seconds": 78760,
+        "hours": 21.88
+      }
+    ],
+    "2025-01": [
+      {
+        "game": "未分類",
+        "seconds": 68131,
+        "hours": 18.93
+      }
+    ],
+    "2024-12": [
+      {
+        "game": "未分類",
+        "seconds": 69832,
+        "hours": 19.4
+      }
+    ],
     "2024-11": [
+      {
+        "game": "未分類",
+        "seconds": 58622,
+        "hours": 16.28
+      },
       {
         "game": "モンスターハンター",
         "seconds": 9919,
@@ -3792,16 +3962,59 @@
     ],
     "2024-10": [
       {
+        "game": "未分類",
+        "seconds": 85854,
+        "hours": 23.85
+      },
+      {
         "game": "VALORANT",
         "seconds": 15749,
         "hours": 4.37
       }
     ],
+    "2024-09": [
+      {
+        "game": "未分類",
+        "seconds": 101187,
+        "hours": 28.11
+      }
+    ],
+    "2024-08": [
+      {
+        "game": "未分類",
+        "seconds": 44556,
+        "hours": 12.38
+      }
+    ],
+    "2024-07": [
+      {
+        "game": "未分類",
+        "seconds": 106127,
+        "hours": 29.48
+      }
+    ],
     "2024-06": [
+      {
+        "game": "未分類",
+        "seconds": 23514,
+        "hours": 6.53
+      },
       {
         "game": "原神",
         "seconds": 6320,
         "hours": 1.76
+      },
+      {
+        "game": "Grand Theft Auto V",
+        "seconds": 5393,
+        "hours": 1.5
+      }
+    ],
+    "2024-05": [
+      {
+        "game": "未分類",
+        "seconds": 11893,
+        "hours": 3.3
       }
     ]
   },
