@@ -1,5 +1,89 @@
-
 {
-  "updatedAt": "",
-  "announcements": []
+  "updatedAt": "2026-10-20T15:12:45+09:00",
+  "announcements": [
+    {
+      "type": "公式ストア新着",
+      "title": "再販 【再販】お泊りボイス - Bグループ ¥600~¥1,200 税込",
+      "date": "確認日：2026-10-20",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/dig-00075_B.html"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "ナイショのお願いボイス - Bグループ ¥600~¥1,200 税込",
+      "date": "確認日：2026-10-20",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/dig-00099_B.html"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "妖怪パロディボイス - Bグループ ¥600~¥1,200 税込",
+      "date": "確認日：2026-10-20",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/dig-00100_B.html"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "【劇場版 七次元生徒会！】パンフレット ¥3,000 税込",
+      "date": "確認日：2026-10-20",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/SSZS-80343.html"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "【劇場版 七次元生徒会！】ペンライト ¥4,500 税込",
+      "date": "確認日：2026-10-20",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/SSZS-80341.html"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "【劇場版 七次元生徒会！】Tシャツ ¥4,000 税込",
+      "date": "確認日：2026-10-20",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/SSZS-80342.html"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "【劇場版 七次元生徒会！】ブランケット ¥4,500 税込",
+      "date": "確認日：2026-10-20",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/SSZS-80345.html"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "【劇場版 七次元生徒会！】生徒手帳風バインダー ¥3,200 税込",
+      "date": "確認日：2026-10-20",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/SSZS-80346.html"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "【劇場版 七次元生徒会！】にじぱぺっと ¥1,700 税込",
+      "date": "確認日：2026-10-20",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/SSZS-80348.html"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "【劇場版 七次元生徒会！】オペラグラス ¥4,000 税込",
+      "date": "確認日：2026-10-20",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/SSZS-80353.html"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "【劇場版 七次元生徒会！】マスコットチャーム ¥1,200~¥2,200 税込",
+      "date": "確認日：2026-10-20",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/SSZS-80355.html"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "【劇場版 七次元生徒会！】アクリルスタンド ¥1,800 税込",
+      "date": "確認日：2026-10-20",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/SSZS-80361.html"
+    }
+  ]
 }
