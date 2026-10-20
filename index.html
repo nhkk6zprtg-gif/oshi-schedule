@@ -87,6 +87,7 @@ section { margin-bottom:36px; }
 .week-ja { font-size:12px; }
 .notice-card { padding:13px;margin-bottom:10px; }
 .notice-type { color:#bbb;font-size:10px;letter-spacing:1px;margin-bottom:7px; }
+.notice-image { display:block;width:100%;max-height:280px;object-fit:contain;background:#111;border-radius:5px;margin-bottom:12px; }
 .notice-title { font-size:14px;line-height:1.6;margin-bottom:8px; }
 .notice-date { color:#aaa;font-size:11px;line-height:1.7;margin-bottom:10px; }
 .notice-link { color:#ddd;font-size:11px;text-decoration:underline; }
@@ -446,11 +447,15 @@ function renderWeeklySummary(days) {
 
 async function loadAnnouncements() {
   const box = $("notices");
+
   try {
     const response = await fetch(NOTICE_URL + "?t=" + Date.now());
     if (!response.ok) throw new Error("告知データ取得失敗");
+
     const data = await response.json();
-    const items = Array.isArray(data.announcements) ? data.announcements : [];
+    const items = Array.isArray(data.announcements)
+      ? data.announcements
+      : [];
 
     if (!items.length) {
       box.innerHTML = '<div class="empty">現在掲載中のお知らせはありません。<br>公式告知の登録後、こちらに表示されます。</div>';
@@ -458,9 +463,17 @@ async function loadAnnouncements() {
     }
 
     box.innerHTML = items.map(item => {
-      const url = /^https?:\/\//i.test(item.url || "") ? item.url : "";
+      const url = /^https?:\/\//i.test(item.url || "")
+        ? item.url
+        : "";
+
+      const imageUrl = /^https?:\/\//i.test(item.imageUrl || "")
+        ? item.imageUrl
+        : "";
+
       return `<article class="card notice-card">
         <div class="notice-type">${escapeHTML(item.type || "お知らせ")}</div>
+        ${imageUrl ? `<img class="notice-image" src="${escapeHTML(imageUrl)}" alt="${escapeHTML(item.title || "商品画像")}" loading="lazy" onerror="this.style.display='none'">` : ""}
         <div class="notice-title">${escapeHTML(item.title || "お知らせ")}</div>
         <div class="notice-date">
           ${escapeHTML(item.date || "日付未定")}
@@ -469,6 +482,7 @@ async function loadAnnouncements() {
         ${url ? `<a class="notice-link" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">公式ページを見る ↗</a>` : ""}
       </article>`;
     }).join("");
+
   } catch (error) {
     box.innerHTML = '<div class="empty">お知らせを読み込めませんでした。時間をおいて再度お試しください。</div>';
   }
