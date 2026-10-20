@@ -1,365 +1,79 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101010">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0c0e">
 <title>STREAM SCHEDULE</title>
 <style>
-:root{--bg:#090909;--panel:#151515;--line:#383838;--silver:#c9c9c9;--text:#f4f4f4;--muted:#999}
-*{box-sizing:border-box}
-body{margin:0;color:var(--text);background:radial-gradient(ellipse at top,#292929 0%,#111 38%,#080808 80%);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
-button{font:inherit}
-header{padding:32px 16px 24px;text-align:center;border-bottom:1px solid #303030;background:linear-gradient(180deg,#202020,#111)}
-.eyebrow{color:#aaa;letter-spacing:4px;font-size:10px;margin-bottom:12px}
-h1{margin:0;font-size:clamp(23px,6vw,36px);font-weight:500;letter-spacing:3px}
-.header-line{width:52px;height:1px;background:#aaa;margin:18px auto 0}
-main{max-width:1100px;margin:auto;padding:22px 12px 45px}
-section{margin-bottom:36px}
-.section-heading{display:flex;align-items:center;gap:10px;margin-bottom:15px}
-.section-heading h2{margin:0;font-size:15px;font-weight:500;letter-spacing:1.5px}
-.section-heading span{color:#999;font-size:10px}
-.section-heading::after{content:"";height:1px;background:#383838;flex:1}
-.card{background:linear-gradient(135deg,#1b1b1b,#101010);border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.controls{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.control-group{display:flex;align-items:center;gap:6px}
-.control-button,.view-button{border:1px solid #555;border-radius:5px;background:#171717;color:#ddd;padding:9px 12px;cursor:pointer;font-size:12px}
-.control-button:active,.view-button.active{background:linear-gradient(135deg,#eee,#aaa);color:#111}
-.period-label{font-size:15px;font-weight:600;min-width:112px;text-align:center}
-.stats{display:flex;gap:7px;overflow-x:auto;padding-bottom:12px;margin-bottom:12px}
-.stat{flex:0 0 auto;border:1px solid #444;background:#171717;border-radius:20px;padding:8px 12px;font-size:11px;color:#ccc}
-.calendar-shell{border:1px solid #414141;background:#141414;border-radius:10px;padding:8px}
-.month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
-.weekday{padding:10px 0;text-align:center;color:#aaa;font-size:11px;border-bottom:1px solid #444}
-.weekday:last-child{color:#c88}
-.day-cell{min-width:0;min-height:92px;border-right:1px solid #333;border-bottom:1px solid #333;padding:3px;cursor:pointer;background:#121212}
-.day-cell:nth-child(7n){border-right:0}
-.day-cell.other-month{opacity:.35}
-.day-cell.today{outline:1px solid #bbb;outline-offset:-2px}
-.day-number{font-size:11px;color:#bbb;padding:3px}
-.day-cell.selected{background:#292929}
-.day-events{display:grid;gap:3px}
-.day-thumb{width:100%;aspect-ratio:1.25;object-fit:cover;display:block;border-radius:3px;background:#303030}
-.day-event{position:relative;overflow:hidden;border-radius:4px;background:#252525;border:1px solid #484848}
-.day-event-title{font-size:9px;line-height:1.35;padding:3px;overflow-wrap:anywhere}
-.more-events{color:#bbb;font-size:9px;padding:2px}
-.week-scroll{overflow-x:auto}
-.week-grid{min-width:720px;display:grid;grid-template-columns:42px repeat(7,minmax(0,1fr))}
-.time-label,.week-head{border-bottom:1px solid #333;text-align:center;padding:8px 1px;font-size:10px;color:#aaa}
-.week-head{min-height:47px;border-left:1px solid #333}
-.week-head strong{display:block;color:#eee;font-size:13px;margin-bottom:3px}
-.week-head.today strong{color:#ddd;text-decoration:underline}
-.time-label{height:54px;border-right:1px solid #444}
-.time-cell{height:54px;border-right:1px solid #333;border-bottom:1px solid #333;position:relative;min-width:0;background:repeating-linear-gradient(to bottom,#171717 0,#171717 26px,#292929 27px)}
-.week-event{position:absolute;left:2px;right:2px;z-index:2;border:1px solid #777;border-radius:4px;background:#303030;padding:3px;color:#fff;overflow:hidden;cursor:pointer;font-size:9px;line-height:1.4}
-.week-event img{width:100%;height:35px;object-fit:cover;border-radius:2px}
-.week-event .event-name{display:block;overflow-wrap:anywhere}
-.stream-list{display:grid;gap:10px}
-.stream-card{display:grid;grid-template-columns:minmax(100px,34%) minmax(0,1fr);gap:12px;padding:10px}
-.thumb{width:100%;aspect-ratio:16/9;object-fit:cover;background:#292929;border-radius:4px}
-.stream-info{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:8px}
-.stream-title{font-size:13px;line-height:1.55;overflow-wrap:anywhere}
-.stream-date{color:#bbb;font-size:11px;line-height:1.5}
-.stream-link,.detail-button{display:inline-block;width:fit-content;padding:7px 10px;border:1px solid #666;border-radius:4px;color:#eee;text-decoration:none;font-size:10px}
-.stream-link:hover,.detail-button:hover{background:#eee;color:#111}
-.month-tabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:12px}
-.month-tab{flex:0 0 auto;border:1px solid #454545;border-radius:4px;background:#151515;color:#aaa;padding:9px 13px;font-size:11px;cursor:pointer}
-.month-tab.active{background:linear-gradient(135deg,#eee,#aaa);color:#111}
-.archive-count{color:#999;font-size:11px;margin-bottom:12px}
-.empty{padding:24px 12px;text-align:center;color:#999;font-size:12px;border:1px dashed #393939;border-radius:6px;line-height:1.8}
-.weekly-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.week-day{border:1px solid #333;background:#151515;border-radius:5px;padding:13px 8px;text-align:center}
-.week-en{display:block;color:#999;font-size:10px;letter-spacing:2px;margin-bottom:6px}
-.week-ja{font-size:12px}
-.notice-card{padding:13px;margin-bottom:10px}
-.notice-type{color:#bbb;font-size:10px;letter-spacing:1px;margin-bottom:7px}
-.notice-image{display:block;width:100%;height:110px;max-height:110px;object-fit:contain;background:#111;border-radius:5px;margin-bottom:8px}
-.notice-title{font-size:14px;line-height:1.6;margin-bottom:8px}
-.notice-date{color:#aaa;font-size:11px;line-height:1.7;margin-bottom:10px}
-.notice-link{color:#ddd;font-size:11px;text-decoration:underline}
-.goods-accordion>summary{list-style:none;cursor:pointer;padding:14px 12px;border:1px solid #383838;border-radius:6px;background:linear-gradient(135deg,#1b1b1b,#101010);margin-bottom:0}
-.goods-accordion>summary::-webkit-details-marker{display:none}
-.goods-accordion>summary::before{content:"+";color:#c9c9c9;margin-right:10px}
-.goods-accordion[open]>summary::before{content:"−"}
-.goods-accordion[open]>summary{margin-bottom:14px}
-.goods-accordion>summary .section-heading{margin:0}
-.goods-accordion>summary .section-heading::after{display:none}
-.goods-accordion>summary .section-heading span{margin-left:auto}
-.goods-accordion #notices{padding-top:2px}
-.game-panel{padding:14px}
-.game-month-label{font-size:12px;color:#aaa;margin-bottom:12px}
-.game-ranking{display:grid;gap:8px}
-.game-row{border:1px solid #383838;background:#151515;border-radius:6px;padding:12px}
-.game-row-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}
-.game-name{font-size:13px;overflow-wrap:anywhere}
-.game-hours{font-size:13px;color:#eee;white-space:nowrap;font-variant-numeric:tabular-nums}
-.game-bar{height:5px;background:#303030;border-radius:10px;overflow:hidden}
-.game-bar-fill{height:100%;background:linear-gradient(90deg,#777,#eee);border-radius:10px}
-.game-note{font-size:10px;color:#888;line-height:1.7;margin-top:12px}
-dialog{width:calc(100% - 28px);max-width:520px;max-height:85vh;overflow:auto;color:#eee;background:#171717;border:1px solid #777;border-radius:10px;padding:18px}
-dialog::backdrop{background:#000b}
-.detail-thumb{width:100%;border-radius:5px;margin-bottom:12px}
-.detail-title{font-size:17px;line-height:1.5;margin-bottom:10px}
-.detail-date{font-size:12px;color:#bbb;margin-bottom:16px}
-.detail-actions{display:flex;gap:8px;flex-wrap:wrap}
-.close-button{display:block;margin:16px 0 0 auto;padding:8px 13px;color:#ddd;background:#222;border:1px solid #555;border-radius:4px}
-footer{text-align:center;color:#777;border-top:1px solid #292929;padding:22px 12px;font-size:10px;letter-spacing:1px}
-@media(min-width:600px){main{padding:30px 20px 55px}.day-cell{min-height:115px;padding:5px}.day-number{font-size:13px}.weekly-summary{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:380px){.stream-card{grid-template-columns:1fr}.thumb{max-height:200px}.day-cell{min-height:70px}.day-event-title{font-size:8px}}
+:root{--bg:#090a0c;--panel:#17191d;--panel2:#202329;--line:#444850;--silver:#c9ccd2;--white:#f4f4f5;--muted:#a0a3ab;--accent:#aeb4c0}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--white);background:radial-gradient(ellipse at top,#272a30 0%,#111216 34%,#090a0c 75%);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Hiragino Kaku Gothic ProN",sans-serif}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible,[role=button]:focus-visible{outline:2px solid #e8e8ec;outline-offset:2px}a{color:inherit}header{padding:37px 15px 29px;text-align:center;border-bottom:1px solid #3b3d43;background:linear-gradient(180deg,#25272c,#101114)}.eyebrow{font-size:10px;letter-spacing:4px;color:#b4b6be}h1{margin:12px 0 0;font-size:clamp(24px,6vw,38px);font-weight:500;letter-spacing:3px}.header-line{width:55px;height:1px;background:linear-gradient(90deg,transparent,#e4e5e9,transparent);margin:18px auto 0}main{max-width:1120px;margin:auto;padding:24px 12px 50px}section{margin:0 0 38px}.section-heading{display:flex;align-items:center;gap:10px;margin-bottom:15px}.section-heading h2{margin:0;font-size:15px;font-weight:550;letter-spacing:1.6px}.section-heading span{font-size:10px;color:#a7aab2}.section-heading:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#555961,#282a30)}.card{background:linear-gradient(135deg,#1d1f24,#121316);border:1px solid var(--line);border-radius:10px;overflow:hidden}.calendar-panel{padding:12px;background:linear-gradient(155deg,#22252b,#15171b);border:1px solid #535761;border-radius:13px;box-shadow:0 16px 42px #0005}.controls{display:flex;justify-content:space-between;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:12px}.control-group{display:flex;align-items:center;gap:7px}.control-button,.view-button,.month-tab{background:#202228;border:1px solid #5b5e66;color:#e3e4e8;border-radius:7px;padding:10px 12px;font-size:12px}.control-button:active,.view-button.active,.month-tab.active{background:linear-gradient(135deg,#f0f0f2,#9da2ac);color:#141518;border-color:#c5c8ce}.period-label{background:none;border:0;color:#f0f0f3;font-weight:650;font-size:15px;letter-spacing:.3px;min-width:115px;text-align:center;padding:8px 2px}.period-label:after{content:"⌄";font-size:12px;color:#b8bec8;margin-left:7px}.view-switch{display:flex;gap:4px;padding:3px;border:1px solid #454850;border-radius:8px;background:#111215}.view-button{min-width:44px;border:0}.stats{display:flex;gap:7px;overflow-x:auto;padding:3px 0 15px;scrollbar-width:thin}.stat{flex:none;border:1px solid #555a64;border-radius:18px;background:#272a31;color:#dedfe4;font-size:11px;padding:8px 12px;white-space:nowrap}.stat strong{font-size:13px;color:#fff}.calendar-shell{position:relative;border:1px solid #5c606b;background:#292c34;border-radius:12px;padding:8px;overflow:hidden}.calendar-shell:before{content:"";display:block;position:absolute;top:0;left:calc(50% - 50px);width:100px;height:4px;background:linear-gradient(90deg,#51555f,#b9bec7,#51555f);border-radius:0 0 6px 6px}.month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-radius:8px;overflow:hidden;background:#121419}.weekday{padding:10px 0;text-align:center;color:#b8bbc3;font-size:11px;border-bottom:1px solid #777d89}.weekday.sunday{color:#d6a7af}.weekday.saturday{color:#b2c1d8}.day-cell{min-width:0;min-height:85px;border-right:1px solid #393c44;border-bottom:1px solid #393c44;padding:3px;cursor:pointer;background:#17191e}.day-cell:nth-child(7n){border-right:0}.day-cell.other-month{opacity:.3}.day-cell.today{outline:2px solid #c8cbd2;outline-offset:-2px}.day-cell.selected{background:#333740}.day-number{font-size:11px;color:#cdd0d8;padding:4px 3px}.day-events{display:grid;gap:3px}.day-event{position:relative;overflow:hidden;border:1px solid #656a74;border-radius:4px;background:#292c33;cursor:pointer}.day-thumb{display:block;width:100%;aspect-ratio:1.15;object-fit:cover;background:#30333a}.day-event-title{font-size:8px;line-height:1.3;padding:3px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.more-events{font-size:9px;color:#c9cbd1;padding:2px}.week-scroll{overflow-x:auto;border-radius:8px;background:#121419;scrollbar-width:thin}.week-board{min-width:610px}.week-header{display:grid;grid-template-columns:40px repeat(7,minmax(0,1fr));height:62px;border-bottom:1px solid #7e828c}.week-head{text-align:center;border-left:1px solid #343840;padding:7px 1px;color:#a9aeb9;font-size:11px}.week-head strong{display:block;font-size:17px;color:#f0f1f4}.week-head.today{background:#343943}.week-body{display:grid;grid-template-columns:40px repeat(7,minmax(0,1fr));height:1152px;position:relative}.time-rail{position:relative;border-right:1px solid #555b66;background:repeating-linear-gradient(to bottom,#17191e 0,#17191e 47px,#353943 47px,#353943 48px)}.time-mark{height:48px;font-size:10px;color:#8f96a3;text-align:right;padding:2px 4px}.day-lane{position:relative;min-width:0;border-right:1px dashed #424750;background:repeating-linear-gradient(to bottom,transparent 0,transparent 47px,#373c46 47px,#373c46 48px)}.day-lane:last-child{border-right:0}.week-event{position:absolute;left:2px;right:2px;z-index:2;border:1px solid #9298a4;border-radius:5px;overflow:hidden;background:#454a55;cursor:pointer;color:#fff;box-shadow:0 3px 8px #0007}.week-event img{display:block;width:100%;height:55%;object-fit:cover;opacity:.85}.week-event-name{font-size:9px;line-height:1.3;padding:3px;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.week-event-time{font-size:9px;padding:3px;color:#f1f1f3}.calendar-note{font-size:10px;color:#9ea2ab;line-height:1.7;margin-top:9px}.year-picker{position:absolute;z-index:10;top:70px;left:50%;transform:translateX(-50%);width:min(330px,calc(100% - 20px));background:#22252c;border:1px solid #a1a6b1;border-radius:12px;padding:12px;box-shadow:0 18px 40px #000c}.year-picker[hidden]{display:none}.year-picker-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.year-picker-head strong{font-size:16px}.year-months{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.year-month{border:1px solid #555b65;background:#30343c;color:#e7e9ef;border-radius:7px;padding:11px 2px;font-size:12px}.year-month.active{background:#c3c7cf;color:#15171a}.year-month small{display:block;color:inherit;opacity:.7;margin-top:4px;font-size:9px}.stream-list{display:grid;gap:10px}.stream-card{display:grid;grid-template-columns:minmax(95px,34%) minmax(0,1fr);gap:12px;padding:10px}.thumb{width:100%;aspect-ratio:16/9;object-fit:cover;background:#292c34;border-radius:5px}.stream-info{min-width:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:8px}.stream-title{font-size:13px;line-height:1.55;overflow-wrap:anywhere}.stream-date{font-size:11px;color:#b5b8c0}.stream-link{display:inline-block;padding:8px 12px;border:1px solid #858994;border-radius:6px;text-decoration:none;font-size:11px}.stream-link:hover{background:#e0e1e5;color:#111}.month-tabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:12px}.month-tab{flex:none;font-size:11px}.archive-count{font-size:11px;color:#aeb0b7;margin-bottom:12px}.empty{padding:25px 12px;border:1px dashed #4b4f57;border-radius:8px;text-align:center;color:#a5a7b0;font-size:12px;line-height:1.8}.game-panel{padding:14px}.game-month-label{color:#afb2bb;font-size:12px;margin-bottom:12px}.game-ranking{display:grid;gap:8px}.game-row{border:1px solid #464952;background:#191b20;border-radius:7px;padding:12px}.game-row-top{display:flex;justify-content:space-between;gap:10px;margin-bottom:9px}.game-name{font-size:13px;overflow-wrap:anywhere}.game-hours{font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums}.game-bar{height:5px;background:#343740;border-radius:10px;overflow:hidden}.game-bar-fill{height:100%;background:linear-gradient(90deg,#727781,#e9ebef);border-radius:10px}.game-note{font-size:10px;color:#92959d;line-height:1.8;margin-top:12px}.goods-accordion>summary{list-style:none;cursor:pointer;padding:15px 13px;border:1px solid #555962;border-radius:8px;background:#1c1e23}.goods-accordion>summary::-webkit-details-marker{display:none}.goods-accordion>summary:before{content:"＋";margin-right:10px;color:#d2d5dc}.goods-accordion[open]>summary:before{content:"−"}.goods-accordion>summary .section-heading{display:inline-flex;margin:0}.goods-accordion>summary .section-heading:after{display:none}.goods-accordion #notices{padding-top:13px}.notice-card{padding:13px;margin-bottom:10px}.notice-type{font-size:10px;color:#bdc0c8;margin-bottom:8px}.notice-image{display:block;width:100%;max-height:180px;object-fit:contain;background:#111;border-radius:6px;margin-bottom:10px}.notice-title{font-size:14px;line-height:1.6;margin-bottom:8px}.notice-date{font-size:11px;color:#a9acb5;line-height:1.7;margin-bottom:10px}.notice-link{font-size:11px;color:#ddd}.weekly-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.week-day{border:1px solid #444852;background:#191b20;border-radius:6px;padding:13px 8px;text-align:center}.week-en{display:block;font-size:10px;letter-spacing:2px;color:#a5a9b1;margin-bottom:6px}.week-ja{font-size:12px}dialog{width:calc(100% - 28px);max-width:530px;max-height:85vh;overflow:auto;background:#1b1d22;border:1px solid #969ba6;border-radius:12px;padding:18px;color:#f1f1f4;box-shadow:0 20px 60px #000b}dialog::backdrop{background:#000c}.detail-thumb{width:100%;border-radius:6px;margin-bottom:13px}.detail-title{font-size:17px;line-height:1.6;margin-bottom:10px}.detail-date{font-size:12px;color:#b7bac2;margin-bottom:12px}.detail-actions{display:flex;gap:8px;flex-wrap:wrap}.close-button{display:block;margin:17px 0 0 auto;padding:9px 15px;color:#eee;background:#292c33;border:1px solid #717680;border-radius:6px}footer{text-align:center;color:#898c95;border-top:1px solid #343740;padding:24px 12px;font-size:10px;letter-spacing:1px}@media(min-width:650px){main{padding:34px 22px 60px}.calendar-panel{padding:18px}.day-cell{min-height:126px;padding:5px}.day-number{font-size:13px}.weekly-summary{grid-template-columns:repeat(4,1fr)}.week-board{min-width:700px}}@media(max-width:380px){.stream-card{grid-template-columns:1fr}.thumb{max-height:200px}.day-cell{min-height:68px}.day-event-title{font-size:7px}.calendar-panel{padding:8px}.control-button{padding:9px}}
 </style>
 </head>
 <body>
-<header>
-<div class="eyebrow">STREAM ARCHIVE & INFORMATION</div>
-<h1>STREAM SCHEDULE</h1>
-<div class="header-line"></div>
-</header>
+<header><div class="eyebrow">STREAM ARCHIVE & INFORMATION</div><h1>STREAM SCHEDULE</h1><div class="header-line"></div></header>
 <main>
 <section>
 <div class="section-heading"><h2>STREAM CALENDAR</h2><span>配信カレンダー</span></div>
-<div class="controls">
-<div class="control-group"><button class="control-button" id="prev" aria-label="前へ">‹</button><div class="period-label" id="period-label">読み込み中</div><button class="control-button" id="next" aria-label="次へ">›</button></div>
-<div class="control-group"><button class="control-button" id="today">今日</button><button class="view-button active" data-view="week">週</button><button class="view-button" data-view="month">月</button></div>
-</div>
+<div class="calendar-panel">
+<div class="controls"><div class="control-group"><button class="control-button" id="prev" aria-label="前へ">‹</button><button class="period-label" id="period-label" aria-label="年月を選択">読み込み中</button><button class="control-button" id="next" aria-label="次へ">›</button></div><div class="control-group"><button class="control-button" id="today">今日</button><div class="view-switch"><button class="view-button active" data-view="week">週</button><button class="view-button" data-view="month">月</button></div></div></div>
 <div class="stats" id="stats"></div>
-<div class="calendar-shell"><div id="calendar"></div></div>
-<div id="selected-day" style="margin-top:15px"></div>
+<div class="calendar-shell"><div id="year-picker" class="year-picker" hidden></div><div id="calendar"></div></div>
+<div class="calendar-note">配信サムネイルをタップすると詳細が開きます。週間表示は横にスクロールできます。</div>
+</div><div id="selected-day" style="margin-top:17px"></div>
 </section>
-
-<section>
-<div class="section-heading"><h2>UPCOMING STREAMS</h2><span>配信予定</span></div>
-<div id="upcoming-list" class="stream-list"><div class="empty">配信予定を読み込み中...</div></div>
-</section>
-
-<section>
-<div class="section-heading"><h2>MONTHLY GAME HOURS</h2><span>月別ゲーム配信時間</span></div>
-<div class="card game-panel">
-<div class="controls">
-<div class="control-group"><button class="control-button" id="game-prev">‹</button><div class="period-label" id="game-period">読み込み中</div><button class="control-button" id="game-next">›</button></div>
-</div>
-<div id="game-hours"><div class="empty">ゲーム配信時間を読み込み中...</div></div>
-<div class="game-note">YouTubeから取得した配信データをもとに集計します。時間データやゲーム名を取得できない配信は、正確性を保つため集計に含まれない場合があります。</div>
-</div>
-</section>
-
-<section>
-<div class="section-heading"><h2>PAST STREAMS</h2><span>過去の配信</span></div>
-<div id="month-tabs" class="month-tabs"></div>
-<div id="archive-list"><div class="empty">過去の配信を読み込み中...</div></div>
-</section>
-
-<section>
-<details class="goods-accordion">
-<summary><div class="section-heading"><h2>GOODS & VOICE</h2><span>タップして商品一覧を開く</span></div></summary>
-<div id="notices"><div class="empty">お知らせ情報を読み込み中...</div></div>
-</details>
-</section>
-
-<section>
-<div class="section-heading"><h2>WEEKLY SCHEDULE</h2><span>週間スケジュール</span></div>
-<div id="weekly-summary" class="weekly-summary"></div>
-</section>
+<section><div class="section-heading"><h2>UPCOMING STREAMS</h2><span>配信予定</span></div><div id="upcoming-list" class="stream-list"><div class="empty">読み込み中...</div></div></section>
+<section><div class="section-heading"><h2>MONTHLY GAME HOURS</h2><span>月別ゲーム配信時間</span></div><div class="card game-panel"><div class="controls"><div class="control-group"><button class="control-button" id="game-prev">‹</button><div class="period-label" id="game-period">読み込み中</div><button class="control-button" id="game-next">›</button></div></div><div id="game-hours"><div class="empty">読み込み中...</div></div><div class="game-note">YouTubeの配信情報から自動集計しています。未分類や複数ゲーム配信の内訳には推定・判定不能の部分があります。</div></div></section>
+<section><div class="section-heading"><h2>PAST STREAMS</h2><span>過去の配信</span></div><div id="month-tabs" class="month-tabs"></div><div id="archive-list"><div class="empty">読み込み中...</div></div></section>
+<section><details class="goods-accordion"><summary><div class="section-heading"><h2>GOODS & VOICE</h2><span>タップして商品一覧を開く</span></div></summary><div id="notices"><div class="empty">読み込み中...</div></div></details></section>
+<section><div class="section-heading"><h2>WEEKLY SCHEDULE</h2><span>週間スケジュール</span></div><div id="weekly-summary" class="weekly-summary"></div></section>
 </main>
 <dialog id="detail-dialog"><div id="detail-content"></div><button class="close-button" id="close-detail">閉じる</button></dialog>
 <footer><div id="updated">SCHEDULE DATA</div><div style="margin-top:8px">STREAM SCHEDULE</div></footer>
-
 <script>
 const DATA_URL="https://raw.githubusercontent.com/nhkk6zprtg-gif/oshi-schedule/main/schedule.json";
 const NOTICE_URL="https://raw.githubusercontent.com/nhkk6zprtg-gif/oshi-schedule/main/announcements.json";
 const $=id=>document.getElementById(id);
 const weekdays=["日","月","火","水","木","金","土"];
-let allStreams=[],upcomingStreams=[],pastStreams=[],currentView="week",currentDate=new Date(),selectedDate=dateKey(new Date()),gameMonth=monthKey(new Date()),scheduleData={};
-
-function escapeHTML(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+let allStreams=[],upcomingStreams=[],pastStreams=[],currentView="week",currentDate=new Date(),selectedDate=dateKey(new Date()),gameMonth=monthKey(new Date()),scheduleData={},pickerYear=new Date().getFullYear();
+function escapeHTML(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function dateKey(date){return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit"}).format(date)}
-function dateParts(key){const [year,month,day]=key.split("-").map(Number);return {year,month,day}}
-function jstDate(value){if(!value)return "";const date=new Date(value);if(Number.isNaN(date.getTime()))return "";return dateKey(date)}
-function formatDate(value){if(!value)return "日時未定";const date=new Date(value);if(Number.isNaN(date.getTime()))return "日時未定";return new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).format(date).replace(/\//g,".")}
+function dateParts(key){const [year,month,day]=key.split("-").map(Number);return{year,month,day}}
+function localKey(date){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`}
+function jstDate(value){if(!value)return"";const d=new Date(value);return Number.isNaN(d.getTime())?"":dateKey(d)}
+function formatDate(value){if(!value)return"日時未定";const d=new Date(value);if(Number.isNaN(d.getTime()))return"日時未定";return new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).format(d).replace(/\//g,".")}
 function monthKey(value){return jstDate(value).slice(0,7)}
-function monthLabel(key){const [year,month]=key.split("-");return `${year}年${Number(month)}月`}
-function streamURL(stream){if(/^https:\/\/www\.youtube\.com\/watch\?v=[\w-]+$/.test(stream.url||""))return stream.url;if(stream.videoId)return "https://www.youtube.com/watch?v="+encodeURIComponent(stream.videoId);return "https://www.youtube.com/@kanae"}
-function streamThumb(stream){if(/^https?:\/\//i.test(stream.thumbnail||""))return stream.thumbnail;if(stream.videoId)return "https://i.ytimg.com/vi/"+encodeURIComponent(stream.videoId)+"/hqdefault.jpg";return ""}
-function streamCard(stream){const thumb=streamThumb(stream);return `<article class="card stream-card"><img class="thumb" src="${escapeHTML(thumb)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><div class="stream-info"><div class="stream-title">${escapeHTML(stream.title||"配信")}</div><div class="stream-date">${escapeHTML(formatDate(stream.scheduledAt||stream.actualStartTime))}</div><a class="stream-link" href="${escapeHTML(streamURL(stream))}" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a><button class="control-button detail-open" data-id="${escapeHTML(stream.videoId||"")}">詳細を見る</button></div></article>`}
-function streamDetails(stream){const thumb=streamThumb(stream);$("detail-content").innerHTML=`${thumb?`<img class="detail-thumb" src="${escapeHTML(thumb)}" alt="">`:""}<div class="detail-title">${escapeHTML(stream.title||"配信")}</div><div class="detail-date">${escapeHTML(formatDate(stream.scheduledAt||stream.actualStartTime))}</div><div class="detail-actions"><a class="stream-link" href="${escapeHTML(streamURL(stream))}" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a></div>`;$("detail-dialog").showModal()}
-function bindDetailButtons(){document.querySelectorAll(".detail-open").forEach(button=>button.addEventListener("click",()=>{const stream=allStreams.find(s=>String(s.videoId||"")===button.dataset.id);if(stream)streamDetails(stream)}))}
-function dayStreams(key){return allStreams.filter(s=>jstDate(s.scheduledAt||s.actualStartTime)===key).sort((a,b)=>new Date(a.scheduledAt||a.actualStartTime)-new Date(b.scheduledAt||b.actualStartTime))}
-function renderStats(){$("stats").innerHTML=`<div class="stat">配信 ${allStreams.length} 件</div><div class="stat">予定 ${upcomingStreams.length} 件</div><div class="stat">アーカイブ ${pastStreams.length} 件</div>`}
-
-function renderMonth(){
-const year=currentDate.getFullYear(),month=currentDate.getMonth(),first=new Date(year,month,1),start=new Date(year,month,1-first.getDay());
-let html='<div class="month-grid">';
-weekdays.forEach(day=>html+=`<div class="weekday">${day}</div>`);
-for(let i=0;i<42;i++){
-const date=new Date(start);date.setDate(start.getDate()+i);
-const key=dateKey(date),items=dayStreams(key),classes=["day-cell",date.getMonth()!==month?"other-month":"",key===dateKey(new Date())?"today":"",key===selectedDate?"selected":""].filter(Boolean).join(" ");
-html+=`<div class="${classes}" data-date="${key}"><div class="day-number">${date.getDate()}</div><div class="day-events">`;
-items.slice(0,3).forEach(stream=>{const thumb=streamThumb(stream);html+=`<div class="day-event" data-stream="${escapeHTML(stream.videoId||"")}">${thumb?`<img class="day-thumb" src="${escapeHTML(thumb)}" alt="" loading="lazy">`:""}<div class="day-event-title">${escapeHTML(stream.title||"配信")}</div></div>`});
-if(items.length>3)html+=`<div class="more-events">ほか ${items.length-3} 件</div>`;
-html+="</div></div>";
-}
-$("calendar").innerHTML=html+"</div>";
-$("period-label").textContent=`${year}年${month+1}月`;
-$("calendar").querySelectorAll(".day-cell").forEach(cell=>cell.addEventListener("click",event=>{
-const el=event.target.closest("[data-stream]");
-if(el){const stream=allStreams.find(s=>String(s.videoId||"")===el.dataset.stream);if(stream){streamDetails(stream);return}}
-selectedDate=cell.dataset.date;renderCalendar()
-}));
-renderSelectedDay()
-}
-function startOfWeek(date){const result=new Date(date);result.setDate(result.getDate()-((result.getDay()+6)%7));result.setHours(12,0,0,0);return result}
-function renderWeek(){
-const start=startOfWeek(currentDate),dates=[];
-for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);dates.push(d)}
-$("period-label").textContent=`${dates[0].getMonth()+1}/${dates[0].getDate()} – ${dates[6].getMonth()+1}/${dates[6].getDate()}`;
-let html='<div class="week-scroll"><div class="week-grid"><div class="week-head"></div>';
-dates.forEach(d=>{const key=dateKey(d);html+=`<div class="week-head ${key===dateKey(new Date())?"today":""}"><strong>${d.getDate()}</strong>${weekdays[d.getDay()]}</div>`});
-for(let hour=0;hour<24;hour++){
-html+=`<div class="time-label">${String(hour).padStart(2,"0")}:00</div>`;
-dates.forEach(d=>{
-const key=dateKey(d),items=dayStreams(key).filter(s=>{
-const dt=new Date(s.scheduledAt||s.actualStartTime);
-return Number.isFinite(dt.getTime())&&Number(new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",hour:"2-digit",hour12:false}).format(dt))===hour
-});
-html+='<div class="time-cell">';
-items.forEach((stream,index)=>{const thumb=streamThumb(stream);html+=`<div class="week-event" style="top:${index*3}px;${index>0?"left:"+(index*10+2)+"px;":""}" data-stream="${escapeHTML(stream.videoId||"")}">${thumb?`<img src="${escapeHTML(thumb)}" alt="" loading="lazy">`:""}<span class="event-name">${escapeHTML(stream.title||"配信")}</span></div>`});
-html+="</div>"
-})
-}
-$("calendar").innerHTML=html+"</div></div>";
-$("calendar").querySelectorAll("[data-stream]").forEach(el=>el.addEventListener("click",()=>{const stream=allStreams.find(s=>String(s.videoId||"")===el.dataset.stream);if(stream)streamDetails(stream)}));
-renderSelectedDay()
-}
-function renderSelectedDay(){
-const items=dayStreams(selectedDate),parts=dateParts(selectedDate);
-$("selected-day").innerHTML=`<div class="section-heading"><h2>${parts.month}月${parts.day}日の配信</h2><span>${items.length}件</span></div>${items.length?`<div class="stream-list">${items.map(streamCard).join("")}</div>`:'<div class="empty">この日の配信データはありません。</div>'}`;
-bindDetailButtons()
-}
-function renderCalendar(){document.querySelectorAll("[data-view]").forEach(button=>button.classList.toggle("active",button.dataset.view===currentView));if(currentView==="month")renderMonth();else renderWeek()}
-function renderUpcoming(streams){$("upcoming-list").innerHTML=streams.length?streams.map(streamCard).join(""):'<div class="empty">現在、公開されている配信予定はありません。</div>';bindDetailButtons()}
-function renderArchives(streams){
-const groups={};
-streams.forEach(stream=>{const key=monthKey(stream.scheduledAt||stream.actualStartTime);if(key)(groups[key]||=[]).push(stream)});
-const months=Object.keys(groups).sort((a,b)=>b.localeCompare(a)),tabs=$("month-tabs"),list=$("archive-list");
-if(!months.length){tabs.innerHTML="";list.innerHTML='<div class="empty">過去の配信データはまだありません。</div>';return}
-tabs.innerHTML=months.map((month,i)=>`<button class="month-tab ${i===0?"active":""}" data-month="${month}">${monthLabel(month)}</button>`).join("");
-function showMonth(month){
-tabs.querySelectorAll(".month-tab").forEach(tab=>tab.classList.toggle("active",tab.dataset.month===month));
-const items=groups[month].slice().sort((a,b)=>(b.scheduledAt||b.actualStartTime||"").localeCompare(a.scheduledAt||a.actualStartTime||""));
-list.innerHTML=`<div class="archive-count">${monthLabel(month)} ・ ${items.length}件</div><div class="stream-list">${items.map(streamCard).join("")}</div>`;
-bindDetailButtons()
-}
-tabs.querySelectorAll(".month-tab").forEach(tab=>tab.addEventListener("click",()=>showMonth(tab.dataset.month)));
-showMonth(months[0])
-}
-function renderWeeklySummary(days){
-const fallback=[["月曜日","MON"],["火曜日","TUE"],["水曜日","WED"],["木曜日","THU"],["金曜日","FRI"],["土曜日","SAT"],["日曜日","SUN"]];
-const items=Array.isArray(days)&&days.length?days.map(d=>[d.day||"",d.dayEn||""]):fallback;
-$("weekly-summary").innerHTML=items.map(d=>`<div class="week-day"><span class="week-en">${escapeHTML(d[1])}</span><span class="week-ja">${escapeHTML(d[0])}</span></div>`).join("")
-}
-
-/* 月別ゲーム時間データを複数の形式から読み取る */
-function getMonthlyGameRows(data,month){
-const source=data.monthlyGameHours;
-if(!source)return [];
-let rows=[];
-if(Array.isArray(source)){
-rows=source.filter(item=>(item.month||item.monthKey||item.date||"").slice(0,7)===month);
-}else if(typeof source==="object"){
-const monthData=source[month];
-if(monthData&&typeof monthData==="object"){
-if(Array.isArray(monthData))rows=monthData;
-else rows=Object.entries(monthData).map(([game,value])=>typeof value==="object"?{game,...value}:{game,hours:value});
-}else{
-rows=Object.entries(source).filter(([key])=>key.slice(0,7)===month).flatMap(([key,value])=>Array.isArray(value)?value:Object.entries(value||{}).map(([game,hours])=>({month:key,game,hours})));
-}
-}
-return rows.map(item=>{
-const game=item.game||item.gameName||item.title||item.name||"";
-let hours=Number(item.hours??item.totalHours);
-if(!Number.isFinite(hours)){
-const seconds=Number(item.durationSeconds??item.seconds??item.totalSeconds);
-if(Number.isFinite(seconds))hours=seconds/3600;
-}
-if(!Number.isFinite(hours)&&item.duration){
-const match=String(item.duration).match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
-if(match)hours=(Number(match[1]||0)*3600+Number(match[2]||0)*60+Number(match[3]||0))/3600;
-}
-return {game:String(game),hours}
-}).filter(item=>item.game&&Number.isFinite(item.hours)&&item.hours>0)
-}
-function renderGameHours(){
-$("game-period").textContent=monthLabel(gameMonth);
-const rows=getMonthlyGameRows(scheduleData,gameMonth).sort((a,b)=>b.hours-a.hours);
-const box=$("game-hours");
-if(!rows.length){
-box.innerHTML='<div class="empty">この月のゲーム別配信時間データがありません。<br>更新スクリプトの実行後に、集計データがある月から表示されます。</div>';
-return
-}
-const max=Math.max(...rows.map(row=>row.hours));
-box.innerHTML=`<div class="game-month-label">${monthLabel(gameMonth)}のゲーム別配信時間</div><div class="game-ranking">${rows.map(row=>`<div class="game-row"><div class="game-row-top"><span class="game-name">${escapeHTML(row.game)}</span><span class="game-hours">${row.hours.toFixed(1)}h</span></div><div class="game-bar"><div class="game-bar-fill" style="width:${Math.max(0,Math.min(100,row.hours/max*100))}%"></div></div></div>`).join("")}</div>`
-}
-function shiftGameMonth(amount){
-const [year,month]=gameMonth.split("-").map(Number);
-const date=new Date(year,month-1+amount,1);
-gameMonth=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}`;
-renderGameHours()
-}
-
-async function loadAnnouncements(){
-const box=$("notices");
-try{
-const response=await fetch(NOTICE_URL+"?t="+Date.now());
-if(!response.ok)throw new Error("告知データ取得失敗");
-const data=await response.json(),items=Array.isArray(data.announcements)?data.announcements:[];
-if(!items.length){box.innerHTML='<div class="empty">現在掲載中のお知らせはありません。<br>公式告知の登録後、こちらに表示されます。</div>';return}
-box.innerHTML=items.map(item=>{
-const url=/^https?:\/\//i.test(item.url||"")?item.url:"",imageUrl=/^https?:\/\//i.test(item.imageUrl||"")?item.imageUrl:"";
-return `<article class="card notice-card"><div class="notice-type">${escapeHTML(item.type||"お知らせ")}</div>${imageUrl?`<img class="notice-image" src="${escapeHTML(imageUrl)}" alt="${escapeHTML(item.title||"商品画像")}" loading="lazy" onerror="this.style.display='none'">`:""}<div class="notice-title">${escapeHTML(item.title||"お知らせ")}</div><div class="notice-date">${escapeHTML(item.date||"日付未定")}${item.salesPeriod?"<br>販売期間："+escapeHTML(item.salesPeriod):""}</div>${url?`<a class="notice-link" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">公式ページを見る ↗</a>`:""}</article>`
-}).join("")
-}catch(error){box.innerHTML='<div class="empty">お知らせを読み込めませんでした。時間をおいて再度お試しください。</div>'}
-}
-function movePeriod(amount){
-if(currentView==="month")currentDate=new Date(currentDate.getFullYear(),currentDate.getMonth()+amount,1,12);
-else currentDate.setDate(currentDate.getDate()+amount*7);
-selectedDate=dateKey(currentDate);
-renderCalendar()
-}
-$("prev").addEventListener("click",()=>movePeriod(-1));
-$("next").addEventListener("click",()=>movePeriod(1));
-$("today").addEventListener("click",()=>{currentDate=new Date();selectedDate=dateKey(currentDate);renderCalendar()});
-document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>{currentView=button.dataset.view;renderCalendar()}));
-$("game-prev").addEventListener("click",()=>shiftGameMonth(-1));
-$("game-next").addEventListener("click",()=>shiftGameMonth(1));
-$("close-detail").addEventListener("click",()=>$("detail-dialog").close());
-
-async function loadSchedule(){
-try{
-const response=await fetch(DATA_URL+"?t="+Date.now());
-if(!response.ok)throw new Error("データ取得失敗");
-const data=await response.json();
-scheduleData=data;
-upcomingStreams=Array.isArray(data.streams)?data.streams:[];
-pastStreams=Array.isArray(data.pastStreams)?data.pastStreams:[];
-allStreams=[...upcomingStreams,...pastStreams];
-renderStats();
-renderCalendar();
-renderUpcoming(upcomingStreams);
-renderArchives(pastStreams);
-renderWeeklySummary(data.weeklySchedule);
-renderGameHours();
-$("updated").textContent=data.updatedAt?"最終更新："+formatDate(data.updatedAt):"SCHEDULE DATA"
-}catch(error){
-$("upcoming-list").innerHTML='<div class="empty">配信データを読み込めませんでした。時間をおいて再度お試しください。</div>';
-$("archive-list").innerHTML='<div class="empty">過去の配信データを読み込めませんでした。</div>';
-$("calendar").innerHTML='<div class="empty">カレンダーを読み込めませんでした。</div>';
-$("game-hours").innerHTML='<div class="empty">ゲーム配信時間を読み込めませんでした。</div>';
-renderWeeklySummary([])
-}
-}
-renderCalendar();
-loadSchedule();
-loadAnnouncements();
+function monthLabel(key){const[y,m]=key.split("-");return `${y}年${Number(m)}月`}
+function streamTime(s){return s.scheduledAt||s.actualStartTime||""}
+function streamURL(s){if(/^https:\/\/www\.youtube\.com\/watch\?v=[\w-]+$/.test(s.url||""))return s.url;if(s.videoId)return"https://www.youtube.com/watch?v="+encodeURIComponent(s.videoId);return"https://www.youtube.com/@kanae"}
+function streamThumb(s){if(/^https?:\/\//i.test(s.thumbnail||""))return s.thumbnail;if(s.videoId)return"https://i.ytimg.com/vi/"+encodeURIComponent(s.videoId)+"/hqdefault.jpg";return""}
+function streamCard(s){const thumb=streamThumb(s);return `<article class="card stream-card">${thumb?`<img class="thumb" src="${escapeHTML(thumb)}" alt="" loading="lazy">`:""}<div class="stream-info"><div class="stream-title">${escapeHTML(s.title||"配信")}</div><div class="stream-date">${escapeHTML(formatDate(streamTime(s)))}</div><a class="stream-link" href="${escapeHTML(streamURL(s))}" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a><button class="control-button detail-open" data-id="${escapeHTML(s.videoId||"")}">詳細を見る</button></div></article>`}
+function streamDetails(s){const thumb=streamThumb(s);const duration=Number(s.durationSeconds);const hours=duration>0?`<div class="detail-date">配信時間：約${(duration/3600).toFixed(1)}時間</div>`:"";$("detail-content").innerHTML=`${thumb?`<img class="detail-thumb" src="${escapeHTML(thumb)}" alt="">`:""}<div class="detail-title">${escapeHTML(s.title||"配信")}</div><div class="detail-date">${escapeHTML(formatDate(streamTime(s)))}</div>${hours}<div class="detail-actions"><a class="stream-link" href="${escapeHTML(streamURL(s))}" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a></div>`;$("detail-dialog").showModal()}
+function findStream(id){return allStreams.find(s=>String(s.videoId||"")===id)}
+function bindDetails(root=document){root.querySelectorAll(".detail-open,[data-stream]").forEach(el=>{el.addEventListener("click",e=>{e.stopPropagation();const s=findStream(el.dataset.id||el.dataset.stream);if(s)streamDetails(s)})})}
+function dayStreams(key){return allStreams.filter(s=>jstDate(streamTime(s))===key).sort((a,b)=>new Date(streamTime(a))-new Date(streamTime(b)))}
+function periodStreams(){if(currentView==="month"){const m=localKey(new Date(currentDate.getFullYear(),currentDate.getMonth(),1)).slice(0,7);return allStreams.filter(s=>jstDate(streamTime(s)).slice(0,7)===m)}const start=startOfWeek(currentDate),keys=new Set(Array.from({length:7},(_,i)=>{const d=new Date(start);d.setDate(start.getDate()+i);return localKey(d)}));return allStreams.filter(s=>keys.has(jstDate(streamTime(s))))}
+function renderStats(){const items=periodStreams(),seconds=items.reduce((sum,s)=>sum+(Number(s.durationSeconds)>0?Number(s.durationSeconds):0),0);const games={};items.forEach(s=>{const name=s.game||"未分類";games[name]=(games[name]||0)+(Number(s.durationSeconds)>0?Number(s.durationSeconds):0)});const top=Object.entries(games).sort((a,b)=>b[1]-a[1]).slice(0,4);$("stats").innerHTML=`<div class="stat"><strong>${items.length}</strong> 回</div><div class="stat"><strong>${(seconds/3600).toFixed(1)}</strong> 時間</div><div class="stat"><strong>${upcomingStreams.filter(s=>items.includes(s)).length}</strong> 件予定</div>`+top.map(([g,n])=>`<div class="stat">${escapeHTML(g)} ${(n/3600).toFixed(1)}h</div>`).join("")}
+function renderMonth(){const year=currentDate.getFullYear(),month=currentDate.getMonth(),first=new Date(year,month,1,12),start=new Date(first);start.setDate(1-first.getDay());let html='<div class="month-grid">';weekdays.forEach((d,i)=>html+=`<div class="weekday ${i===0?"sunday":i===6?"saturday":""}">${d}</div>`);for(let i=0;i<42;i++){const date=new Date(start);date.setDate(start.getDate()+i);const key=localKey(date),items=dayStreams(key),classes=["day-cell",date.getMonth()!==month?"other-month":"",key===dateKey(new Date())?"today":"",key===selectedDate?"selected":""].filter(Boolean).join(" ");html+=`<div class="${classes}" data-date="${key}"><div class="day-number">${date.getDate()}</div><div class="day-events">`;items.slice(0,2).forEach(s=>{const thumb=streamThumb(s);html+=`<div class="day-event" data-stream="${escapeHTML(s.videoId||"")}">${thumb?`<img class="day-thumb" src="${escapeHTML(thumb)}" alt="" loading="lazy">`:""}<div class="day-event-title">${escapeHTML(s.title||"配信")}</div></div>`});if(items.length>2)html+=`<div class="more-events">＋${items.length-2}件</div>`;html+="</div></div>"}$("calendar").innerHTML=html+"</div>";$("period-label").textContent=`${year}年${month+1}月`;$("calendar").querySelectorAll(".day-cell").forEach(cell=>cell.addEventListener("click",()=>{selectedDate=cell.dataset.date;renderCalendar()}));bindDetails($("calendar"));renderSelectedDay()}
+function startOfWeek(date){const d=new Date(date);d.setDate(d.getDate()-((d.getDay()+6)%7));d.setHours(12,0,0,0);return d}
+function jstClock(value){const d=new Date(value);if(Number.isNaN(d.getTime()))return null;const parts=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(d);const get=t=>Number(parts.find(p=>p.type===t)?.value||0);return get("hour")*60+get("minute")}
+function renderWeek(){const start=startOfWeek(currentDate),dates=[];for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);dates.push(d)}$("period-label").textContent=`${dates[0].getFullYear()}年 ${dates[0].getMonth()+1}/${dates[0].getDate()}–${dates[6].getMonth()+1}/${dates[6].getDate()}`;let html='<div class="week-scroll"><div class="week-board"><div class="week-header"><div></div>';dates.forEach(d=>{const key=localKey(d);html+=`<div class="week-head ${key===dateKey(new Date())?"today":""}"><strong>${d.getDate()}</strong>${weekdays[d.getDay()]}</div>`});html+='</div><div class="week-body"><div class="time-rail">';for(let h=0;h<24;h++)html+=`<div class="time-mark">${String(h).padStart(2,"0")}</div>`;html+='</div>';dates.forEach(d=>{const key=localKey(d),items=dayStreams(key);html+='<div class="day-lane">';items.forEach((s,index)=>{const minute=jstClock(streamTime(s));if(minute===null)return;const raw=Number(s.durationSeconds),duration=raw>0?raw/60:90;const top=minute*0.8;const height=Math.max(43,Math.min(duration*0.8,1152-top));const thumb=streamThumb(s);const hh=String(Math.floor(minute/60)).padStart(2,"0"),mm=String(minute%60).padStart(2,"0");html+=`<div class="week-event" data-stream="${escapeHTML(s.videoId||"")}" style="top:${top}px;height:${height}px;${index%2?"border-color:#c8ccd4;":""}"><div class="week-event-time">${hh}:${mm}</div>${thumb&&height>65?`<img src="${escapeHTML(thumb)}" alt="" loading="lazy">`:""}<div class="week-event-name">${escapeHTML(s.title||"配信")}</div></div>`});html+='</div>'});html+='</div></div></div>';$("calendar").innerHTML=html;bindDetails($("calendar"));renderSelectedDay()}
+function renderSelectedDay(){const items=dayStreams(selectedDate),p=dateParts(selectedDate);$("selected-day").innerHTML=`<div class="section-heading"><h2>${p.month}月${p.day}日の配信</h2><span>${items.length}件</span></div>${items.length?`<div class="stream-list">${items.map(streamCard).join("")}</div>`:'<div class="empty">この日の配信データはありません。</div>'}`;bindDetails($("selected-day"))}
+function renderCalendar(){document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===currentView));renderStats();if(currentView==="month")renderMonth();else renderWeek()}
+function renderUpcoming(items){$("upcoming-list").innerHTML=items.length?items.map(streamCard).join(""):'<div class="empty">現在、公開されている配信予定はありません。</div>';bindDetails($("upcoming-list"))}
+function renderArchives(streams){const groups={};streams.forEach(s=>{const key=monthKey(streamTime(s));if(key)(groups[key]||=[]).push(s)});const months=Object.keys(groups).sort((a,b)=>b.localeCompare(a)),tabs=$("month-tabs"),list=$("archive-list");if(!months.length){tabs.innerHTML="";list.innerHTML='<div class="empty">過去の配信データはまだありません。</div>';return}tabs.innerHTML=months.map((m,i)=>`<button class="month-tab ${i===0?"active":""}" data-month="${m}">${monthLabel(m)}</button>`).join("");function showMonth(m){tabs.querySelectorAll(".month-tab").forEach(t=>t.classList.toggle("active",t.dataset.month===m));const items=groups[m].slice().sort((a,b)=>new Date(streamTime(b))-new Date(streamTime(a)));list.innerHTML=`<div class="archive-count">${monthLabel(m)} ・ ${items.length}件</div><div class="stream-list">${items.map(streamCard).join("")}</div>`;bindDetails(list)}tabs.querySelectorAll(".month-tab").forEach(t=>t.addEventListener("click",()=>showMonth(t.dataset.month)));showMonth(months[0])}
+function renderWeeklySummary(days){const fallback=[["月曜日","MON"],["火曜日","TUE"],["水曜日","WED"],["木曜日","THU"],["金曜日","FRI"],["土曜日","SAT"],["日曜日","SUN"]];const items=Array.isArray(days)&&days.length?days.map(d=>[d.day||"",d.dayEn||""]):fallback;$("weekly-summary").innerHTML=items.map(d=>`<div class="week-day"><span class="week-en">${escapeHTML(d[1])}</span><span class="week-ja">${escapeHTML(d[0])}</span></div>`).join("")}
+function getMonthlyGameRows(data,month){const source=data.monthlyGameHours;if(!source)return[];let rows=[];if(Array.isArray(source))rows=source.filter(i=>String(i.month||i.monthKey||i.date||"").slice(0,7)===month);else if(typeof source==="object"){const value=source[month];if(Array.isArray(value))rows=value;else if(value&&typeof value==="object")rows=Object.entries(value).map(([game,v])=>typeof v==="object"?{game,...v}:{game,hours:v})}return rows.map(i=>{const game=i.game||i.gameName||i.title||i.name||"";let hours=Number(i.hours??i.totalHours);if(!Number.isFinite(hours))hours=Number(i.seconds??i.durationSeconds??i.totalSeconds)/3600;return{game:String(game),hours}}).filter(i=>i.game&&Number.isFinite(i.hours)&&i.hours>0)}
+function renderGameHours(){$("game-period").textContent=monthLabel(gameMonth);const rows=getMonthlyGameRows(scheduleData,gameMonth).sort((a,b)=>b.hours-a.hours),box=$("game-hours");if(!rows.length){box.innerHTML='<div class="empty">この月のゲーム別配信時間データはありません。</div>';return}const max=Math.max(...rows.map(r=>r.hours));box.innerHTML=`<div class="game-month-label">${monthLabel(gameMonth)}のゲーム別配信時間</div><div class="game-ranking">${rows.map(r=>`<div class="game-row"><div class="game-row-top"><span class="game-name">${escapeHTML(r.game)}</span><span class="game-hours">${r.hours.toFixed(1)}h</span></div><div class="game-bar"><div class="game-bar-fill" style="width:${Math.max(0,Math.min(100,r.hours/max*100))}%"></div></div></div>`).join("")}</div>`}
+function shiftGameMonth(amount){const[y,m]=gameMonth.split("-").map(Number),d=new Date(y,m-1+amount,1);gameMonth=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;renderGameHours()}
+async function loadAnnouncements(){const box=$("notices");try{const r=await fetch(NOTICE_URL+"?t="+Date.now());if(!r.ok)throw Error();const data=await r.json(),items=Array.isArray(data.announcements)?data.announcements:[];if(!items.length){box.innerHTML='<div class="empty">現在掲載中のお知らせはありません。</div>';return}box.innerHTML=items.map(i=>{const url=/^https?:\/\//i.test(i.url||"")?i.url:"",img=/^https?:\/\//i.test(i.imageUrl||"")?i.imageUrl:"";return `<article class="card notice-card"><div class="notice-type">${escapeHTML(i.type||"お知らせ")}</div>${img?`<img class="notice-image" src="${escapeHTML(img)}" alt="" loading="lazy">`:""}<div class="notice-title">${escapeHTML(i.title||"お知らせ")}</div><div class="notice-date">${escapeHTML(i.date||"日付未定")}${i.salesPeriod?"<br>販売期間："+escapeHTML(i.salesPeriod):""}</div>${url?`<a class="notice-link" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">公式ページを見る ↗</a>`:""}</article>`}).join("")}catch(e){box.innerHTML='<div class="empty">お知らせを読み込めませんでした。</div>'}}
+function movePeriod(n){if(currentView==="month")currentDate=new Date(currentDate.getFullYear(),currentDate.getMonth()+n,1,12);else{const d=new Date(currentDate);d.setDate(d.getDate()+7*n);currentDate=d}selectedDate=localKey(currentDate);renderCalendar()}
+function showYearPicker(){const box=$("year-picker");if(!box.hidden){box.hidden=true;return}pickerYear=currentDate.getFullYear();renderYearPicker();box.hidden=false}
+function renderYearPicker(){const box=$("year-picker");box.innerHTML=`<div class="year-picker-head"><button class="control-button" id="year-prev">‹</button><strong>${pickerYear}年</strong><button class="control-button" id="year-next">›</button></div><div class="year-months">${Array.from({length:12},(_,i)=>`<button class="year-month ${pickerYear===currentDate.getFullYear()&&i===currentDate.getMonth()?"active":""}" data-month-index="${i}">${i+1}月<small>${monthStreamCount(pickerYear,i)}件</small></button>`).join("")}</div>`;$("year-prev").onclick=()=>{pickerYear--;renderYearPicker()};$("year-next").onclick=()=>{pickerYear++;renderYearPicker()};box.querySelectorAll("[data-month-index]").forEach(b=>b.onclick=()=>{currentDate=new Date(pickerYear,Number(b.dataset.monthIndex),1,12);selectedDate=localKey(currentDate);box.hidden=true;renderCalendar()})}
+function monthStreamCount(year,month){const key=`${year}-${String(month+1).padStart(2,"0")}`;return allStreams.filter(s=>jstDate(streamTime(s)).startsWith(key)).length}
+$("prev").onclick=()=>movePeriod(-1);$("next").onclick=()=>movePeriod(1);$("today").onclick=()=>{currentDate=new Date();selectedDate=dateKey(currentDate);$("year-picker").hidden=true;renderCalendar()};$("period-label").onclick=showYearPicker;document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{currentView=b.dataset.view;$("year-picker").hidden=true;renderCalendar()});$("game-prev").onclick=()=>shiftGameMonth(-1);$("game-next").onclick=()=>shiftGameMonth(1);$("close-detail").onclick=()=>$("detail-dialog").close();$("detail-dialog").addEventListener("click",e=>{if(e.target===$("detail-dialog"))$("detail-dialog").close()});
+async function loadSchedule(){try{const r=await fetch(DATA_URL+"?t="+Date.now());if(!r.ok)throw Error();const data=await r.json();scheduleData=data;upcomingStreams=Array.isArray(data.streams)?data.streams:[];pastStreams=Array.isArray(data.pastStreams)?data.pastStreams:[];allStreams=[...upcomingStreams,...pastStreams];renderCalendar();renderUpcoming(upcomingStreams);renderArchives(pastStreams);renderWeeklySummary(data.weeklySchedule);renderGameHours();$("updated").textContent=data.updatedAt?"最終更新："+formatDate(data.updatedAt):"SCHEDULE DATA"}catch(e){$("upcoming-list").innerHTML='<div class="empty">配信データを読み込めませんでした。</div>';$("archive-list").innerHTML='<div class="empty">過去の配信データを読み込めませんでした。</div>';$("calendar").innerHTML='<div class="empty">カレンダーを読み込めませんでした。</div>';$("game-hours").innerHTML='<div class="empty">ゲーム配信時間を読み込めませんでした。</div>';renderWeeklySummary([])}}
+renderCalendar();loadSchedule();loadAnnouncements();
 </script>
 </body>
 </html>
