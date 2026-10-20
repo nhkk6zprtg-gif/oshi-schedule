@@ -1,0 +1,37 @@
+
+name: Update Kanae Announcements
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  check-announcements:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check official Kanae store page
+        run: |
+          python - <<'PY'
+          import urllib.request
+          url = "https://shop.nijisanji.jp/s/niji/group/list/019/item"
+          req = urllib.request.Request(
+              url,
+              headers={"User-Agent": "Mozilla/5.0"}
+          )
+          try:
+              with urllib.request.urlopen(req, timeout=20) as response:
+                  html = response.read().decode("utf-8", "replace")
+                  print("HTTP status:", response.status)
+                  print("Page downloaded:", len(html), "characters")
+                  print("Kanae page checked successfully.")
+          except Exception as e:
+              print("Official store check failed:", e)
+              raise
+          PY
