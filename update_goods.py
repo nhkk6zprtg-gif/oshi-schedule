@@ -36,14 +36,15 @@ DATE_PATTERN = (
 )
 
 PERIOD_PATTERN = re.compile(
-    rf"({DATE_PATTERN})\s*[～〜~\-－]\s*"
+    rf"({DATE_PATTERN})\s*"
+    rf"[～〜~\-－]\s*"
     rf"({DATE_PATTERN})"
 )
 
 DELIVERY_PATTERN = re.compile(
-    r"(20\d{2}年\d{1,2}月"
-    r"(?:上旬|中旬|下旬|末|頃|ごろ|以降|予定|"
-    r"\d{1,2}日)*)"
+    r"20\d{2}年\s*\d{1,2}月"
+    r"(?:\s*\d{1,2}日|上旬|中旬|下旬|末)?"
+    r"(?:頃|ごろ|以降|予定)?"
 )
 
 def fetch(url):
@@ -195,6 +196,18 @@ def clean_title(title):
     return title
 
 
+def get_description(text):
+    if "商品説明" not in text:
+        return ""
+
+    description = text.split(
+        "商品説明", 1
+    )[1]
+
+    # 商品説明以降の必要な範囲を調査
+    return description[:12000]
+
+
 def extract_dates(text):
     result = {
         "date": "",
@@ -203,61 +216,63 @@ def extract_dates(text):
         "deliveryDate": "",
     }
 
-    # 商品説明に記載された販売期間を優先
-    section = text.split("商品説明", 1)
-    description = (
-        section[1] if len(section) > 1
-        else text
-    )
+    description = get_description(text)
 
-    description = description[:12000]
+    if not description:
+        return result
 
-    # 受注販売期間・販売期間などを探す
-    period_labels = [
-        "受注販売期間",
-        "受注期間",
-        "予約受付期間",
-        "予約期間",
-        "販売期間",
-        "再販期間",
-        "販売",
-    ]
+    # 販売期間の表記が複数あるため
+    # 日付範囲を探し、前後の文脈で判定する
+    for match in PERIOD_PATTERN.finditer(
+        description
+    ):
+        before = description[
+            max(0, match.start() - 120):
+            match.start()
+        ]
 
-    for label in period_labels:
-        for match in re.finditer(
-            re.escape(label),
-            description,
+        after = description[
+            match.end():
+            match.end() + 50
+        ]
+
+        context = before + after
+
+        # 他商品の案内などを避けるため
+        # 商品説明内の販売関連表記に限定
+        sales_words = [
+            "販売",
+            "再販",
+            "受注",
+            "予約",
+            "受付",
+            "期間",
+        ]
+
+        if not any(
+            word in before
+            for word in sales_words
         ):
-            nearby = description[
-                match.end():match.end() + 180
-            ]
+            continue
 
-            period = PERIOD_PATTERN.search(
-                nearby
-            )
+        start = match.group(1).strip()
+        end = match.group(2).strip()
 
-            if period:
-                start = period.group(1).strip()
-                end = period.group(2).strip()
+        result["date"] = start
+        result["salesPeriod"] = (
+            start + " ～ " + end
+        )
 
-                result["date"] = start
-                result["salesPeriod"] = (
-                    start + " ～ " + end
-                )
+        if "受注" in before:
+            result["salesType"] = "受注販売"
+        elif "予約" in before:
+            result["salesType"] = "予約販売"
+        else:
+            result["salesType"] = "通常販売"
 
-                if "受注" in label:
-                    result["salesType"] = "受注販売"
-                elif "予約" in label:
-                    result["salesType"] = "予約販売"
-                else:
-                    result["salesType"] = "通常販売"
+        break
 
-                break
-
-        if result["salesPeriod"]:
-            break
-
-    # 販売期間が見つからない場合のみ発売日を確認
+    # 期間がない場合は単独の発売日を確認
     if not result["date"]:
         for label in [
             "発売日",
@@ -271,13 +286,14 @@ def extract_dates(text):
                 + r")",
                 description,
             )
+
             if match:
                 result["date"] = (
                     match.group(1).strip()
                 )
                 break
 
-    # 販売形式を確認
+    # 商品説明全体から販売形式を補完
     if not result["salesType"]:
         if (
             "受注生産" in description
@@ -287,34 +303,39 @@ def extract_dates(text):
         elif "予約販売" in description:
             result["salesType"] = "予約販売"
 
-    # お届け予定・発送予定を確認
-    for label in [
+    # お届け時期は【お届け時期】など
+    # 括弧付きの表記にも対応
+    delivery_labels = [
+        "【お届け時期】",
+        "【お届け予定】",
         "お届け時期",
         "お届け予定",
         "発送予定時期",
         "発送予定",
         "発送時期",
-    ]:
-        match = re.search(
+    ]
+
+    for label in delivery_labels:
+        for match in re.finditer(
             re.escape(label),
             description,
-        )
+        ):
+            nearby = description[
+                match.end():
+                match.end() + 100
+            ]
 
-        if not match:
-            continue
-
-        nearby = description[
-            match.end():match.end() + 100
-        ]
-
-        delivery = DELIVERY_PATTERN.search(
-            nearby
-        )
-
-        if delivery:
-            result["deliveryDate"] = (
-                delivery.group(1)
+            delivery = DELIVERY_PATTERN.search(
+                nearby
             )
+
+            if delivery:
+                result["deliveryDate"] = (
+                    delivery.group(0).strip()
+                )
+                break
+
+        if result["deliveryDate"]:
             break
 
     return result
