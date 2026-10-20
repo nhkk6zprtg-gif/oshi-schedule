@@ -1,3 +1,4 @@
+
 import json
 import os
 import re
@@ -8,10 +9,14 @@ from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
 API_KEY = os.environ["YOUTUBE_API_KEY"]
-HANDLE = "@kanae"
 API_BASE = "https://www.googleapis.com/youtube/v3"
 ARCHIVE_PAGES = 5
 JST = ZoneInfo("Asia/Tokyo")
+
+CHANNELS = [
+    {"handle": "@kanae", "file": "schedule.json"},
+    {"handle": "@kuzuha", "file": "schedule_kuzuha.json"},
+]
 
 GAME_RULES = [
     ("原神", [r"原神", r"genshin(?: impact)?"]),
@@ -46,9 +51,9 @@ def youtube_api(endpoint, params):
         return json.load(response)
 
 
-def load_existing():
+def load_existing(filename):
     try:
-        with open("schedule.json", encoding="utf-8") as file:
+        with open(filename, encoding="utf-8") as file:
             return json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
@@ -62,7 +67,10 @@ def parse_datetime(value):
 
 
 def parse_duration(value):
-    match = re.fullmatch(r"P(?:([0-9]+)D)?T?(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?", value or "")
+    match = re.fullmatch(
+        r"P(?:([0-9]+)D)?T?(?:([0-9]+)H)?(?:([0-9]+)M)?(?:([0-9]+)S)?",
+        value or ""
+    )
     if not match:
         return None
     days, hours, minutes, seconds = (int(x or 0) for x in match.groups())
@@ -72,25 +80,26 @@ def parse_duration(value):
 
 def find_games(text):
     text = (text or "").lower()
-    return [game for game, patterns in GAME_RULES if any(re.search(pattern, text, re.IGNORECASE) for pattern in patterns)]
+    return [
+        game for game, patterns in GAME_RULES
+        if any(re.search(pattern, text, re.IGNORECASE) for pattern in patterns)
+    ]
 
 
 def classify_game(title, description=""):
-    # タイトルを優先する。複数タイトル一致の場合は自動で一つに決めない。
     title_games = find_games(title)
     if len(title_games) == 1:
         return title_games[0]
     if len(title_games) > 1:
         return None
 
-    # 概要欄はリンク・宣伝・タグで他ゲーム名が混ざりやすい。
-    # 冒頭の短い説明文だけを補助情報として使う。
     first_lines = []
     for line in (description or "").splitlines()[:5]:
         line = line.strip()
         if not line or "http" in line.lower() or line.startswith("#"):
             continue
         first_lines.append(line)
+
     desc_games = find_games("\n".join(first_lines)[:300])
     return desc_games[0] if len(desc_games) == 1 else None
 
@@ -102,7 +111,13 @@ def get_video_details(video_ids):
         batch = ids[offset:offset + 50]
         if not batch:
             continue
-        data = youtube_api("videos", {"part": "snippet,contentDetails,liveStreamingDetails", "id": ",".join(batch)})
+        data = youtube_api(
+            "videos",
+            {
+                "part": "snippet,contentDetails,liveStreamingDetails",
+                "id": ",".join(batch)
+            }
+        )
         for item in data.get("items", []):
             result[item["id"]] = item
     return result
@@ -113,16 +128,28 @@ def make_stream(video_id, item, fallback_time):
     live = item.get("liveStreamingDetails", {})
     content = item.get("contentDetails", {})
     thumbnails = snippet.get("thumbnails", {})
-    thumbnail = next((thumbnails[k]["url"] for k in ("high", "medium", "default") if thumbnails.get(k, {}).get("url")), "")
+
+    thumbnail = next(
+        (
+            thumbnails[k]["url"]
+            for k in ("high", "medium", "default")
+            if thumbnails.get(k, {}).get("url")
+        ),
+        ""
+    )
+
     actual_start = live.get("actualStartTime")
     actual_end = live.get("actualEndTime")
     start_dt = parse_datetime(actual_start)
     end_dt = parse_datetime(actual_end)
+
     seconds = parse_duration(content.get("duration"))
     if start_dt and end_dt and end_dt > start_dt:
         seconds = int((end_dt - start_dt).total_seconds())
+
     title = snippet.get("title", "配信")
     description = snippet.get("description", "")
+
     return {
         "videoId": video_id,
         "title": title,
@@ -139,73 +166,140 @@ def make_stream(video_id, item, fallback_time):
 
 def build_monthly_game_hours(streams):
     totals = defaultdict(int)
+
     for stream in streams:
         seconds = stream.get("durationSeconds")
-        start = parse_datetime(stream.get("actualStartTime") or stream.get("scheduledAt"))
+        start = parse_datetime(
+            stream.get("actualStartTime") or stream.get("scheduledAt")
+        )
         if not isinstance(seconds, (int, float)) or seconds <= 0 or not start:
             continue
+
         game = stream.get("game") or "未分類"
         month = start.astimezone(JST).strftime("%Y-%m")
         totals[(month, game)] += int(seconds)
+
     output = {}
     for (month, game), seconds in totals.items():
-        output.setdefault(month, []).append({"game": game, "seconds": seconds, "hours": round(seconds / 3600, 2)})
+        output.setdefault(month, []).append({
+            "game": game,
+            "seconds": seconds,
+            "hours": round(seconds / 3600, 2)
+        })
+
     for rows in output.values():
         rows.sort(key=lambda row: row["seconds"], reverse=True)
+
     return output
 
 
-def main():
-    old_data = load_existing()
+def collect_channel(config):
+    handle = config["handle"]
+    filename = config["file"]
+    old_data = load_existing(filename)
     now = datetime.now(timezone.utc)
-    channel_data = youtube_api("channels", {"part": "id,snippet,contentDetails", "forHandle": HANDLE})
+
+    print(f"\n取得開始: {handle}")
+
+    channel_data = youtube_api(
+        "channels",
+        {
+            "part": "id,snippet,contentDetails",
+            "forHandle": handle
+        }
+    )
     channels = channel_data.get("items", [])
     if not channels:
-        raise RuntimeError(f"YouTubeチャンネルが見つかりません: {HANDLE}")
+        raise RuntimeError(f"YouTubeチャンネルが見つかりません: {handle}")
+
     channel = channels[0]
     channel_id = channel["id"]
     uploads_playlist = channel["contentDetails"]["relatedPlaylists"]["uploads"]
 
-    upcoming_data = youtube_api("search", {"part": "snippet", "channelId": channel_id, "type": "video", "eventType": "upcoming", "order": "date", "maxResults": 25})
-    upcoming_ids = [x["id"]["videoId"] for x in upcoming_data.get("items", []) if x.get("id", {}).get("videoId")]
+    upcoming_data = youtube_api(
+        "search",
+        {
+            "part": "snippet",
+            "channelId": channel_id,
+            "type": "video",
+            "eventType": "upcoming",
+            "order": "date",
+            "maxResults": 25
+        }
+    )
+    upcoming_ids = [
+        x["id"]["videoId"]
+        for x in upcoming_data.get("items", [])
+        if x.get("id", {}).get("videoId")
+    ]
 
     archive_ids = []
     page_token = None
+
     for _ in range(ARCHIVE_PAGES):
-        params = {"part": "snippet,contentDetails", "playlistId": uploads_playlist, "maxResults": 50}
+        params = {
+            "part": "snippet,contentDetails",
+            "playlistId": uploads_playlist,
+            "maxResults": 50
+        }
         if page_token:
             params["pageToken"] = page_token
+
         page = youtube_api("playlistItems", params)
-        archive_ids.extend(x["contentDetails"]["videoId"] for x in page.get("items", []) if x.get("contentDetails", {}).get("videoId"))
+        archive_ids.extend(
+            x["contentDetails"]["videoId"]
+            for x in page.get("items", [])
+            if x.get("contentDetails", {}).get("videoId")
+        )
         page_token = page.get("nextPageToken")
         if not page_token:
             break
 
     completed_ids = []
     page_token = None
+
     for _ in range(ARCHIVE_PAGES):
-        params = {"part": "snippet", "channelId": channel_id, "type": "video", "eventType": "completed", "order": "date", "maxResults": 50}
+        params = {
+            "part": "snippet",
+            "channelId": channel_id,
+            "type": "video",
+            "eventType": "completed",
+            "order": "date",
+            "maxResults": 50
+        }
         if page_token:
             params["pageToken"] = page_token
+
         page = youtube_api("search", params)
-        completed_ids.extend(x["id"]["videoId"] for x in page.get("items", []) if x.get("id", {}).get("videoId"))
+        completed_ids.extend(
+            x["id"]["videoId"]
+            for x in page.get("items", [])
+            if x.get("id", {}).get("videoId")
+        )
         page_token = page.get("nextPageToken")
         if not page_token:
             break
 
     completed_set = set(completed_ids)
     all_archive_ids = list(dict.fromkeys(archive_ids + completed_ids))
-    details = get_video_details(list(dict.fromkeys(upcoming_ids + all_archive_ids)))
+    details = get_video_details(
+        list(dict.fromkeys(upcoming_ids + all_archive_ids))
+    )
 
     upcoming = []
     for video_id in upcoming_ids:
         item = details.get(video_id)
         if not item:
             continue
-        scheduled = item.get("liveStreamingDetails", {}).get("scheduledStartTime")
+
+        scheduled = item.get(
+            "liveStreamingDetails", {}
+        ).get("scheduledStartTime")
+
         scheduled_dt = parse_datetime(scheduled)
         if scheduled_dt and scheduled_dt > now:
             upcoming.append(make_stream(video_id, item, scheduled))
+
     upcoming.sort(key=lambda x: x["scheduledAt"])
 
     saved_archives = {}
@@ -213,7 +307,10 @@ def main():
         video_id = stream.get("videoId")
         if not video_id:
             url = stream.get("url", "")
-            video_id = urllib.parse.parse_qs(urllib.parse.urlparse(url).query).get("v", [""])[0]
+            video_id = urllib.parse.parse_qs(
+                urllib.parse.urlparse(url).query
+            ).get("v", [""])[0]
+
         if video_id:
             saved_archives[video_id] = stream
 
@@ -221,37 +318,85 @@ def main():
         item = details.get(video_id)
         if not item:
             continue
+
         live = item.get("liveStreamingDetails", {})
         actual_start = live.get("actualStartTime")
-        # 配信として確認できたもののみ履歴に追加する。
+
         if not actual_start and video_id not in completed_set:
             continue
-        fallback = actual_start or item.get("snippet", {}).get("publishedAt")
+
+        fallback = actual_start or item.get(
+            "snippet", {}
+        ).get("publishedAt")
+
         if not fallback:
             continue
-        saved_archives[video_id] = make_stream(video_id, item, fallback)
+
+        saved_archives[video_id] = make_stream(
+            video_id, item, fallback
+        )
 
     past_streams = list(saved_archives.values())
-    # 旧形式の履歴も、保存済みタイトルから再判定する。
+
     for stream in past_streams:
-        if "durationSeconds" in stream and stream.get("durationSeconds"):
-            stream["game"] = classify_game(stream.get("title", ""), stream.get("description", ""))
-    past_streams.sort(key=lambda x: x.get("scheduledAt") or "", reverse=True)
+        if stream.get("durationSeconds"):
+            stream["game"] = classify_game(
+                stream.get("title", ""),
+                stream.get("description", "")
+            )
+
+    past_streams.sort(
+        key=lambda x: x.get("scheduledAt") or "",
+        reverse=True
+    )
+
     monthly = build_monthly_game_hours(past_streams)
+
     output = {
-        "channel": {"id": channel_id, "title": channel.get("snippet", {}).get("title", ""), "url": "https://youtube.com/@kanae"},
+        "channel": {
+            "id": channel_id,
+            "title": channel.get("snippet", {}).get("title", ""),
+            "url": f"https://www.youtube.com/{handle}"
+        },
         "updatedAt": now.isoformat(),
         "streams": upcoming,
         "pastStreams": past_streams,
         "monthlyGameHours": monthly,
-        "weeklySchedule": [{"day": jp, "dayEn": en} for jp, en in [("月曜日", "MON"), ("火曜日", "TUE"), ("水曜日", "WED"), ("木曜日", "THU"), ("金曜日", "FRI"), ("土曜日", "SAT"), ("日曜日", "SUN")]],
+        "weeklySchedule": [
+            {"day": jp, "dayEn": en}
+            for jp, en in [
+                ("月曜日", "MON"),
+                ("火曜日", "TUE"),
+                ("水曜日", "WED"),
+                ("木曜日", "THU"),
+                ("金曜日", "FRI"),
+                ("土曜日", "SAT"),
+                ("日曜日", "SUN")
+            ]
+        ]
     }
-    with open("schedule.json", "w", encoding="utf-8") as file:
+
+    with open(filename, "w", encoding="utf-8") as file:
         json.dump(output, file, ensure_ascii=False, indent=2)
+
+    print(f"保存先: {filename}")
     print(f"今後の配信予定: {len(upcoming)} 件")
     print(f"保存済みの過去配信: {len(past_streams)} 件")
     print(f"月別集計対象: {sum(len(rows) for rows in monthly.values())} 件")
-    print(f"未分類の月別集計: {sum(any(row['game'] == '未分類' for row in rows) for rows in monthly.values())} か月")
+
+
+def main():
+    errors = []
+
+    for config in CHANNELS:
+        try:
+            collect_channel(config)
+        except Exception as error:
+            errors.append(f"{config['handle']}: {error}")
+            print(f"取得失敗: {config['handle']} - {error}")
+
+    if errors:
+        raise RuntimeError(" / ".join(errors))
 
 
 if __name__ == "__main__":
