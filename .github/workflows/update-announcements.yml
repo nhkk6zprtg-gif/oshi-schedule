@@ -10,28 +10,130 @@ permissions:
   contents: write
 
 jobs:
-  check-announcements:
+  update-announcements:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check official Kanae store page
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install parser
+        run: pip install beautifulsoup4
+
+      - name: Fetch official store
         run: |
           python - <<'PY'
+          import json
+          import re
           import urllib.request
-          url = "https://shop.nijisanji.jp/s/niji/group/list/019/item"
-          req = urllib.request.Request(
-              url,
+          from datetime import datetime, timezone, timedelta
+          from urllib.parse import urljoin, urlparse
+          from bs4 import BeautifulSoup
+
+          source = "https://shop.nijisanji.jp/1019"
+          request = urllib.request.Request(
+              source,
               headers={"User-Agent": "Mozilla/5.0"}
           )
+
+          with urllib.request.urlopen(request, timeout=30) as response:
+              html = response.read().decode("utf-8", "replace")
+
+          soup = BeautifulSoup(html, "html.parser")
+          found = {}
+
+          for a in soup.find_all("a", href=True):
+              title = " ".join(a.get_text(" ", strip=True).split())
+              if len(title) < 4:
+                  continue
+
+              context = a
+              is_new = False
+
+              for _ in range(4):
+                  if context is None:
+                      break
+                  text = context.get_text(" ", strip=True)
+                  if re.search(r"\bNEW\b", text, re.I):
+                      is_new = True
+                      break
+                  context = context.parent
+
+              if not is_new:
+                  continue
+
+              url = urljoin(source, a["href"])
+              parsed = urlparse(url)
+
+              if parsed.netloc != "shop.nijisanji.jp":
+                  continue
+              if parsed.path.rstrip("/") == "/1019":
+                  continue
+              if "searchAjax" in url or "login" in url.lower():
+                  continue
+
+              title = re.sub(r"^\s*NEW\s*", "", title, flags=re.I).strip()
+              if len(title) < 3:
+                  continue
+
+              found[url] = {
+                  "type": "公式ストア新着",
+                  "title": title,
+                  "date": "確認日：" + datetime.now(
+                      timezone(timedelta(hours=9))
+                  ).strftime("%Y-%m-%d"),
+                  "salesPeriod": "",
+                  "url": url
+              }
+
+          if not found:
+              raise SystemExit(
+                  "新着商品を抽出できませんでした。"
+                  "既存の告知データは変更しません。"
+              )
+
           try:
-              with urllib.request.urlopen(req, timeout=20) as response:
-                  html = response.read().decode("utf-8", "replace")
-                  print("HTTP status:", response.status)
-                  print("Page downloaded:", len(html), "characters")
-                  print("Kanae page checked successfully.")
-          except Exception as e:
-              print("Official store check failed:", e)
-              raise
+              with open("announcements.json", encoding="utf-8") as f:
+                  data = json.load(f)
+          except (OSError, json.JSONDecodeError):
+              data = {"updatedAt": "", "announcements": []}
+
+          existing = data.get("announcements", [])
+          if not isinstance(existing, list):
+              existing = []
+
+          merged = {}
+          for item in existing:
+              if isinstance(item, dict) and item.get("url"):
+                  merged[item["url"]] = item
+
+          merged.update(found)
+
+          data["updatedAt"] = datetime.now(
+              timezone(timedelta(hours=9))
+          ).isoformat(timespec="seconds")
+          data["announcements"] = list(merged.values())[:50]
+
+          with open("announcements.json", "w", encoding="utf-8") as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+              f.write("\n")
+
+          print("新着候補:", len(found), "件")
+          print("告知データ:", len(data["announcements"]), "件")
           PY
+
+      - name: Commit announcements
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add announcements.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update Kanae announcements"
+            git push
+          else
+            echo "告知データに変更はありません"
+          fi
