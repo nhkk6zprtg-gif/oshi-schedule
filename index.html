@@ -78,7 +78,6 @@ section{margin-bottom:36px}
 .notice-title{font-size:14px;line-height:1.6;margin-bottom:8px}
 .notice-date{color:#aaa;font-size:11px;line-height:1.7;margin-bottom:10px}
 .notice-link{color:#ddd;font-size:11px;text-decoration:underline}
-/* GOODS & VOICE：タップで開閉 */
 .goods-accordion>summary{list-style:none;cursor:pointer;padding:14px 12px;border:1px solid #383838;border-radius:6px;background:linear-gradient(135deg,#1b1b1b,#101010);margin-bottom:0}
 .goods-accordion>summary::-webkit-details-marker{display:none}
 .goods-accordion>summary::before{content:"+";color:#c9c9c9;margin-right:10px}
@@ -88,6 +87,16 @@ section{margin-bottom:36px}
 .goods-accordion>summary .section-heading::after{display:none}
 .goods-accordion>summary .section-heading span{margin-left:auto}
 .goods-accordion #notices{padding-top:2px}
+.game-panel{padding:14px}
+.game-month-label{font-size:12px;color:#aaa;margin-bottom:12px}
+.game-ranking{display:grid;gap:8px}
+.game-row{border:1px solid #383838;background:#151515;border-radius:6px;padding:12px}
+.game-row-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}
+.game-name{font-size:13px;overflow-wrap:anywhere}
+.game-hours{font-size:13px;color:#eee;white-space:nowrap;font-variant-numeric:tabular-nums}
+.game-bar{height:5px;background:#303030;border-radius:10px;overflow:hidden}
+.game-bar-fill{height:100%;background:linear-gradient(90deg,#777,#eee);border-radius:10px}
+.game-note{font-size:10px;color:#888;line-height:1.7;margin-top:12px}
 dialog{width:calc(100% - 28px);max-width:520px;max-height:85vh;overflow:auto;color:#eee;background:#171717;border:1px solid #777;border-radius:10px;padding:18px}
 dialog::backdrop{background:#000b}
 .detail-thumb{width:100%;border-radius:5px;margin-bottom:12px}
@@ -117,21 +126,36 @@ footer{text-align:center;color:#777;border-top:1px solid #292929;padding:22px 12
 <div class="calendar-shell"><div id="calendar"></div></div>
 <div id="selected-day" style="margin-top:15px"></div>
 </section>
+
 <section>
 <div class="section-heading"><h2>UPCOMING STREAMS</h2><span>配信予定</span></div>
 <div id="upcoming-list" class="stream-list"><div class="empty">配信予定を読み込み中...</div></div>
 </section>
+
+<section>
+<div class="section-heading"><h2>MONTHLY GAME HOURS</h2><span>月別ゲーム配信時間</span></div>
+<div class="card game-panel">
+<div class="controls">
+<div class="control-group"><button class="control-button" id="game-prev">‹</button><div class="period-label" id="game-period">読み込み中</div><button class="control-button" id="game-next">›</button></div>
+</div>
+<div id="game-hours"><div class="empty">ゲーム配信時間を読み込み中...</div></div>
+<div class="game-note">YouTubeから取得した配信データをもとに集計します。時間データやゲーム名を取得できない配信は、正確性を保つため集計に含まれない場合があります。</div>
+</div>
+</section>
+
 <section>
 <div class="section-heading"><h2>PAST STREAMS</h2><span>過去の配信</span></div>
 <div id="month-tabs" class="month-tabs"></div>
 <div id="archive-list"><div class="empty">過去の配信を読み込み中...</div></div>
 </section>
+
 <section>
 <details class="goods-accordion">
 <summary><div class="section-heading"><h2>GOODS & VOICE</h2><span>タップして商品一覧を開く</span></div></summary>
 <div id="notices"><div class="empty">お知らせ情報を読み込み中...</div></div>
 </details>
 </section>
+
 <section>
 <div class="section-heading"><h2>WEEKLY SCHEDULE</h2><span>週間スケジュール</span></div>
 <div id="weekly-summary" class="weekly-summary"></div>
@@ -139,12 +163,14 @@ footer{text-align:center;color:#777;border-top:1px solid #292929;padding:22px 12
 </main>
 <dialog id="detail-dialog"><div id="detail-content"></div><button class="close-button" id="close-detail">閉じる</button></dialog>
 <footer><div id="updated">SCHEDULE DATA</div><div style="margin-top:8px">STREAM SCHEDULE</div></footer>
+
 <script>
 const DATA_URL="https://raw.githubusercontent.com/nhkk6zprtg-gif/oshi-schedule/main/schedule.json";
 const NOTICE_URL="https://raw.githubusercontent.com/nhkk6zprtg-gif/oshi-schedule/main/announcements.json";
 const $=id=>document.getElementById(id);
 const weekdays=["日","月","火","水","木","金","土"];
-let allStreams=[],upcomingStreams=[],pastStreams=[],currentView="week",currentDate=new Date(),selectedDate=dateKey(new Date());
+let allStreams=[],upcomingStreams=[],pastStreams=[],currentView="week",currentDate=new Date(),selectedDate=dateKey(new Date()),gameMonth=monthKey(new Date()),scheduleData={};
+
 function escapeHTML(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function dateKey(date){return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit"}).format(date)}
 function dateParts(key){const [year,month,day]=key.split("-").map(Number);return {year,month,day}}
@@ -154,27 +180,183 @@ function monthKey(value){return jstDate(value).slice(0,7)}
 function monthLabel(key){const [year,month]=key.split("-");return `${year}年${Number(month)}月`}
 function streamURL(stream){if(/^https:\/\/www\.youtube\.com\/watch\?v=[\w-]+$/.test(stream.url||""))return stream.url;if(stream.videoId)return "https://www.youtube.com/watch?v="+encodeURIComponent(stream.videoId);return "https://www.youtube.com/@kanae"}
 function streamThumb(stream){if(/^https?:\/\//i.test(stream.thumbnail||""))return stream.thumbnail;if(stream.videoId)return "https://i.ytimg.com/vi/"+encodeURIComponent(stream.videoId)+"/hqdefault.jpg";return ""}
-function streamCard(stream){const thumb=streamThumb(stream);return `<article class="card stream-card"><img class="thumb" src="${escapeHTML(thumb)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><div class="stream-info"><div class="stream-title">${escapeHTML(stream.title||"配信")}</div><div class="stream-date">${escapeHTML(formatDate(stream.scheduledAt))}</div><a class="stream-link" href="${escapeHTML(streamURL(stream))}" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a><button class="control-button detail-open" data-id="${escapeHTML(stream.videoId||"")}">詳細を見る</button></div></article>`}
-function streamDetails(stream){const thumb=streamThumb(stream);$("detail-content").innerHTML=`${thumb?`<img class="detail-thumb" src="${escapeHTML(thumb)}" alt="">`:""}<div class="detail-title">${escapeHTML(stream.title||"配信")}</div><div class="detail-date">${escapeHTML(formatDate(stream.scheduledAt))}</div><div class="detail-actions"><a class="stream-link" href="${escapeHTML(streamURL(stream))}" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a></div>`;$("detail-dialog").showModal()}
+function streamCard(stream){const thumb=streamThumb(stream);return `<article class="card stream-card"><img class="thumb" src="${escapeHTML(thumb)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><div class="stream-info"><div class="stream-title">${escapeHTML(stream.title||"配信")}</div><div class="stream-date">${escapeHTML(formatDate(stream.scheduledAt||stream.actualStartTime))}</div><a class="stream-link" href="${escapeHTML(streamURL(stream))}" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a><button class="control-button detail-open" data-id="${escapeHTML(stream.videoId||"")}">詳細を見る</button></div></article>`}
+function streamDetails(stream){const thumb=streamThumb(stream);$("detail-content").innerHTML=`${thumb?`<img class="detail-thumb" src="${escapeHTML(thumb)}" alt="">`:""}<div class="detail-title">${escapeHTML(stream.title||"配信")}</div><div class="detail-date">${escapeHTML(formatDate(stream.scheduledAt||stream.actualStartTime))}</div><div class="detail-actions"><a class="stream-link" href="${escapeHTML(streamURL(stream))}" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a></div>`;$("detail-dialog").showModal()}
 function bindDetailButtons(){document.querySelectorAll(".detail-open").forEach(button=>button.addEventListener("click",()=>{const stream=allStreams.find(s=>String(s.videoId||"")===button.dataset.id);if(stream)streamDetails(stream)}))}
-function dayStreams(key){return allStreams.filter(s=>jstDate(s.scheduledAt)===key).sort((a,b)=>new Date(a.scheduledAt)-new Date(b.scheduledAt))}
+function dayStreams(key){return allStreams.filter(s=>jstDate(s.scheduledAt||s.actualStartTime)===key).sort((a,b)=>new Date(a.scheduledAt||a.actualStartTime)-new Date(b.scheduledAt||b.actualStartTime))}
 function renderStats(){$("stats").innerHTML=`<div class="stat">配信 ${allStreams.length} 件</div><div class="stat">予定 ${upcomingStreams.length} 件</div><div class="stat">アーカイブ ${pastStreams.length} 件</div>`}
-function renderMonth(){const year=currentDate.getFullYear(),month=currentDate.getMonth(),first=new Date(year,month,1),start=new Date(year,month,1-first.getDay());let html='<div class="month-grid">';weekdays.forEach(day=>html+=`<div class="weekday">${day}</div>`);for(let i=0;i<42;i++){const date=new Date(start);date.setDate(start.getDate()+i);const key=dateKey(date),items=dayStreams(key),classes=["day-cell",date.getMonth()!==month?"other-month":"",key===dateKey(new Date())?"today":"",key===selectedDate?"selected":""].filter(Boolean).join(" ");html+=`<div class="${classes}" data-date="${key}"><div class="day-number">${date.getDate()}</div><div class="day-events">`;items.slice(0,3).forEach(stream=>{const thumb=streamThumb(stream);html+=`<div class="day-event" data-stream="${escapeHTML(stream.videoId||"")}">${thumb?`<img class="day-thumb" src="${escapeHTML(thumb)}" alt="" loading="lazy">`:""}<div class="day-event-title">${escapeHTML(stream.title||"配信")}</div></div>`});if(items.length>3)html+=`<div class="more-events">ほか ${items.length-3} 件</div>`;html+="</div></div>"}$("calendar").innerHTML=html+"</div>";$("period-label").textContent=`${year}年${month+1}月`;$("calendar").querySelectorAll(".day-cell").forEach(cell=>cell.addEventListener("click",event=>{const el=event.target.closest("[data-stream]");if(el){const stream=allStreams.find(s=>String(s.videoId||"")===el.dataset.stream);if(stream){streamDetails(stream);return}}selectedDate=cell.dataset.date;renderCalendar()}));renderSelectedDay()}
+
+function renderMonth(){
+const year=currentDate.getFullYear(),month=currentDate.getMonth(),first=new Date(year,month,1),start=new Date(year,month,1-first.getDay());
+let html='<div class="month-grid">';
+weekdays.forEach(day=>html+=`<div class="weekday">${day}</div>`);
+for(let i=0;i<42;i++){
+const date=new Date(start);date.setDate(start.getDate()+i);
+const key=dateKey(date),items=dayStreams(key),classes=["day-cell",date.getMonth()!==month?"other-month":"",key===dateKey(new Date())?"today":"",key===selectedDate?"selected":""].filter(Boolean).join(" ");
+html+=`<div class="${classes}" data-date="${key}"><div class="day-number">${date.getDate()}</div><div class="day-events">`;
+items.slice(0,3).forEach(stream=>{const thumb=streamThumb(stream);html+=`<div class="day-event" data-stream="${escapeHTML(stream.videoId||"")}">${thumb?`<img class="day-thumb" src="${escapeHTML(thumb)}" alt="" loading="lazy">`:""}<div class="day-event-title">${escapeHTML(stream.title||"配信")}</div></div>`});
+if(items.length>3)html+=`<div class="more-events">ほか ${items.length-3} 件</div>`;
+html+="</div></div>";
+}
+$("calendar").innerHTML=html+"</div>";
+$("period-label").textContent=`${year}年${month+1}月`;
+$("calendar").querySelectorAll(".day-cell").forEach(cell=>cell.addEventListener("click",event=>{
+const el=event.target.closest("[data-stream]");
+if(el){const stream=allStreams.find(s=>String(s.videoId||"")===el.dataset.stream);if(stream){streamDetails(stream);return}}
+selectedDate=cell.dataset.date;renderCalendar()
+}));
+renderSelectedDay()
+}
 function startOfWeek(date){const result=new Date(date);result.setDate(result.getDate()-((result.getDay()+6)%7));result.setHours(12,0,0,0);return result}
-function renderWeek(){const start=startOfWeek(currentDate),dates=[];for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);dates.push(d)}$("period-label").textContent=`${dates[0].getMonth()+1}/${dates[0].getDate()} – ${dates[6].getMonth()+1}/${dates[6].getDate()}`;let html='<div class="week-scroll"><div class="week-grid"><div class="week-head"></div>';dates.forEach(d=>{const key=dateKey(d);html+=`<div class="week-head ${key===dateKey(new Date())?"today":""}"><strong>${d.getDate()}</strong>${weekdays[d.getDay()]}</div>`});for(let hour=0;hour<24;hour++){html+=`<div class="time-label">${String(hour).padStart(2,"0")}:00</div>`;dates.forEach(d=>{const key=dateKey(d),items=dayStreams(key).filter(s=>{const dt=new Date(s.scheduledAt);return Number.isFinite(dt.getTime())&&Number(new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",hour:"2-digit",hour12:false}).format(dt))===hour});html+='<div class="time-cell">';items.forEach((stream,index)=>{const thumb=streamThumb(stream);html+=`<div class="week-event" style="top:${index*3}px;${index>0?"left:"+(index*10+2)+"px;":""}" data-stream="${escapeHTML(stream.videoId||"")}">${thumb?`<img src="${escapeHTML(thumb)}" alt="" loading="lazy">`:""}<span class="event-name">${escapeHTML(stream.title||"配信")}</span></div>`});html+="</div>"})} $("calendar").innerHTML=html+"</div></div>";$("calendar").querySelectorAll("[data-stream]").forEach(el=>el.addEventListener("click",()=>{const stream=allStreams.find(s=>String(s.videoId||"")===el.dataset.stream);if(stream)streamDetails(stream)}));renderSelectedDay()}
-function renderSelectedDay(){const items=dayStreams(selectedDate),parts=dateParts(selectedDate);$("selected-day").innerHTML=`<div class="section-heading"><h2>${parts.month}月${parts.day}日の配信</h2><span>${items.length}件</span></div>${items.length?`<div class="stream-list">${items.map(streamCard).join("")}</div>`:'<div class="empty">この日の配信データはありません。</div>'}`;bindDetailButtons()}
+function renderWeek(){
+const start=startOfWeek(currentDate),dates=[];
+for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);dates.push(d)}
+$("period-label").textContent=`${dates[0].getMonth()+1}/${dates[0].getDate()} – ${dates[6].getMonth()+1}/${dates[6].getDate()}`;
+let html='<div class="week-scroll"><div class="week-grid"><div class="week-head"></div>';
+dates.forEach(d=>{const key=dateKey(d);html+=`<div class="week-head ${key===dateKey(new Date())?"today":""}"><strong>${d.getDate()}</strong>${weekdays[d.getDay()]}</div>`});
+for(let hour=0;hour<24;hour++){
+html+=`<div class="time-label">${String(hour).padStart(2,"0")}:00</div>`;
+dates.forEach(d=>{
+const key=dateKey(d),items=dayStreams(key).filter(s=>{
+const dt=new Date(s.scheduledAt||s.actualStartTime);
+return Number.isFinite(dt.getTime())&&Number(new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",hour:"2-digit",hour12:false}).format(dt))===hour
+});
+html+='<div class="time-cell">';
+items.forEach((stream,index)=>{const thumb=streamThumb(stream);html+=`<div class="week-event" style="top:${index*3}px;${index>0?"left:"+(index*10+2)+"px;":""}" data-stream="${escapeHTML(stream.videoId||"")}">${thumb?`<img src="${escapeHTML(thumb)}" alt="" loading="lazy">`:""}<span class="event-name">${escapeHTML(stream.title||"配信")}</span></div>`});
+html+="</div>"
+})
+}
+$("calendar").innerHTML=html+"</div></div>";
+$("calendar").querySelectorAll("[data-stream]").forEach(el=>el.addEventListener("click",()=>{const stream=allStreams.find(s=>String(s.videoId||"")===el.dataset.stream);if(stream)streamDetails(stream)}));
+renderSelectedDay()
+}
+function renderSelectedDay(){
+const items=dayStreams(selectedDate),parts=dateParts(selectedDate);
+$("selected-day").innerHTML=`<div class="section-heading"><h2>${parts.month}月${parts.day}日の配信</h2><span>${items.length}件</span></div>${items.length?`<div class="stream-list">${items.map(streamCard).join("")}</div>`:'<div class="empty">この日の配信データはありません。</div>'}`;
+bindDetailButtons()
+}
 function renderCalendar(){document.querySelectorAll("[data-view]").forEach(button=>button.classList.toggle("active",button.dataset.view===currentView));if(currentView==="month")renderMonth();else renderWeek()}
 function renderUpcoming(streams){$("upcoming-list").innerHTML=streams.length?streams.map(streamCard).join(""):'<div class="empty">現在、公開されている配信予定はありません。</div>';bindDetailButtons()}
-function renderArchives(streams){const groups={};streams.forEach(stream=>{const key=monthKey(stream.scheduledAt);if(key)(groups[key]||=[]).push(stream)});const months=Object.keys(groups).sort((a,b)=>b.localeCompare(a)),tabs=$("month-tabs"),list=$("archive-list");if(!months.length){tabs.innerHTML="";list.innerHTML='<div class="empty">過去の配信データはまだありません。</div>';return}tabs.innerHTML=months.map((month,i)=>`<button class="month-tab ${i===0?"active":""}" data-month="${month}">${monthLabel(month)}</button>`).join("");function showMonth(month){tabs.querySelectorAll(".month-tab").forEach(tab=>tab.classList.toggle("active",tab.dataset.month===month));const items=groups[month].slice().sort((a,b)=>(b.scheduledAt||"").localeCompare(a.scheduledAt||""));list.innerHTML=`<div class="archive-count">${monthLabel(month)} ・ ${items.length}件</div><div class="stream-list">${items.map(streamCard).join("")}</div>`;bindDetailButtons()}tabs.querySelectorAll(".month-tab").forEach(tab=>tab.addEventListener("click",()=>showMonth(tab.dataset.month)));showMonth(months[0])}
-function renderWeeklySummary(days){const fallback=[["月曜日","MON"],["火曜日","TUE"],["水曜日","WED"],["木曜日","THU"],["金曜日","FRI"],["土曜日","SAT"],["日曜日","SUN"]],items=Array.isArray(days)&&days.length?days.map(d=>[d.day||"",d.dayEn||""]):fallback;$("weekly-summary").innerHTML=items.map(d=>`<div class="week-day"><span class="week-en">${escapeHTML(d[1])}</span><span class="week-ja">${escapeHTML(d[0])}</span></div>`).join("")}
-async function loadAnnouncements(){const box=$("notices");try{const response=await fetch(NOTICE_URL+"?t="+Date.now());if(!response.ok)throw new Error("告知データ取得失敗");const data=await response.json(),items=Array.isArray(data.announcements)?data.announcements:[];if(!items.length){box.innerHTML='<div class="empty">現在掲載中のお知らせはありません。<br>公式告知の登録後、こちらに表示されます。</div>';return}box.innerHTML=items.map(item=>{const url=/^https?:\/\//i.test(item.url||"")?item.url:"",imageUrl=/^https?:\/\//i.test(item.imageUrl||"")?item.imageUrl:"";return `<article class="card notice-card"><div class="notice-type">${escapeHTML(item.type||"お知らせ")}</div>${imageUrl?`<img class="notice-image" src="${escapeHTML(imageUrl)}" alt="${escapeHTML(item.title||"商品画像")}" loading="lazy" onerror="this.style.display='none'">`:""}<div class="notice-title">${escapeHTML(item.title||"お知らせ")}</div><div class="notice-date">${escapeHTML(item.date||"日付未定")}${item.salesPeriod?"<br>販売期間："+escapeHTML(item.salesPeriod):""}</div>${url?`<a class="notice-link" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">公式ページを見る ↗</a>`:""}</article>`}).join("")}catch(error){box.innerHTML='<div class="empty">お知らせを読み込めませんでした。時間をおいて再度お試しください。</div>'}}
-function movePeriod(amount){if(currentView==="month")currentDate=new Date(currentDate.getFullYear(),currentDate.getMonth()+amount,1,12);else currentDate.setDate(currentDate.getDate()+amount*7);selectedDate=dateKey(currentDate);renderCalendar()}
+function renderArchives(streams){
+const groups={};
+streams.forEach(stream=>{const key=monthKey(stream.scheduledAt||stream.actualStartTime);if(key)(groups[key]||=[]).push(stream)});
+const months=Object.keys(groups).sort((a,b)=>b.localeCompare(a)),tabs=$("month-tabs"),list=$("archive-list");
+if(!months.length){tabs.innerHTML="";list.innerHTML='<div class="empty">過去の配信データはまだありません。</div>';return}
+tabs.innerHTML=months.map((month,i)=>`<button class="month-tab ${i===0?"active":""}" data-month="${month}">${monthLabel(month)}</button>`).join("");
+function showMonth(month){
+tabs.querySelectorAll(".month-tab").forEach(tab=>tab.classList.toggle("active",tab.dataset.month===month));
+const items=groups[month].slice().sort((a,b)=>(b.scheduledAt||b.actualStartTime||"").localeCompare(a.scheduledAt||a.actualStartTime||""));
+list.innerHTML=`<div class="archive-count">${monthLabel(month)} ・ ${items.length}件</div><div class="stream-list">${items.map(streamCard).join("")}</div>`;
+bindDetailButtons()
+}
+tabs.querySelectorAll(".month-tab").forEach(tab=>tab.addEventListener("click",()=>showMonth(tab.dataset.month)));
+showMonth(months[0])
+}
+function renderWeeklySummary(days){
+const fallback=[["月曜日","MON"],["火曜日","TUE"],["水曜日","WED"],["木曜日","THU"],["金曜日","FRI"],["土曜日","SAT"],["日曜日","SUN"]];
+const items=Array.isArray(days)&&days.length?days.map(d=>[d.day||"",d.dayEn||""]):fallback;
+$("weekly-summary").innerHTML=items.map(d=>`<div class="week-day"><span class="week-en">${escapeHTML(d[1])}</span><span class="week-ja">${escapeHTML(d[0])}</span></div>`).join("")
+}
+
+/* 月別ゲーム時間データを複数の形式から読み取る */
+function getMonthlyGameRows(data,month){
+const source=data.monthlyGameHours;
+if(!source)return [];
+let rows=[];
+if(Array.isArray(source)){
+rows=source.filter(item=>(item.month||item.monthKey||item.date||"").slice(0,7)===month);
+}else if(typeof source==="object"){
+const monthData=source[month];
+if(monthData&&typeof monthData==="object"){
+if(Array.isArray(monthData))rows=monthData;
+else rows=Object.entries(monthData).map(([game,value])=>typeof value==="object"?{game,...value}:{game,hours:value});
+}else{
+rows=Object.entries(source).filter(([key])=>key.slice(0,7)===month).flatMap(([key,value])=>Array.isArray(value)?value:Object.entries(value||{}).map(([game,hours])=>({month:key,game,hours})));
+}
+}
+return rows.map(item=>{
+const game=item.game||item.gameName||item.title||item.name||"";
+let hours=Number(item.hours??item.totalHours);
+if(!Number.isFinite(hours)){
+const seconds=Number(item.durationSeconds??item.seconds??item.totalSeconds);
+if(Number.isFinite(seconds))hours=seconds/3600;
+}
+if(!Number.isFinite(hours)&&item.duration){
+const match=String(item.duration).match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+if(match)hours=(Number(match[1]||0)*3600+Number(match[2]||0)*60+Number(match[3]||0))/3600;
+}
+return {game:String(game),hours}
+}).filter(item=>item.game&&Number.isFinite(item.hours)&&item.hours>0)
+}
+function renderGameHours(){
+$("game-period").textContent=monthLabel(gameMonth);
+const rows=getMonthlyGameRows(scheduleData,gameMonth).sort((a,b)=>b.hours-a.hours);
+const box=$("game-hours");
+if(!rows.length){
+box.innerHTML='<div class="empty">この月のゲーム別配信時間データがありません。<br>更新スクリプトの実行後に、集計データがある月から表示されます。</div>';
+return
+}
+const max=Math.max(...rows.map(row=>row.hours));
+box.innerHTML=`<div class="game-month-label">${monthLabel(gameMonth)}のゲーム別配信時間</div><div class="game-ranking">${rows.map(row=>`<div class="game-row"><div class="game-row-top"><span class="game-name">${escapeHTML(row.game)}</span><span class="game-hours">${row.hours.toFixed(1)}h</span></div><div class="game-bar"><div class="game-bar-fill" style="width:${Math.max(0,Math.min(100,row.hours/max*100))}%"></div></div></div>`).join("")}</div>`
+}
+function shiftGameMonth(amount){
+const [year,month]=gameMonth.split("-").map(Number);
+const date=new Date(year,month-1+amount,1);
+gameMonth=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}`;
+renderGameHours()
+}
+
+async function loadAnnouncements(){
+const box=$("notices");
+try{
+const response=await fetch(NOTICE_URL+"?t="+Date.now());
+if(!response.ok)throw new Error("告知データ取得失敗");
+const data=await response.json(),items=Array.isArray(data.announcements)?data.announcements:[];
+if(!items.length){box.innerHTML='<div class="empty">現在掲載中のお知らせはありません。<br>公式告知の登録後、こちらに表示されます。</div>';return}
+box.innerHTML=items.map(item=>{
+const url=/^https?:\/\//i.test(item.url||"")?item.url:"",imageUrl=/^https?:\/\//i.test(item.imageUrl||"")?item.imageUrl:"";
+return `<article class="card notice-card"><div class="notice-type">${escapeHTML(item.type||"お知らせ")}</div>${imageUrl?`<img class="notice-image" src="${escapeHTML(imageUrl)}" alt="${escapeHTML(item.title||"商品画像")}" loading="lazy" onerror="this.style.display='none'">`:""}<div class="notice-title">${escapeHTML(item.title||"お知らせ")}</div><div class="notice-date">${escapeHTML(item.date||"日付未定")}${item.salesPeriod?"<br>販売期間："+escapeHTML(item.salesPeriod):""}</div>${url?`<a class="notice-link" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">公式ページを見る ↗</a>`:""}</article>`
+}).join("")
+}catch(error){box.innerHTML='<div class="empty">お知らせを読み込めませんでした。時間をおいて再度お試しください。</div>'}
+}
+function movePeriod(amount){
+if(currentView==="month")currentDate=new Date(currentDate.getFullYear(),currentDate.getMonth()+amount,1,12);
+else currentDate.setDate(currentDate.getDate()+amount*7);
+selectedDate=dateKey(currentDate);
+renderCalendar()
+}
 $("prev").addEventListener("click",()=>movePeriod(-1));
 $("next").addEventListener("click",()=>movePeriod(1));
 $("today").addEventListener("click",()=>{currentDate=new Date();selectedDate=dateKey(currentDate);renderCalendar()});
 document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>{currentView=button.dataset.view;renderCalendar()}));
+$("game-prev").addEventListener("click",()=>shiftGameMonth(-1));
+$("game-next").addEventListener("click",()=>shiftGameMonth(1));
 $("close-detail").addEventListener("click",()=>$("detail-dialog").close());
-async function loadSchedule(){try{const response=await fetch(DATA_URL+"?t="+Date.now());if(!response.ok)throw new Error("データ取得失敗");const data=await response.json();upcomingStreams=Array.isArray(data.streams)?data.streams:[];pastStreams=Array.isArray(data.pastStreams)?data.pastStreams:[];allStreams=[...upcomingStreams,...pastStreams];renderStats();renderCalendar();renderUpcoming(upcomingStreams);renderArchives(pastStreams);renderWeeklySummary(data.weeklySchedule);$("updated").textContent=data.updatedAt?"最終更新："+formatDate(data.updatedAt):"SCHEDULE DATA"}catch(error){$("upcoming-list").innerHTML='<div class="empty">配信データを読み込めませんでした。時間をおいて再度お試しください。</div>';$("archive-list").innerHTML='<div class="empty">過去の配信データを読み込めませんでした。</div>';$("calendar").innerHTML='<div class="empty">カレンダーを読み込めませんでした。</div>';renderWeeklySummary([])}}
+
+async function loadSchedule(){
+try{
+const response=await fetch(DATA_URL+"?t="+Date.now());
+if(!response.ok)throw new Error("データ取得失敗");
+const data=await response.json();
+scheduleData=data;
+upcomingStreams=Array.isArray(data.streams)?data.streams:[];
+pastStreams=Array.isArray(data.pastStreams)?data.pastStreams:[];
+allStreams=[...upcomingStreams,...pastStreams];
+renderStats();
+renderCalendar();
+renderUpcoming(upcomingStreams);
+renderArchives(pastStreams);
+renderWeeklySummary(data.weeklySchedule);
+renderGameHours();
+$("updated").textContent=data.updatedAt?"最終更新："+formatDate(data.updatedAt):"SCHEDULE DATA"
+}catch(error){
+$("upcoming-list").innerHTML='<div class="empty">配信データを読み込めませんでした。時間をおいて再度お試しください。</div>';
+$("archive-list").innerHTML='<div class="empty">過去の配信データを読み込めませんでした。</div>';
+$("calendar").innerHTML='<div class="empty">カレンダーを読み込めませんでした。</div>';
+$("game-hours").innerHTML='<div class="empty">ゲーム配信時間を読み込めませんでした。</div>';
+renderWeeklySummary([])
+}
+}
 renderCalendar();
 loadSchedule();
 loadAnnouncements();
