@@ -42,3 +42,4 @@ jobs:
           else
             git commit -m "Update Kanae and Kuzuha schedules"
             git push
+          fi
