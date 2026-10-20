@@ -1,5 +1,6 @@
 
 import re
+import html
 import urllib.request
 from html.parser import HTMLParser
 from urllib.parse import urljoin
@@ -12,151 +13,158 @@ SOURCES = {
 }
 
 
-class Inspector(HTMLParser):
+class ProductParser(HTMLParser):
     def __init__(self):
         super().__init__()
-        self.links = []
-        self.blocks = []
+        self.products = []
         self.current = None
+        self.depth = 0
+        self.capture_name = False
+        self.capture_price = False
 
     def handle_starttag(self, tag, attrs):
-        a = dict(attrs)
+        attrs = dict(attrs)
+        classes = attrs.get("class", "").split()
 
-        if tag == "a":
-            self.current = {
-                "href": a.get("href", ""),
-                "class": a.get("class", ""),
-                "text": [],
-            }
+        if self.current is None:
+            if (
+                tag == "div"
+                and "card-container" in classes
+                and attrs.get("data-pid")
+            ):
+                self.current = {
+                    "id": attrs["data-pid"],
+                    "title": "",
+                    "url": "",
+                    "imageUrl": "",
+                    "price": "",
+                }
+                self.depth = 1
+            return
 
-        cls = a.get("class", "")
-        if any(x in cls.lower() for x in [
-            "product", "tile", "search-result",
-            "price", "grid"
+        if tag in ("div", "section", "article"):
+            self.depth += 1
+
+        if tag == "a" and not self.current["url"]:
+            href = attrs.get("href", "")
+            if href:
+                self.current["url"] = urljoin(BASE, href)
+
+        if tag == "img" and not self.current["imageUrl"]:
+            src = (
+                attrs.get("data-src")
+                or attrs.get("src")
+                or ""
+            )
+            if src:
+                self.current["imageUrl"] = urljoin(BASE, src)
+
+            title = (
+                attrs.get("alt")
+                or attrs.get("title")
+                or ""
+            ).strip()
+
+            if title and not self.current["title"]:
+                self.current["title"] = title
+
+        if "card-price" in classes or "text-price" in classes:
+            self.capture_price = True
+
+        if any(x in classes for x in [
+            "card-name",
+            "card-title",
+            "card-product-name",
         ]):
-            self.blocks.append((tag, cls[:160]))
+            self.capture_name = True
 
     def handle_data(self, data):
-        if self.current is not None:
-            value = " ".join(data.split())
-            if value:
-                self.current["text"].append(value)
+        if self.current is None:
+            return
+
+        value = " ".join(data.split())
+        if not value:
+            return
+
+        if self.capture_price:
+            if re.search(r"[\d,]+", value):
+                self.current["price"] += value + " "
+
+        if self.capture_name:
+            self.current["title"] += value + " "
 
     def handle_endtag(self, tag):
-        if tag == "a" and self.current is not None:
-            item = self.current
-            item["text"] = " ".join(item["text"])[:100]
-            self.links.append(item)
-            self.current = None
+        if self.current is None:
+            return
+
+        if tag in ("span", "p", "a"):
+            self.capture_price = False
+            self.capture_name = False
+
+        if tag in ("div", "section", "article"):
+            self.depth -= 1
+
+            if self.depth == 0:
+                self.current["title"] = (
+                    self.current["title"].strip()
+                )
+                self.current["price"] = (
+                    self.current["price"].strip()
+                )
+
+                self.products.append(self.current)
+                self.current = None
+                self.capture_price = False
+                self.capture_name = False
 
 
 def fetch(url):
-    req = urllib.request.Request(
+    request = urllib.request.Request(
         url,
         headers={
             "User-Agent": "Mozilla/5.0",
             "Accept-Language": "ja-JP,ja;q=0.9",
         },
     )
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read().decode("utf-8", "replace")
+
+    with urllib.request.urlopen(
+        request,
+        timeout=30
+    ) as response:
+        return response.read().decode(
+            "utf-8",
+            errors="replace"
+        )
 
 
 def main():
     for name, url in SOURCES.items():
         print("\n==========", name, "==========")
-        print("URL:", url)
 
         try:
             page = fetch(url)
-            parser = Inspector()
+            parser = ProductParser()
             parser.feed(page)
 
-            print("HTML文字数:", len(page))
-            print("リンク数:", len(parser.links))
+            products = parser.products
 
-            print("\n--- 商品関連HTMLクラス ---")
-            for tag, cls in list(dict.fromkeys(
-                parser.blocks
-            ))[:20]:
-                print(tag, cls)
+            print("取得した商品数:", len(products))
 
-            print("\n--- 商品らしいリンク ---")
-            matches = []
-            for item in parser.links:
-                href = item["href"]
-                cls = item["class"]
-                if any(x in (href + cls).lower() for x in [
-                    "product", "item", "detail",
-                    "pid", "sku", "tile"
-                ]):
-                    matches.append(item)
+            for index, product in enumerate(
+                products[:10], start=1
+            ):
+                print("\n--- 商品", index, "---")
+                print("ID:", product["id"])
+                print("商品名:", product["title"])
+                print("価格:", product["price"])
+                print("商品URL:", product["url"])
+                print("画像URL:", product["imageUrl"][:200])
 
-            print("候補数:", len(matches))
-            for item in matches[:12]:
-                print("TEXT:", item["text"])
-                print("HREF:", item["href"][:220])
-                print("CLASS:", item["class"][:120])
-
-            print("\n--- HTML内のキーワード ---")
-            for keyword in [
-                "product-tile",
-                "product-name",
-                "product-price",
-                "product-id",
-                "data-pid",
-                "search-result",
-                "product-grid",
-                "product-list",
-                "¥",
-                "税込",
-                "商品一覧",
-            ]:
-                print(
-                    keyword,
-                    page.lower().count(keyword.lower())
-                )
-
-            print("\n--- 商品表示部分のHTML抜粋 ---")
-            for keyword in [
-                "product-tile",
-                "product-name",
-                "data-pid",
-                "商品一覧",
-            ]:
-                pos = page.lower().find(keyword.lower())
-                if pos >= 0:
-                    start = max(0, pos - 200)
-                    end = min(len(page), pos + 500)
-                    snippet = re.sub(
-                        r"\s+", " ", page[start:end]
-                    )
-                    print(keyword, ":", snippet[:700])
-
-            print("\n--- 検出されたURL形式 ---")
-            urls = re.findall(
-                r'''(?:href|data-url)=["']([^"']+)''',
-                page,
-                re.I,
-            )
-            seen = set()
-            count = 0
-
-            for path in urls:
-                full = urljoin(BASE, path)
-                if full in seen:
-                    continue
-                seen.add(full)
-                if any(x in full.lower() for x in [
-                    "search", "product", "item"
-                ]):
-                    print(full[:220])
-                    count += 1
-                    if count >= 15:
-                        break
+            if not products:
+                print("商品カードが見つかりませんでした")
 
         except Exception as error:
-            print("ERROR:", repr(error))
+            print("取得エラー:", repr(error))
 
 
 if __name__ == "__main__":
