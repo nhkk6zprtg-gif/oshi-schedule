@@ -24,7 +24,7 @@ jobs:
       - name: Install parser
         run: pip install beautifulsoup4
 
-      - name: Fetch official store
+      - name: Fetch official store and product images
         run: |
           python - <<'PY'
           import json
@@ -34,15 +34,55 @@ jobs:
           from urllib.parse import urljoin, urlparse
           from bs4 import BeautifulSoup
 
+          JST = timezone(timedelta(hours=9))
           source = "https://shop.nijisanji.jp/1019"
-          request = urllib.request.Request(
-              source,
-              headers={"User-Agent": "Mozilla/5.0"}
-          )
 
-          with urllib.request.urlopen(request, timeout=30) as response:
-              html = response.read().decode("utf-8", "replace")
+          def get_html(url):
+              req = urllib.request.Request(
+                  url,
+                  headers={"User-Agent": "Mozilla/5.0"}
+              )
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  return response.read().decode("utf-8", "replace")
 
+          def get_image(url):
+              try:
+                  soup = BeautifulSoup(get_html(url), "html.parser")
+
+                  for key, value in [
+                      ("property", "og:image"),
+                      ("name", "twitter:image"),
+                  ]:
+                      tag = soup.find("meta", attrs={key: value})
+                      if tag and tag.get("content"):
+                          image_url = urljoin(url, tag["content"].strip())
+                          if urlparse(image_url).scheme in ("http", "https"):
+                              return image_url
+
+                  for tag in soup.find_all("script", type="application/ld+json"):
+                      try:
+                          data = json.loads(tag.string or tag.get_text())
+                      except Exception:
+                          continue
+
+                      items = data if isinstance(data, list) else [data]
+                      for item in items:
+                          if not isinstance(item, dict):
+                              continue
+                          img = item.get("image")
+                          if isinstance(img, str):
+                              return urljoin(url, img)
+                          if isinstance(img, list) and img:
+                              if isinstance(img[0], str):
+                                  return urljoin(url, img[0])
+                          if isinstance(img, dict) and img.get("url"):
+                              return urljoin(url, img["url"])
+              except Exception as e:
+                  print("Image lookup skipped:", url, str(e))
+
+              return ""
+
+          html = get_html(source)
           soup = BeautifulSoup(html, "html.parser")
           found = {}
 
@@ -57,8 +97,7 @@ jobs:
               for _ in range(4):
                   if context is None:
                       break
-                  text = context.get_text(" ", strip=True)
-                  if re.search(r"\bNEW\b", text, re.I):
+                  if re.search(r"\bNEW\b", context.get_text(" ", strip=True), re.I):
                       is_new = True
                       break
                   context = context.parent
@@ -80,14 +119,15 @@ jobs:
               if len(title) < 3:
                   continue
 
+              image_url = get_image(url)
+
               found[url] = {
                   "type": "公式ストア新着",
                   "title": title,
-                  "date": "確認日：" + datetime.now(
-                      timezone(timedelta(hours=9))
-                  ).strftime("%Y-%m-%d"),
+                  "date": "確認日：" + datetime.now(JST).strftime("%Y-%m-%d"),
                   "salesPeriod": "",
-                  "url": url
+                  "url": url,
+                  "imageUrl": image_url
               }
 
           if not found:
@@ -111,11 +151,13 @@ jobs:
               if isinstance(item, dict) and item.get("url"):
                   merged[item["url"]] = item
 
-          merged.update(found)
+          for url, item in found.items():
+              old = merged.get(url, {})
+              merged[url] = {**old, **item}
+              if not item["imageUrl"] and old.get("imageUrl"):
+                  merged[url]["imageUrl"] = old["imageUrl"]
 
-          data["updatedAt"] = datetime.now(
-              timezone(timedelta(hours=9))
-          ).isoformat(timespec="seconds")
+          data["updatedAt"] = datetime.now(JST).isoformat(timespec="seconds")
           data["announcements"] = list(merged.values())[:50]
 
           with open("announcements.json", "w", encoding="utf-8") as f:
@@ -123,6 +165,7 @@ jobs:
               f.write("\n")
 
           print("新着候補:", len(found), "件")
+          print("画像URL取得:", sum(bool(x["imageUrl"]) for x in found.values()), "件")
           print("告知データ:", len(data["announcements"]), "件")
           PY
 
@@ -132,7 +175,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add announcements.json
           if ! git diff --cached --quiet; then
-            git commit -m "Update Kanae announcements"
+            git commit -m "Update Kanae announcements with images"
             git push
           else
             echo "告知データに変更はありません"
