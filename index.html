@@ -7,543 +7,174 @@
 <meta name="theme-color" content="#101010">
 <title>STREAM SCHEDULE</title>
 <style>
-:root {
-  --bg:#090909;--panel:#151515;--line:#383838;
-  --silver:#c9c9c9;--text:#f4f4f4;--muted:#999;
-}
-* { box-sizing:border-box; }
-body {
-  margin:0;color:var(--text);
-  background:radial-gradient(ellipse at top,#292929 0%,#111 38%,#080808 80%);
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
-}
-button { font:inherit; }
-header {
-  padding:32px 16px 24px;text-align:center;border-bottom:1px solid #303030;
-  background:linear-gradient(180deg,#202020,#111);
-}
-.eyebrow { color:#aaa;letter-spacing:4px;font-size:10px;margin-bottom:12px; }
-h1 { margin:0;font-size:clamp(23px,6vw,36px);font-weight:500;letter-spacing:3px; }
-.header-line { width:52px;height:1px;background:#aaa;margin:18px auto 0; }
-main { max-width:1100px;margin:auto;padding:22px 12px 45px; }
-section { margin-bottom:36px; }
-.section-heading { display:flex;align-items:center;gap:10px;margin-bottom:15px; }
-.section-heading h2 { margin:0;font-size:15px;font-weight:500;letter-spacing:1.5px; }
-.section-heading span { color:#999;font-size:10px; }
-.section-heading::after { content:"";height:1px;background:#383838;flex:1; }
-.card { background:linear-gradient(135deg,#1b1b1b,#101010);border:1px solid var(--line);border-radius:8px;overflow:hidden; }
-.controls { display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:14px; }
-.control-group { display:flex;align-items:center;gap:6px; }
-.control-button,.view-button {
-  border:1px solid #555;border-radius:5px;background:#171717;color:#ddd;
-  padding:9px 12px;cursor:pointer;font-size:12px;
-}
-.control-button:active,.view-button.active { background:linear-gradient(135deg,#eee,#aaa);color:#111; }
-.period-label { font-size:15px;font-weight:600;min-width:112px;text-align:center; }
-.stats { display:flex;gap:7px;overflow-x:auto;padding-bottom:12px;margin-bottom:12px; }
-.stat { flex:0 0 auto;border:1px solid #444;background:#171717;border-radius:20px;padding:8px 12px;font-size:11px;color:#ccc; }
-.calendar-shell { border:1px solid #414141;background:#141414;border-radius:10px;padding:8px; }
-.month-grid { display:grid;grid-template-columns:repeat(7,minmax(0,1fr)); }
-.weekday { padding:10px 0;text-align:center;color:#aaa;font-size:11px;border-bottom:1px solid #444; }
-.weekday:last-child { color:#c88; }
-.day-cell { min-width:0;min-height:92px;border-right:1px solid #333;border-bottom:1px solid #333;padding:3px;cursor:pointer;background:#121212; }
-.day-cell:nth-child(7n) { border-right:0; }
-.day-cell.other-month { opacity:.35; }
-.day-cell.today { outline:1px solid #bbb;outline-offset:-2px; }
-.day-number { font-size:11px;color:#bbb;padding:3px; }
-.day-cell.selected { background:#292929; }
-.day-events { display:grid;gap:3px; }
-.day-thumb { width:100%;aspect-ratio:1.25;object-fit:cover;display:block;border-radius:3px;background:#303030; }
-.day-event { position:relative;overflow:hidden;border-radius:4px;background:#252525;border:1px solid #484848; }
-.day-event-title { font-size:9px;line-height:1.35;padding:3px;overflow-wrap:anywhere; }
-.more-events { color:#bbb;font-size:9px;padding:2px; }
-.week-scroll { overflow-x:auto; }
-.week-grid { min-width:720px;display:grid;grid-template-columns:42px repeat(7,minmax(0,1fr)); }
-.time-label,.week-head { border-bottom:1px solid #333;text-align:center;padding:8px 1px;font-size:10px;color:#aaa; }
-.week-head { min-height:47px;border-left:1px solid #333; }
-.week-head strong { display:block;color:#eee;font-size:13px;margin-bottom:3px; }
-.week-head.today strong { color:#ddd;text-decoration:underline; }
-.time-label { height:54px;border-right:1px solid #444; }
-.time-cell { height:54px;border-right:1px solid #333;border-bottom:1px solid #333;position:relative;min-width:0;background:repeating-linear-gradient(to bottom,#171717 0,#171717 26px,#292929 27px); }
-.week-event { position:absolute;left:2px;right:2px;z-index:2;border:1px solid #777;border-radius:4px;background:#303030;padding:3px;color:#fff;overflow:hidden;cursor:pointer;font-size:9px;line-height:1.4; }
-.week-event img { width:100%;height:35px;object-fit:cover;border-radius:2px; }
-.week-event .event-name { display:block;overflow-wrap:anywhere; }
-.stream-list { display:grid;gap:10px; }
-.stream-card { display:grid;grid-template-columns:minmax(100px,34%) minmax(0,1fr);gap:12px;padding:10px; }
-.thumb { width:100%;aspect-ratio:16/9;object-fit:cover;background:#292929;border-radius:4px; }
-.stream-info { min-width:0;display:flex;flex-direction:column;justify-content:center;gap:8px; }
-.stream-title { font-size:13px;line-height:1.55;overflow-wrap:anywhere; }
-.stream-date { color:#bbb;font-size:11px;line-height:1.5; }
-.stream-link,.detail-button { display:inline-block;width:fit-content;padding:7px 10px;border:1px solid #666;border-radius:4px;color:#eee;text-decoration:none;font-size:10px; }
-.stream-link:hover,.detail-button:hover { background:#eee;color:#111; }
-.month-tabs { display:flex;gap:7px;overflow-x:auto;padding-bottom:12px; }
-.month-tab { flex:0 0 auto;border:1px solid #454545;border-radius:4px;background:#151515;color:#aaa;padding:9px 13px;font-size:11px;cursor:pointer; }
-.month-tab.active { background:linear-gradient(135deg,#eee,#aaa);color:#111; }
-.archive-count { color:#999;font-size:11px;margin-bottom:12px; }
-.empty { padding:24px 12px;text-align:center;color:#999;font-size:12px;border:1px dashed #393939;border-radius:6px;line-height:1.8; }
-.weekly-summary { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px; }
-.week-day { border:1px solid #333;background:#151515;border-radius:5px;padding:13px 8px;text-align:center; }
-.week-en { display:block;color:#999;font-size:10px;letter-spacing:2px;margin-bottom:6px; }
-.week-ja { font-size:12px; }
-.notice-card { padding:13px;margin-bottom:10px; }
-.notice-type { color:#bbb;font-size:10px;letter-spacing:1px;margin-bottom:7px; }
-.notice-image {
-display:block;
-width:100%;
-height:110px;
-max-height:110px;
-object-fit:contain;
-background:#111;
-border-radius:5px;
-margin-bottom:8px;
-}
-.notice-title { font-size:14px;line-height:1.6;margin-bottom:8px; }
-.notice-date { color:#aaa;font-size:11px;line-height:1.7;margin-bottom:10px; }
-.notice-link { color:#ddd;font-size:11px;text-decoration:underline; }
-dialog { width:calc(100% - 28px);max-width:520px;max-height:85vh;overflow:auto;color:#eee;background:#171717;border:1px solid #777;border-radius:10px;padding:18px; }
-dialog::backdrop { background:#000b; }
-.detail-thumb { width:100%;border-radius:5px;margin-bottom:12px; }
-.detail-title { font-size:17px;line-height:1.5;margin-bottom:10px; }
-.detail-date { font-size:12px;color:#bbb;margin-bottom:16px; }
-.detail-actions { display:flex;gap:8px;flex-wrap:wrap; }
-.close-button { display:block;margin:16px 0 0 auto;padding:8px 13px;color:#ddd;background:#222;border:1px solid #555;border-radius:4px; }
-footer { text-align:center;color:#777;border-top:1px solid #292929;padding:22px 12px;font-size:10px;letter-spacing:1px; }
-@media(min-width:600px) {
-  main { padding:30px 20px 55px; }
-  .day-cell { min-height:115px;padding:5px; }
-  .day-number { font-size:13px; }
-  .weekly-summary { grid-template-columns:repeat(4,minmax(0,1fr)); }
-}
-@media(max-width:380px) {
-  .stream-card { grid-template-columns:1fr; }
-  .thumb { max-height:200px; }
-  .day-cell { min-height:70px; }
-  .day-event-title { font-size:8px; }
-}
+:root{--bg:#090909;--panel:#151515;--line:#383838;--silver:#c9c9c9;--text:#f4f4f4;--muted:#999}
+*{box-sizing:border-box}
+body{margin:0;color:var(--text);background:radial-gradient(ellipse at top,#292929 0%,#111 38%,#080808 80%);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+button{font:inherit}
+header{padding:32px 16px 24px;text-align:center;border-bottom:1px solid #303030;background:linear-gradient(180deg,#202020,#111)}
+.eyebrow{color:#aaa;letter-spacing:4px;font-size:10px;margin-bottom:12px}
+h1{margin:0;font-size:clamp(23px,6vw,36px);font-weight:500;letter-spacing:3px}
+.header-line{width:52px;height:1px;background:#aaa;margin:18px auto 0}
+main{max-width:1100px;margin:auto;padding:22px 12px 45px}
+section{margin-bottom:36px}
+.section-heading{display:flex;align-items:center;gap:10px;margin-bottom:15px}
+.section-heading h2{margin:0;font-size:15px;font-weight:500;letter-spacing:1.5px}
+.section-heading span{color:#999;font-size:10px}
+.section-heading::after{content:"";height:1px;background:#383838;flex:1}
+.card{background:linear-gradient(135deg,#1b1b1b,#101010);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.controls{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.control-group{display:flex;align-items:center;gap:6px}
+.control-button,.view-button{border:1px solid #555;border-radius:5px;background:#171717;color:#ddd;padding:9px 12px;cursor:pointer;font-size:12px}
+.control-button:active,.view-button.active{background:linear-gradient(135deg,#eee,#aaa);color:#111}
+.period-label{font-size:15px;font-weight:600;min-width:112px;text-align:center}
+.stats{display:flex;gap:7px;overflow-x:auto;padding-bottom:12px;margin-bottom:12px}
+.stat{flex:0 0 auto;border:1px solid #444;background:#171717;border-radius:20px;padding:8px 12px;font-size:11px;color:#ccc}
+.calendar-shell{border:1px solid #414141;background:#141414;border-radius:10px;padding:8px}
+.month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.weekday{padding:10px 0;text-align:center;color:#aaa;font-size:11px;border-bottom:1px solid #444}
+.weekday:last-child{color:#c88}
+.day-cell{min-width:0;min-height:92px;border-right:1px solid #333;border-bottom:1px solid #333;padding:3px;cursor:pointer;background:#121212}
+.day-cell:nth-child(7n){border-right:0}
+.day-cell.other-month{opacity:.35}
+.day-cell.today{outline:1px solid #bbb;outline-offset:-2px}
+.day-number{font-size:11px;color:#bbb;padding:3px}
+.day-cell.selected{background:#292929}
+.day-events{display:grid;gap:3px}
+.day-thumb{width:100%;aspect-ratio:1.25;object-fit:cover;display:block;border-radius:3px;background:#303030}
+.day-event{position:relative;overflow:hidden;border-radius:4px;background:#252525;border:1px solid #484848}
+.day-event-title{font-size:9px;line-height:1.35;padding:3px;overflow-wrap:anywhere}
+.more-events{color:#bbb;font-size:9px;padding:2px}
+.week-scroll{overflow-x:auto}
+.week-grid{min-width:720px;display:grid;grid-template-columns:42px repeat(7,minmax(0,1fr))}
+.time-label,.week-head{border-bottom:1px solid #333;text-align:center;padding:8px 1px;font-size:10px;color:#aaa}
+.week-head{min-height:47px;border-left:1px solid #333}
+.week-head strong{display:block;color:#eee;font-size:13px;margin-bottom:3px}
+.week-head.today strong{color:#ddd;text-decoration:underline}
+.time-label{height:54px;border-right:1px solid #444}
+.time-cell{height:54px;border-right:1px solid #333;border-bottom:1px solid #333;position:relative;min-width:0;background:repeating-linear-gradient(to bottom,#171717 0,#171717 26px,#292929 27px)}
+.week-event{position:absolute;left:2px;right:2px;z-index:2;border:1px solid #777;border-radius:4px;background:#303030;padding:3px;color:#fff;overflow:hidden;cursor:pointer;font-size:9px;line-height:1.4}
+.week-event img{width:100%;height:35px;object-fit:cover;border-radius:2px}
+.week-event .event-name{display:block;overflow-wrap:anywhere}
+.stream-list{display:grid;gap:10px}
+.stream-card{display:grid;grid-template-columns:minmax(100px,34%) minmax(0,1fr);gap:12px;padding:10px}
+.thumb{width:100%;aspect-ratio:16/9;object-fit:cover;background:#292929;border-radius:4px}
+.stream-info{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.stream-title{font-size:13px;line-height:1.55;overflow-wrap:anywhere}
+.stream-date{color:#bbb;font-size:11px;line-height:1.5}
+.stream-link,.detail-button{display:inline-block;width:fit-content;padding:7px 10px;border:1px solid #666;border-radius:4px;color:#eee;text-decoration:none;font-size:10px}
+.stream-link:hover,.detail-button:hover{background:#eee;color:#111}
+.month-tabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:12px}
+.month-tab{flex:0 0 auto;border:1px solid #454545;border-radius:4px;background:#151515;color:#aaa;padding:9px 13px;font-size:11px;cursor:pointer}
+.month-tab.active{background:linear-gradient(135deg,#eee,#aaa);color:#111}
+.archive-count{color:#999;font-size:11px;margin-bottom:12px}
+.empty{padding:24px 12px;text-align:center;color:#999;font-size:12px;border:1px dashed #393939;border-radius:6px;line-height:1.8}
+.weekly-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.week-day{border:1px solid #333;background:#151515;border-radius:5px;padding:13px 8px;text-align:center}
+.week-en{display:block;color:#999;font-size:10px;letter-spacing:2px;margin-bottom:6px}
+.week-ja{font-size:12px}
+.notice-card{padding:13px;margin-bottom:10px}
+.notice-type{color:#bbb;font-size:10px;letter-spacing:1px;margin-bottom:7px}
+.notice-image{display:block;width:100%;height:110px;max-height:110px;object-fit:contain;background:#111;border-radius:5px;margin-bottom:8px}
+.notice-title{font-size:14px;line-height:1.6;margin-bottom:8px}
+.notice-date{color:#aaa;font-size:11px;line-height:1.7;margin-bottom:10px}
+.notice-link{color:#ddd;font-size:11px;text-decoration:underline}
+/* GOODS & VOICE：タップで開閉 */
+.goods-accordion>summary{list-style:none;cursor:pointer;padding:14px 12px;border:1px solid #383838;border-radius:6px;background:linear-gradient(135deg,#1b1b1b,#101010);margin-bottom:0}
+.goods-accordion>summary::-webkit-details-marker{display:none}
+.goods-accordion>summary::before{content:"+";color:#c9c9c9;margin-right:10px}
+.goods-accordion[open]>summary::before{content:"−"}
+.goods-accordion[open]>summary{margin-bottom:14px}
+.goods-accordion>summary .section-heading{margin:0}
+.goods-accordion>summary .section-heading::after{display:none}
+.goods-accordion>summary .section-heading span{margin-left:auto}
+.goods-accordion #notices{padding-top:2px}
+dialog{width:calc(100% - 28px);max-width:520px;max-height:85vh;overflow:auto;color:#eee;background:#171717;border:1px solid #777;border-radius:10px;padding:18px}
+dialog::backdrop{background:#000b}
+.detail-thumb{width:100%;border-radius:5px;margin-bottom:12px}
+.detail-title{font-size:17px;line-height:1.5;margin-bottom:10px}
+.detail-date{font-size:12px;color:#bbb;margin-bottom:16px}
+.detail-actions{display:flex;gap:8px;flex-wrap:wrap}
+.close-button{display:block;margin:16px 0 0 auto;padding:8px 13px;color:#ddd;background:#222;border:1px solid #555;border-radius:4px}
+footer{text-align:center;color:#777;border-top:1px solid #292929;padding:22px 12px;font-size:10px;letter-spacing:1px}
+@media(min-width:600px){main{padding:30px 20px 55px}.day-cell{min-height:115px;padding:5px}.day-number{font-size:13px}.weekly-summary{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:380px){.stream-card{grid-template-columns:1fr}.thumb{max-height:200px}.day-cell{min-height:70px}.day-event-title{font-size:8px}}
 </style>
 </head>
 <body>
 <header>
-  <div class="eyebrow">STREAM ARCHIVE & INFORMATION</div>
-  <h1>STREAM SCHEDULE</h1>
-  <div class="header-line"></div>
+<div class="eyebrow">STREAM ARCHIVE & INFORMATION</div>
+<h1>STREAM SCHEDULE</h1>
+<div class="header-line"></div>
 </header>
-
 <main>
 <section>
-  <div class="section-heading"><h2>STREAM CALENDAR</h2><span>配信カレンダー</span></div>
-  <div class="controls">
-    <div class="control-group">
-      <button class="control-button" id="prev" aria-label="前へ">‹</button>
-      <div class="period-label" id="period-label">読み込み中</div>
-      <button class="control-button" id="next" aria-label="次へ">›</button>
-    </div>
-    <div class="control-group">
-      <button class="control-button" id="today">今日</button>
-      <button class="view-button active" data-view="week">週</button>
-      <button class="view-button" data-view="month">月</button>
-    </div>
-  </div>
-  <div class="stats" id="stats"></div>
-  <div class="calendar-shell"><div id="calendar"></div></div>
-  <div id="selected-day" style="margin-top:15px"></div>
+<div class="section-heading"><h2>STREAM CALENDAR</h2><span>配信カレンダー</span></div>
+<div class="controls">
+<div class="control-group"><button class="control-button" id="prev" aria-label="前へ">‹</button><div class="period-label" id="period-label">読み込み中</div><button class="control-button" id="next" aria-label="次へ">›</button></div>
+<div class="control-group"><button class="control-button" id="today">今日</button><button class="view-button active" data-view="week">週</button><button class="view-button" data-view="month">月</button></div>
+</div>
+<div class="stats" id="stats"></div>
+<div class="calendar-shell"><div id="calendar"></div></div>
+<div id="selected-day" style="margin-top:15px"></div>
 </section>
-
 <section>
-  <div class="section-heading"><h2>UPCOMING STREAMS</h2><span>配信予定</span></div>
-  <div id="upcoming-list" class="stream-list"><div class="empty">配信予定を読み込み中...</div></div>
+<div class="section-heading"><h2>UPCOMING STREAMS</h2><span>配信予定</span></div>
+<div id="upcoming-list" class="stream-list"><div class="empty">配信予定を読み込み中...</div></div>
 </section>
-
 <section>
-  <div class="section-heading"><h2>PAST STREAMS</h2><span>過去の配信</span></div>
-  <div id="month-tabs" class="month-tabs"></div>
-  <div id="archive-list"><div class="empty">過去の配信を読み込み中...</div></div>
+<div class="section-heading"><h2>PAST STREAMS</h2><span>過去の配信</span></div>
+<div id="month-tabs" class="month-tabs"></div>
+<div id="archive-list"><div class="empty">過去の配信を読み込み中...</div></div>
 </section>
-
 <section>
-  <div class="section-heading"><h2>GOODS & VOICE</h2><span>グッズ・ボイス・コラボ商品</span></div>
-  <div id="notices"><div class="empty">お知らせ情報を読み込み中...</div></div>
+<details class="goods-accordion">
+<summary><div class="section-heading"><h2>GOODS & VOICE</h2><span>タップして商品一覧を開く</span></div></summary>
+<div id="notices"><div class="empty">お知らせ情報を読み込み中...</div></div>
+</details>
 </section>
-
 <section>
-  <div class="section-heading"><h2>WEEKLY SCHEDULE</h2><span>週間スケジュール</span></div>
-  <div id="weekly-summary" class="weekly-summary"></div>
+<div class="section-heading"><h2>WEEKLY SCHEDULE</h2><span>週間スケジュール</span></div>
+<div id="weekly-summary" class="weekly-summary"></div>
 </section>
 </main>
-
-<dialog id="detail-dialog">
-  <div id="detail-content"></div>
-  <button class="close-button" id="close-detail">閉じる</button>
-</dialog>
-
-<footer>
-  <div id="updated">SCHEDULE DATA</div>
-  <div style="margin-top:8px;">STREAM SCHEDULE</div>
-</footer>
-
+<dialog id="detail-dialog"><div id="detail-content"></div><button class="close-button" id="close-detail">閉じる</button></dialog>
+<footer><div id="updated">SCHEDULE DATA</div><div style="margin-top:8px">STREAM SCHEDULE</div></footer>
 <script>
-const DATA_URL = "https://raw.githubusercontent.com/nhkk6zprtg-gif/oshi-schedule/main/schedule.json";
-const NOTICE_URL = "https://raw.githubusercontent.com/nhkk6zprtg-gif/oshi-schedule/main/announcements.json";
-
-const $ = id => document.getElementById(id);
-const weekdays = ["日","月","火","水","木","金","土"];
-let allStreams = [];
-let upcomingStreams = [];
-let pastStreams = [];
-let currentView = "week";
-let currentDate = new Date();
-let selectedDate = dateKey(new Date());
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[c]);
-}
-
-function dateKey(date) {
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit"
-  }).format(date);
-}
-
-function dateParts(key) {
-  const [year,month,day] = key.split("-").map(Number);
-  return {year,month,day};
-}
-
-function jstDate(value) {
-  if (!value) return "";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "";
-  return dateKey(date);
-}
-
-function formatDate(value) {
-  if (!value) return "日時未定";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "日時未定";
-  return new Intl.DateTimeFormat("ja-JP", {
-    timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit",
-    weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false
-  }).format(date).replace(/\//g,".");
-}
-
-function monthKey(value) { return jstDate(value).slice(0,7); }
-
-function monthLabel(key) {
-  const [year,month] = key.split("-");
-  return `${year}年${Number(month)}月`;
-}
-
-function streamURL(stream) {
-  if (/^https:\/\/www\.youtube\.com\/watch\?v=[\w-]+$/.test(stream.url || "")) return stream.url;
-  if (stream.videoId) return "https://www.youtube.com/watch?v=" + encodeURIComponent(stream.videoId);
-  return "https://www.youtube.com/@kanae";
-}
-
-function streamThumb(stream) {
-  if (/^https?:\/\//i.test(stream.thumbnail || "")) return stream.thumbnail;
-  if (stream.videoId) return "https://i.ytimg.com/vi/" + encodeURIComponent(stream.videoId) + "/hqdefault.jpg";
-  return "";
-}
-
-function streamCard(stream) {
-  const thumb = streamThumb(stream);
-  return `
-  <article class="card stream-card">
-    <img class="thumb" src="${escapeHTML(thumb)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
-    <div class="stream-info">
-      <div class="stream-title">${escapeHTML(stream.title || "配信")}</div>
-      <div class="stream-date">${escapeHTML(formatDate(stream.scheduledAt))}</div>
-      <a class="stream-link" href="${escapeHTML(streamURL(stream))}" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a>
-      <button class="control-button detail-open" data-id="${escapeHTML(stream.videoId || "")}">詳細を見る</button>
-    </div>
-  </article>`;
-}
-
-function streamDetails(stream) {
-  const thumb = streamThumb(stream);
-  $("detail-content").innerHTML = `
-    ${thumb ? `<img class="detail-thumb" src="${escapeHTML(thumb)}" alt="">` : ""}
-    <div class="detail-title">${escapeHTML(stream.title || "配信")}</div>
-    <div class="detail-date">${escapeHTML(formatDate(stream.scheduledAt))}</div>
-    <div class="detail-actions"><a class="stream-link" href="${escapeHTML(streamURL(stream))}" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a></div>`;
-  $("detail-dialog").showModal();
-}
-
-function bindDetailButtons() {
-  document.querySelectorAll(".detail-open").forEach(button => {
-    button.addEventListener("click", () => {
-      const stream = allStreams.find(s => String(s.videoId || "") === button.dataset.id);
-      if (stream) streamDetails(stream);
-    });
-  });
-}
-
-function dayStreams(key) {
-  return allStreams.filter(s => jstDate(s.scheduledAt) === key)
-    .sort((a,b) => new Date(a.scheduledAt) - new Date(b.scheduledAt));
-}
-
-function renderStats() {
-  $("stats").innerHTML = `
-    <div class="stat">配信 ${allStreams.length} 件</div>
-    <div class="stat">予定 ${upcomingStreams.length} 件</div>
-    <div class="stat">アーカイブ ${pastStreams.length} 件</div>`;
-}
-
-function renderMonth() {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const first = new Date(year,month,1);
-  const start = new Date(year,month,1-first.getDay());
-  let html = '<div class="month-grid">';
-  weekdays.forEach(day => { html += `<div class="weekday">${day}</div>`; });
-
-  for (let i=0;i<42;i++) {
-    const date = new Date(start);
-    date.setDate(start.getDate()+i);
-    const key = dateKey(date);
-    const items = dayStreams(key);
-    const classes = [
-      "day-cell",date.getMonth() !== month ? "other-month" : "",
-      key === dateKey(new Date()) ? "today" : "",
-      key === selectedDate ? "selected" : ""
-    ].filter(Boolean).join(" ");
-
-    html += `<div class="${classes}" data-date="${key}">
-      <div class="day-number">${date.getDate()}</div><div class="day-events">`;
-    items.slice(0,3).forEach(stream => {
-      const thumb = streamThumb(stream);
-      html += `<div class="day-event" data-stream="${escapeHTML(stream.videoId || "")}">
-        ${thumb ? `<img class="day-thumb" src="${escapeHTML(thumb)}" alt="" loading="lazy">` : ""}
-        <div class="day-event-title">${escapeHTML(stream.title || "配信")}</div></div>`;
-    });
-    if (items.length > 3) html += `<div class="more-events">ほか ${items.length-3} 件</div>`;
-    html += "</div></div>";
-  }
-
-  $("calendar").innerHTML = html + "</div>";
-  $("period-label").textContent = `${year}年${month+1}月`;
-  $("calendar").querySelectorAll(".day-cell").forEach(cell => {
-    cell.addEventListener("click", event => {
-      const streamEl = event.target.closest("[data-stream]");
-      if (streamEl) {
-        const stream = allStreams.find(s => String(s.videoId || "") === streamEl.dataset.stream);
-        if (stream) { streamDetails(stream); return; }
-      }
-      selectedDate = cell.dataset.date;
-      renderCalendar();
-    });
-  });
-  renderSelectedDay();
-}
-
-function startOfWeek(date) {
-  const result = new Date(date);
-  result.setDate(result.getDate()-((result.getDay()+6)%7));
-  result.setHours(12,0,0,0);
-  return result;
-}
-
-function renderWeek() {
-  const start = startOfWeek(currentDate);
-  const dates = [];
-  for (let i=0;i<7;i++) {
-    const d = new Date(start);
-    d.setDate(start.getDate()+i);
-    dates.push(d);
-  }
-
-  $("period-label").textContent =
-    `${dates[0].getMonth()+1}/${dates[0].getDate()} – ${dates[6].getMonth()+1}/${dates[6].getDate()}`;
-
-  let html = '<div class="week-scroll"><div class="week-grid"><div class="week-head"></div>';
-  dates.forEach(d => {
-    const key = dateKey(d);
-    html += `<div class="week-head ${key===dateKey(new Date())?"today":""}"><strong>${d.getDate()}</strong>${weekdays[d.getDay()]}</div>`;
-  });
-
-  for (let hour=0;hour<24;hour++) {
-    html += `<div class="time-label">${String(hour).padStart(2,"0")}:00</div>`;
-    dates.forEach(d => {
-      const key = dateKey(d);
-      const items = dayStreams(key).filter(s => {
-        const dt = new Date(s.scheduledAt);
-        return Number.isFinite(dt.getTime()) &&
-          Number(new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",hour:"2-digit",hour12:false}).format(dt)) === hour;
-      });
-      html += '<div class="time-cell">';
-      items.forEach((stream,index) => {
-        const thumb = streamThumb(stream);
-        html += `<div class="week-event" style="top:${index*3}px;${index>0?"left:"+(index*10+2)+"px;":""}" data-stream="${escapeHTML(stream.videoId || "")}">
-          ${thumb ? `<img src="${escapeHTML(thumb)}" alt="" loading="lazy">` : ""}
-          <span class="event-name">${escapeHTML(stream.title || "配信")}</span></div>`;
-      });
-      html += "</div>";
-    });
-  }
-  $("calendar").innerHTML = html + "</div></div>";
-  $("calendar").querySelectorAll("[data-stream]").forEach(el => {
-    el.addEventListener("click", () => {
-      const stream = allStreams.find(s => String(s.videoId || "") === el.dataset.stream);
-      if (stream) streamDetails(stream);
-    });
-  });
-  renderSelectedDay();
-}
-
-function renderSelectedDay() {
-  const items = dayStreams(selectedDate);
-  const parts = dateParts(selectedDate);
-  $("selected-day").innerHTML = `
-    <div class="section-heading"><h2>${parts.month}月${parts.day}日の配信</h2><span>${items.length}件</span></div>
-    ${items.length ? `<div class="stream-list">${items.map(streamCard).join("")}</div>` : '<div class="empty">この日の配信データはありません。</div>'}`;
-  bindDetailButtons();
-}
-
-function renderCalendar() {
-  document.querySelectorAll("[data-view]").forEach(button => button.classList.toggle("active",button.dataset.view===currentView));
-  if (currentView==="month") renderMonth(); else renderWeek();
-}
-
-function renderUpcoming(streams) {
-  $("upcoming-list").innerHTML = streams.length
-    ? streams.map(streamCard).join("")
-    : '<div class="empty">現在、公開されている配信予定はありません。</div>';
-  bindDetailButtons();
-}
-
-function renderArchives(streams) {
-  const groups = {};
-  streams.forEach(stream => {
-    const key = monthKey(stream.scheduledAt);
-    if (!key) return;
-    (groups[key] ||= []).push(stream);
-  });
-  const months = Object.keys(groups).sort((a,b)=>b.localeCompare(a));
-  const tabs = $("month-tabs");
-  const list = $("archive-list");
-
-  if (!months.length) {
-    tabs.innerHTML = "";
-    list.innerHTML = '<div class="empty">過去の配信データはまだありません。</div>';
-    return;
-  }
-
-  tabs.innerHTML = months.map((month,i)=>`<button class="month-tab ${i===0?"active":""}" data-month="${month}">${monthLabel(month)}</button>`).join("");
-
-  function showMonth(month) {
-    tabs.querySelectorAll(".month-tab").forEach(tab => tab.classList.toggle("active",tab.dataset.month===month));
-    const items = groups[month].slice().sort((a,b)=>(b.scheduledAt||"").localeCompare(a.scheduledAt||""));
-    list.innerHTML = `<div class="archive-count">${monthLabel(month)} ・ ${items.length}件</div><div class="stream-list">${items.map(streamCard).join("")}</div>`;
-    bindDetailButtons();
-  }
-
-  tabs.querySelectorAll(".month-tab").forEach(tab => tab.addEventListener("click",()=>showMonth(tab.dataset.month)));
-  showMonth(months[0]);
-}
-
-function renderWeeklySummary(days) {
-  const fallback = [
-    ["月曜日","MON"],["火曜日","TUE"],["水曜日","WED"],
-    ["木曜日","THU"],["金曜日","FRI"],["土曜日","SAT"],["日曜日","SUN"]
-  ];
-  const items = Array.isArray(days)&&days.length ? days.map(d=>[d.day||"",d.dayEn||""]) : fallback;
-  $("weekly-summary").innerHTML = items.map(d=>`
-    <div class="week-day"><span class="week-en">${escapeHTML(d[1])}</span><span class="week-ja">${escapeHTML(d[0])}</span></div>`).join("");
-}
-
-async function loadAnnouncements() {
-  const box = $("notices");
-
-  try {
-    const response = await fetch(NOTICE_URL + "?t=" + Date.now());
-    if (!response.ok) throw new Error("告知データ取得失敗");
-
-    const data = await response.json();
-    const items = Array.isArray(data.announcements)
-      ? data.announcements
-      : [];
-
-    if (!items.length) {
-      box.innerHTML = '<div class="empty">現在掲載中のお知らせはありません。<br>公式告知の登録後、こちらに表示されます。</div>';
-      return;
-    }
-
-    box.innerHTML = items.map(item => {
-      const url = /^https?:\/\//i.test(item.url || "")
-        ? item.url
-        : "";
-
-      const imageUrl = /^https?:\/\//i.test(item.imageUrl || "")
-        ? item.imageUrl
-        : "";
-
-      return `<article class="card notice-card">
-        <div class="notice-type">${escapeHTML(item.type || "お知らせ")}</div>
-        ${imageUrl ? `<img class="notice-image" src="${escapeHTML(imageUrl)}" alt="${escapeHTML(item.title || "商品画像")}" loading="lazy" onerror="this.style.display='none'">` : ""}
-        <div class="notice-title">${escapeHTML(item.title || "お知らせ")}</div>
-        <div class="notice-date">
-          ${escapeHTML(item.date || "日付未定")}
-          ${item.salesPeriod ? "<br>販売期間：" + escapeHTML(item.salesPeriod) : ""}
-        </div>
-        ${url ? `<a class="notice-link" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">公式ページを見る ↗</a>` : ""}
-      </article>`;
-    }).join("");
-
-  } catch (error) {
-    box.innerHTML = '<div class="empty">お知らせを読み込めませんでした。時間をおいて再度お試しください。</div>';
-  }
-}
-
-function movePeriod(amount) {
-  if (currentView==="month") currentDate = new Date(currentDate.getFullYear(),currentDate.getMonth()+amount,1,12);
-  else currentDate.setDate(currentDate.getDate()+amount*7);
-  selectedDate = dateKey(currentDate);
-  renderCalendar();
-}
-
+const DATA_URL="https://raw.githubusercontent.com/nhkk6zprtg-gif/oshi-schedule/main/schedule.json";
+const NOTICE_URL="https://raw.githubusercontent.com/nhkk6zprtg-gif/oshi-schedule/main/announcements.json";
+const $=id=>document.getElementById(id);
+const weekdays=["日","月","火","水","木","金","土"];
+let allStreams=[],upcomingStreams=[],pastStreams=[],currentView="week",currentDate=new Date(),selectedDate=dateKey(new Date());
+function escapeHTML(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function dateKey(date){return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit"}).format(date)}
+function dateParts(key){const [year,month,day]=key.split("-").map(Number);return {year,month,day}}
+function jstDate(value){if(!value)return "";const date=new Date(value);if(Number.isNaN(date.getTime()))return "";return dateKey(date)}
+function formatDate(value){if(!value)return "日時未定";const date=new Date(value);if(Number.isNaN(date.getTime()))return "日時未定";return new Intl.DateTimeFormat("ja-JP",{timeZone:"Asia/Tokyo",year:"numeric",month:"2-digit",day:"2-digit",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).format(date).replace(/\//g,".")}
+function monthKey(value){return jstDate(value).slice(0,7)}
+function monthLabel(key){const [year,month]=key.split("-");return `${year}年${Number(month)}月`}
+function streamURL(stream){if(/^https:\/\/www\.youtube\.com\/watch\?v=[\w-]+$/.test(stream.url||""))return stream.url;if(stream.videoId)return "https://www.youtube.com/watch?v="+encodeURIComponent(stream.videoId);return "https://www.youtube.com/@kanae"}
+function streamThumb(stream){if(/^https?:\/\//i.test(stream.thumbnail||""))return stream.thumbnail;if(stream.videoId)return "https://i.ytimg.com/vi/"+encodeURIComponent(stream.videoId)+"/hqdefault.jpg";return ""}
+function streamCard(stream){const thumb=streamThumb(stream);return `<article class="card stream-card"><img class="thumb" src="${escapeHTML(thumb)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'"><div class="stream-info"><div class="stream-title">${escapeHTML(stream.title||"配信")}</div><div class="stream-date">${escapeHTML(formatDate(stream.scheduledAt))}</div><a class="stream-link" href="${escapeHTML(streamURL(stream))}" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a><button class="control-button detail-open" data-id="${escapeHTML(stream.videoId||"")}">詳細を見る</button></div></article>`}
+function streamDetails(stream){const thumb=streamThumb(stream);$("detail-content").innerHTML=`${thumb?`<img class="detail-thumb" src="${escapeHTML(thumb)}" alt="">`:""}<div class="detail-title">${escapeHTML(stream.title||"配信")}</div><div class="detail-date">${escapeHTML(formatDate(stream.scheduledAt))}</div><div class="detail-actions"><a class="stream-link" href="${escapeHTML(streamURL(stream))}" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a></div>`;$("detail-dialog").showModal()}
+function bindDetailButtons(){document.querySelectorAll(".detail-open").forEach(button=>button.addEventListener("click",()=>{const stream=allStreams.find(s=>String(s.videoId||"")===button.dataset.id);if(stream)streamDetails(stream)}))}
+function dayStreams(key){return allStreams.filter(s=>jstDate(s.scheduledAt)===key).sort((a,b)=>new Date(a.scheduledAt)-new Date(b.scheduledAt))}
+function renderStats(){$("stats").innerHTML=`<div class="stat">配信 ${allStreams.length} 件</div><div class="stat">予定 ${upcomingStreams.length} 件</div><div class="stat">アーカイブ ${pastStreams.length} 件</div>`}
+function renderMonth(){const year=currentDate.getFullYear(),month=currentDate.getMonth(),first=new Date(year,month,1),start=new Date(year,month,1-first.getDay());let html='<div class="month-grid">';weekdays.forEach(day=>html+=`<div class="weekday">${day}</div>`);for(let i=0;i<42;i++){const date=new Date(start);date.setDate(start.getDate()+i);const key=dateKey(date),items=dayStreams(key),classes=["day-cell",date.getMonth()!==month?"other-month":"",key===dateKey(new Date())?"today":"",key===selectedDate?"selected":""].filter(Boolean).join(" ");html+=`<div class="${classes}" data-date="${key}"><div class="day-number">${date.getDate()}</div><div class="day-events">`;items.slice(0,3).forEach(stream=>{const thumb=streamThumb(stream);html+=`<div class="day-event" data-stream="${escapeHTML(stream.videoId||"")}">${thumb?`<img class="day-thumb" src="${escapeHTML(thumb)}" alt="" loading="lazy">`:""}<div class="day-event-title">${escapeHTML(stream.title||"配信")}</div></div>`});if(items.length>3)html+=`<div class="more-events">ほか ${items.length-3} 件</div>`;html+="</div></div>"}$("calendar").innerHTML=html+"</div>";$("period-label").textContent=`${year}年${month+1}月`;$("calendar").querySelectorAll(".day-cell").forEach(cell=>cell.addEventListener("click",event=>{const el=event.target.closest("[data-stream]");if(el){const stream=allStreams.find(s=>String(s.videoId||"")===el.dataset.stream);if(stream){streamDetails(stream);return}}selectedDate=cell.dataset.date;renderCalendar()}));renderSelectedDay()}
+function startOfWeek(date){const result=new Date(date);result.setDate(result.getDate()-((result.getDay()+6)%7));result.setHours(12,0,0,0);return result}
+function renderWeek(){const start=startOfWeek(currentDate),dates=[];for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);dates.push(d)}$("period-label").textContent=`${dates[0].getMonth()+1}/${dates[0].getDate()} – ${dates[6].getMonth()+1}/${dates[6].getDate()}`;let html='<div class="week-scroll"><div class="week-grid"><div class="week-head"></div>';dates.forEach(d=>{const key=dateKey(d);html+=`<div class="week-head ${key===dateKey(new Date())?"today":""}"><strong>${d.getDate()}</strong>${weekdays[d.getDay()]}</div>`});for(let hour=0;hour<24;hour++){html+=`<div class="time-label">${String(hour).padStart(2,"0")}:00</div>`;dates.forEach(d=>{const key=dateKey(d),items=dayStreams(key).filter(s=>{const dt=new Date(s.scheduledAt);return Number.isFinite(dt.getTime())&&Number(new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",hour:"2-digit",hour12:false}).format(dt))===hour});html+='<div class="time-cell">';items.forEach((stream,index)=>{const thumb=streamThumb(stream);html+=`<div class="week-event" style="top:${index*3}px;${index>0?"left:"+(index*10+2)+"px;":""}" data-stream="${escapeHTML(stream.videoId||"")}">${thumb?`<img src="${escapeHTML(thumb)}" alt="" loading="lazy">`:""}<span class="event-name">${escapeHTML(stream.title||"配信")}</span></div>`});html+="</div>"})} $("calendar").innerHTML=html+"</div></div>";$("calendar").querySelectorAll("[data-stream]").forEach(el=>el.addEventListener("click",()=>{const stream=allStreams.find(s=>String(s.videoId||"")===el.dataset.stream);if(stream)streamDetails(stream)}));renderSelectedDay()}
+function renderSelectedDay(){const items=dayStreams(selectedDate),parts=dateParts(selectedDate);$("selected-day").innerHTML=`<div class="section-heading"><h2>${parts.month}月${parts.day}日の配信</h2><span>${items.length}件</span></div>${items.length?`<div class="stream-list">${items.map(streamCard).join("")}</div>`:'<div class="empty">この日の配信データはありません。</div>'}`;bindDetailButtons()}
+function renderCalendar(){document.querySelectorAll("[data-view]").forEach(button=>button.classList.toggle("active",button.dataset.view===currentView));if(currentView==="month")renderMonth();else renderWeek()}
+function renderUpcoming(streams){$("upcoming-list").innerHTML=streams.length?streams.map(streamCard).join(""):'<div class="empty">現在、公開されている配信予定はありません。</div>';bindDetailButtons()}
+function renderArchives(streams){const groups={};streams.forEach(stream=>{const key=monthKey(stream.scheduledAt);if(key)(groups[key]||=[]).push(stream)});const months=Object.keys(groups).sort((a,b)=>b.localeCompare(a)),tabs=$("month-tabs"),list=$("archive-list");if(!months.length){tabs.innerHTML="";list.innerHTML='<div class="empty">過去の配信データはまだありません。</div>';return}tabs.innerHTML=months.map((month,i)=>`<button class="month-tab ${i===0?"active":""}" data-month="${month}">${monthLabel(month)}</button>`).join("");function showMonth(month){tabs.querySelectorAll(".month-tab").forEach(tab=>tab.classList.toggle("active",tab.dataset.month===month));const items=groups[month].slice().sort((a,b)=>(b.scheduledAt||"").localeCompare(a.scheduledAt||""));list.innerHTML=`<div class="archive-count">${monthLabel(month)} ・ ${items.length}件</div><div class="stream-list">${items.map(streamCard).join("")}</div>`;bindDetailButtons()}tabs.querySelectorAll(".month-tab").forEach(tab=>tab.addEventListener("click",()=>showMonth(tab.dataset.month)));showMonth(months[0])}
+function renderWeeklySummary(days){const fallback=[["月曜日","MON"],["火曜日","TUE"],["水曜日","WED"],["木曜日","THU"],["金曜日","FRI"],["土曜日","SAT"],["日曜日","SUN"]],items=Array.isArray(days)&&days.length?days.map(d=>[d.day||"",d.dayEn||""]):fallback;$("weekly-summary").innerHTML=items.map(d=>`<div class="week-day"><span class="week-en">${escapeHTML(d[1])}</span><span class="week-ja">${escapeHTML(d[0])}</span></div>`).join("")}
+async function loadAnnouncements(){const box=$("notices");try{const response=await fetch(NOTICE_URL+"?t="+Date.now());if(!response.ok)throw new Error("告知データ取得失敗");const data=await response.json(),items=Array.isArray(data.announcements)?data.announcements:[];if(!items.length){box.innerHTML='<div class="empty">現在掲載中のお知らせはありません。<br>公式告知の登録後、こちらに表示されます。</div>';return}box.innerHTML=items.map(item=>{const url=/^https?:\/\//i.test(item.url||"")?item.url:"",imageUrl=/^https?:\/\//i.test(item.imageUrl||"")?item.imageUrl:"";return `<article class="card notice-card"><div class="notice-type">${escapeHTML(item.type||"お知らせ")}</div>${imageUrl?`<img class="notice-image" src="${escapeHTML(imageUrl)}" alt="${escapeHTML(item.title||"商品画像")}" loading="lazy" onerror="this.style.display='none'">`:""}<div class="notice-title">${escapeHTML(item.title||"お知らせ")}</div><div class="notice-date">${escapeHTML(item.date||"日付未定")}${item.salesPeriod?"<br>販売期間："+escapeHTML(item.salesPeriod):""}</div>${url?`<a class="notice-link" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">公式ページを見る ↗</a>`:""}</article>`}).join("")}catch(error){box.innerHTML='<div class="empty">お知らせを読み込めませんでした。時間をおいて再度お試しください。</div>'}}
+function movePeriod(amount){if(currentView==="month")currentDate=new Date(currentDate.getFullYear(),currentDate.getMonth()+amount,1,12);else currentDate.setDate(currentDate.getDate()+amount*7);selectedDate=dateKey(currentDate);renderCalendar()}
 $("prev").addEventListener("click",()=>movePeriod(-1));
 $("next").addEventListener("click",()=>movePeriod(1));
-$("today").addEventListener("click",()=>{
-  currentDate=new Date();
-  selectedDate=dateKey(currentDate);
-  renderCalendar();
-});
-document.querySelectorAll("[data-view]").forEach(button=>{
-  button.addEventListener("click",()=>{
-    currentView=button.dataset.view;
-    renderCalendar();
-  });
-});
+$("today").addEventListener("click",()=>{currentDate=new Date();selectedDate=dateKey(currentDate);renderCalendar()});
+document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>{currentView=button.dataset.view;renderCalendar()}));
 $("close-detail").addEventListener("click",()=>$("detail-dialog").close());
-
-async function loadSchedule() {
-  try {
-    const response = await fetch(DATA_URL+"?t="+Date.now());
-    if (!response.ok) throw new Error("データ取得失敗");
-    const data = await response.json();
-
-    upcomingStreams = Array.isArray(data.streams)?data.streams:[];
-    pastStreams = Array.isArray(data.pastStreams)?data.pastStreams:[];
-    allStreams = [...upcomingStreams,...pastStreams];
-
-    renderStats();
-    renderCalendar();
-    renderUpcoming(upcomingStreams);
-    renderArchives(pastStreams);
-    renderWeeklySummary(data.weeklySchedule);
-
-    $("updated").textContent = data.updatedAt ? "最終更新："+formatDate(data.updatedAt) : "SCHEDULE DATA";
-  } catch(error) {
-    $("upcoming-list").innerHTML = '<div class="empty">配信データを読み込めませんでした。時間をおいて再度お試しください。</div>';
-    $("archive-list").innerHTML = '<div class="empty">過去の配信データを読み込めませんでした。</div>';
-    $("calendar").innerHTML = '<div class="empty">カレンダーを読み込めませんでした。</div>';
-    renderWeeklySummary([]);
-  }
-}
-
+async function loadSchedule(){try{const response=await fetch(DATA_URL+"?t="+Date.now());if(!response.ok)throw new Error("データ取得失敗");const data=await response.json();upcomingStreams=Array.isArray(data.streams)?data.streams:[];pastStreams=Array.isArray(data.pastStreams)?data.pastStreams:[];allStreams=[...upcomingStreams,...pastStreams];renderStats();renderCalendar();renderUpcoming(upcomingStreams);renderArchives(pastStreams);renderWeeklySummary(data.weeklySchedule);$("updated").textContent=data.updatedAt?"最終更新："+formatDate(data.updatedAt):"SCHEDULE DATA"}catch(error){$("upcoming-list").innerHTML='<div class="empty">配信データを読み込めませんでした。時間をおいて再度お試しください。</div>';$("archive-list").innerHTML='<div class="empty">過去の配信データを読み込めませんでした。</div>';$("calendar").innerHTML='<div class="empty">カレンダーを読み込めませんでした。</div>';renderWeeklySummary([])}}
 renderCalendar();
 loadSchedule();
 loadAnnouncements();
