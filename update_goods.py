@@ -1,23 +1,20 @@
 
-import json
 import re
 import urllib.request
-from datetime import datetime, timezone
 from html.parser import HTMLParser
-from pathlib import Path
-from urllib.parse import urljoin
+from urllib.parse import urlencode, urljoin
 
 BASE = "https://shop.nijisanji.jp"
 
-SOURCES = {
-    "叶": {
-        "url": BASE + "/searchAjax?cgid=1019&secondCgid=M01-04-0100",
-        "file": "announcements.json",
-    },
-    "葛葉": {
-        "url": BASE + "/searchAjax?cgid=1042&secondCgid=M01-04-0009",
-        "file": "announcements_kuzuha.json",
-    },
+SEARCHES = {
+    "叶": [
+        BASE + "/search?" + urlencode({"q": "叶"}),
+        BASE + "/searchAjax?" + urlencode({"q": "叶"}),
+    ],
+    "葛葉": [
+        BASE + "/search?" + urlencode({"q": "葛葉"}),
+        BASE + "/searchAjax?" + urlencode({"q": "葛葉"}),
+    ],
 }
 
 
@@ -27,8 +24,6 @@ class ProductParser(HTMLParser):
         self.products = []
         self.current = None
         self.depth = 0
-        self.price_depth = None
-        self.name_depth = None
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -58,68 +53,33 @@ class ProductParser(HTMLParser):
             if href:
                 self.current["url"] = urljoin(BASE, href)
 
-        if tag == "img" and not self.current["imageUrl"]:
-            src = (
-                attrs.get("data-src")
-                or attrs.get("src")
-                or ""
-            )
-            if src:
-                self.current["imageUrl"] = urljoin(BASE, src)
+        if tag == "img":
+            if not self.current["imageUrl"]:
+                src = (
+                    attrs.get("data-src")
+                    or attrs.get("src")
+                    or ""
+                )
+                if src:
+                    self.current["imageUrl"] = urljoin(
+                        BASE, src
+                    )
 
-            alt = attrs.get("alt", "").strip()
-            if alt:
-                self.current["title"] = alt
-
-        if "card-price" in classes or "text-price" in classes:
-            self.price_depth = self.depth
-
-        if any(c in classes for c in [
-            "card-name",
-            "card-title",
-            "card-product-name",
-        ]):
-            self.name_depth = self.depth
-
-    def handle_data(self, data):
-        if self.current is None:
-            return
-
-        value = " ".join(data.split())
-        if not value:
-            return
-
-        if self.price_depth is not None:
-            if re.search(r"[\d,]+", value):
-                self.current["price"] += value + " "
-
-        if self.name_depth is not None:
-            self.current["title"] += value + " "
+            if not self.current["title"]:
+                self.current["title"] = (
+                    attrs.get("alt", "").strip()
+                )
 
     def handle_endtag(self, tag):
         if self.current is None:
             return
 
         if tag == "div":
-            if self.price_depth == self.depth:
-                self.price_depth = None
-
-            if self.name_depth == self.depth:
-                self.name_depth = None
-
             self.depth -= 1
 
             if self.depth == 0:
-                self.current["title"] = (
-                    self.current["title"].strip()
-                )
-                self.current["price"] = (
-                    self.current["price"].strip()
-                )
                 self.products.append(self.current)
                 self.current = None
-                self.price_depth = None
-                self.name_depth = None
 
 
 def fetch(url):
@@ -132,129 +92,82 @@ def fetch(url):
     )
 
     with urllib.request.urlopen(
-        request,
-        timeout=30
+        request, timeout=30
     ) as response:
         return response.read().decode(
-            "utf-8",
-            errors="replace"
+            "utf-8", errors="replace"
         )
 
 
-def load_existing(filename):
-    path = Path(filename)
+def clean_title(title):
+    title = " ".join(title.split())
 
-    if not path.exists():
-        return []
+    # 同じ商品名が連続している場合は整理する
+    words = title.split(" ")
+    half = len(words) // 2
 
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-        items = data.get("announcements", [])
-        return items if isinstance(items, list) else []
-    except (ValueError, OSError, AttributeError):
-        return []
+    if (
+        len(words) % 2 == 0
+        and words[:half] == words[half:]
+    ):
+        title = " ".join(words[:half])
 
-
-def save_announcements(filename, items):
-    path = Path(filename)
-
-    data = {
-        "updatedAt": datetime.now(
-            timezone.utc
-        ).isoformat(),
-        "announcements": items,
-    }
-
-    path.write_text(
-        json.dumps(
-            data,
-            ensure_ascii=False,
-            indent=2
-        ) + "\n",
-        encoding="utf-8",
-    )
+    return title
 
 
 def main():
-    for name, config in SOURCES.items():
+    for name, urls in SEARCHES.items():
         print("\n==========", name, "==========")
 
-        try:
-            page = fetch(config["url"])
-            parser = ProductParser()
-            parser.feed(page)
+        for url in urls:
+            print("\n検索URL:", url)
 
-            print("取得した商品数:", len(parser.products))
+            try:
+                page = fetch(url)
+                parser = ProductParser()
+                parser.feed(page)
 
-            if not parser.products:
-                print("商品が取得できないため更新を中止")
-                continue
-
-            existing = load_existing(config["file"])
-
-            manual = [
-                item for item in existing
-                if item.get("source") != "nijisanji_store"
-            ]
-
-            goods = []
-            seen = set()
-
-            for product in parser.products:
-                title = product["title"]
-                url = product["url"]
-
-                if name not in title:
-                    continue
-
-                if not title or not url:
-                    continue
-
-                if url in seen:
-                    continue
-
-                seen.add(url)
-
-                goods.append({
-                    "type": (
-                        "voice"
-                        if "ボイス" in title
-                        else "goods"
-                    ),
-                    "title": title,
-                    "date": "",
-                    "salesPeriod": "",
-                    "imageUrl": product["imageUrl"],
-                    "url": url,
-                    "price": product["price"],
-                    "source": "nijisanji_store",
-                })
-
-            print("本人関連商品数:", len(goods))
-
-            if not goods:
+                print("HTML文字数:", len(page))
                 print(
-                    "本人関連商品が見つからないため"
-                    "既存ファイルを維持"
+                    "取得した商品数:",
+                    len(parser.products)
                 )
-                continue
 
-            merged = manual + goods
+                matched = [
+                    p for p in parser.products
+                    if name in p["title"]
+                ]
 
-            save_announcements(
-                config["file"],
-                merged
-            )
+                print(
+                    "本人名を含む商品数:",
+                    len(matched)
+                )
 
-            print("保存先:", config["file"])
-            print("保存件数:", len(merged))
+                for product in matched[:8]:
+                    print(
+                        "商品:",
+                        clean_title(product["title"])
+                    )
+                    print("ID:", product["id"])
+                    print("URL:", product["url"])
+                    print(
+                        "画像:",
+                        product["imageUrl"][:150]
+                    )
 
-            for item in goods[:5]:
-                print("商品:", item["title"])
-                print("URL:", item["url"])
+                if not matched:
+                    print("検索結果の先頭3件:")
+                    for product in parser.products[:3]:
+                        print(
+                            product["id"],
+                            clean_title(product["title"])
+                        )
 
-        except Exception as error:
-            print("更新失敗:", repr(error))
+            except Exception as error:
+                print(
+                    "検索エラー:",
+                    repr(error)
+                )
 
 
 if __name__ == "__main__":
