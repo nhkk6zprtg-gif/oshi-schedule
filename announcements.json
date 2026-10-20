@@ -1,101 +1,100 @@
 {
-  "updatedAt": "2026-10-20T16:05:01+09:00",
   "announcements": [
     {
-      "type": "公式ストア新着",
-      "title": "再販 【再販】お泊りボイス - Bグループ ¥600~¥1,200 税込",
-      "date": "確認日：2026-10-20",
+      "type": "goods",
+      "title": "【再販】お泊りボイス - Bグループ",
+      "date": "",
       "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/dig-00075_B.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw3dcc09fd/digital/dig-00075_B_0.png"
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw3dcc09fd/digital/dig-00075_B_0.png",
+      "url": "https://shop.nijisanji.jp/dig-00075_B.html"
     },
     {
-      "type": "公式ストア新着",
-      "title": "ナイショのお願いボイス - Bグループ ¥600~¥1,200 税込",
-      "date": "確認日：2026-10-20",
+      "type": "goods",
+      "title": "ナイショのお願いボイス - Bグループ",
+      "date": "",
       "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/dig-00099_B.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw178de070/digital/dig-00099_B_0.png"
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw178de070/digital/dig-00099_B_0.png",
+      "url": "https://shop.nijisanji.jp/dig-00099_B.html"
     },
     {
-      "type": "公式ストア新着",
-      "title": "妖怪パロディボイス - Bグループ ¥600~¥1,200 税込",
-      "date": "確認日：2026-10-20",
+      "type": "goods",
+      "title": "妖怪パロディボイス - Bグループ",
+      "date": "",
       "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/dig-00100_B.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwe56b5baa/digital/dig-00100_B_0.png"
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwe56b5baa/digital/dig-00100_B_0.png",
+      "url": "https://shop.nijisanji.jp/dig-00100_B.html"
     },
     {
-      "type": "公式ストア新着",
-      "title": "【劇場版 七次元生徒会！】パンフレット ¥3,000 税込",
-      "date": "確認日：2026-10-20",
+      "type": "goods",
+      "title": "【劇場版 七次元生徒会！】パンフレット",
+      "date": "",
       "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/SSZS-80343.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwd09441b1/physical/SSZS000080343_1.png"
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwd09441b1/physical/SSZS000080343_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-80343.html"
     },
     {
-      "type": "公式ストア新着",
-      "title": "【劇場版 七次元生徒会！】ペンライト ¥4,500 税込",
-      "date": "確認日：2026-10-20",
+      "type": "goods",
+      "title": "【劇場版 七次元生徒会！】ペンライト",
+      "date": "",
       "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/SSZS-80341.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw318cf9b6/physical/SSZS000080341_1.png"
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw318cf9b6/physical/SSZS000080341_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-80341.html"
     },
     {
-      "type": "公式ストア新着",
-      "title": "【劇場版 七次元生徒会！】Tシャツ ¥4,000 税込",
-      "date": "確認日：2026-10-20",
+      "type": "goods",
+      "title": "【劇場版 七次元生徒会！】Tシャツ",
+      "date": "",
       "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/SSZS-80342.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwb9293589/physical/SSZS000080342_1.png"
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwb9293589/physical/SSZS000080342_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-80342.html"
     },
     {
-      "type": "公式ストア新着",
-      "title": "【劇場版 七次元生徒会！】ブランケット ¥4,500 税込",
-      "date": "確認日：2026-10-20",
+      "type": "goods",
+      "title": "【劇場版 七次元生徒会！】ブランケット",
+      "date": "",
       "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/SSZS-80345.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwfe1e698f/physical/SSZS000080345_1.png"
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwfe1e698f/physical/SSZS000080345_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-80345.html"
     },
     {
-      "type": "公式ストア新着",
-      "title": "【劇場版 七次元生徒会！】生徒手帳風バインダー ¥3,200 税込",
-      "date": "確認日：2026-10-20",
+      "type": "goods",
+      "title": "【劇場版 七次元生徒会！】生徒手帳風バインダー",
+      "date": "",
       "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/SSZS-80346.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwe9f521bd/physical/SSZS000080346_1.png"
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwe9f521bd/physical/SSZS000080346_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-80346.html"
     },
     {
-      "type": "公式ストア新着",
-      "title": "【劇場版 七次元生徒会！】にじぱぺっと ¥1,700 税込",
-      "date": "確認日：2026-10-20",
+      "type": "goods",
+      "title": "【劇場版 七次元生徒会！】にじぱぺっと",
+      "date": "",
       "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/SSZS-80348.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwa07e93df/physical/SSZS000080348_1.png"
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwa07e93df/physical/SSZS000080348_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-80348.html"
     },
     {
-      "type": "公式ストア新着",
-      "title": "【劇場版 七次元生徒会！】オペラグラス ¥4,000 税込",
-      "date": "確認日：2026-10-20",
+      "type": "goods",
+      "title": "【劇場版 七次元生徒会！】オペラグラス",
+      "date": "",
       "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/SSZS-80353.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwa509fb05/physical/SSZS000080353_1.png"
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwa509fb05/physical/SSZS000080353_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-80353.html"
     },
     {
-      "type": "公式ストア新着",
-      "title": "【劇場版 七次元生徒会！】マスコットチャーム ¥1,200~¥2,200 税込",
-      "date": "確認日：2026-10-20",
+      "type": "goods",
+      "title": "【劇場版 七次元生徒会！】マスコットチャーム",
+      "date": "",
       "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/SSZS-80355.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw8b29aa5b/physical/SSZS000080355_1.png"
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw8b29aa5b/physical/SSZS000080355_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-80355.html"
     },
     {
-      "type": "公式ストア新着",
-      "title": "【劇場版 七次元生徒会！】アクリルスタンド ¥1,800 税込",
-      "date": "確認日：2026-10-20",
+      "type": "goods",
+      "title": "【劇場版 七次元生徒会！】アクリルスタンド",
+      "date": "",
       "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/SSZS-80361.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwe333d0bd/physical/SSZS000080361_1.png"
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwe333d0bd/physical/SSZS000080361_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-80361.html"
     }
   ]
 }

@@ -1,4 +1,100 @@
-
 {
-  "announcements": []
+  "announcements": [
+    {
+      "type": "goods",
+      "title": "【葛葉 ワンマン LIVE】にじぱぺっと",
+      "date": "",
+      "salesPeriod": "",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw321754b7/physical/SSZS000071650_01.png",
+      "url": "https://shop.nijisanji.jp/SSZS-71650.html"
+    },
+    {
+      "type": "goods",
+      "title": "【葛葉 ワンマン LIVE】ダイカットビジュアルパネル",
+      "date": "",
+      "salesPeriod": "",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw5fd9949a/physical/SSZS000071651.png",
+      "url": "https://shop.nijisanji.jp/SSZS-71651.html"
+    },
+    {
+      "type": "goods",
+      "title": "【葛葉 ワンマン LIVE】メモリアルセット",
+      "date": "",
+      "salesPeriod": "",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw0381e4b2/physical/SSZS000071652_01.png",
+      "url": "https://shop.nijisanji.jp/SSZS-71652.html"
+    },
+    {
+      "type": "goods",
+      "title": "【にじピンバッジコレクション Vol.2】モチーフピンバッジ 葛葉",
+      "date": "",
+      "salesPeriod": "",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwa83ef960/physical/NPBC2_SSZS000072675_01.png",
+      "url": "https://shop.nijisanji.jp/SSZS-72675.html"
+    },
+    {
+      "type": "goods",
+      "title": "【Another Style Goods vol.1】アクリルスタンド",
+      "date": "",
+      "salesPeriod": "",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw28ff94b1/physical/SSZS000072587_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-72587.html"
+    },
+    {
+      "type": "goods",
+      "title": "【Another Style Goods vol.1】缶バッジ",
+      "date": "",
+      "salesPeriod": "",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwa01026e9/physical/SSZS000072627_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-72627.html"
+    },
+    {
+      "type": "goods",
+      "title": "【Another Style Goods vol.1】ランダムチェキ風カード Aグループ",
+      "date": "",
+      "salesPeriod": "",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw594db30f/physical/new_SSZS000072667_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-72667.html"
+    },
+    {
+      "type": "goods",
+      "title": "【にじさんじ 8th】ランダムメタルカード Aグループ",
+      "date": "",
+      "salesPeriod": "",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw03f8e16e/physical/SSZS000073599.png",
+      "url": "https://shop.nijisanji.jp/SSZS-73599.html"
+    },
+    {
+      "type": "goods",
+      "title": "【にじさんじ 8th】メモリアルブック",
+      "date": "",
+      "salesPeriod": "",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw1d622114/physical/SSZS000073603_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-73603.html"
+    },
+    {
+      "type": "goods",
+      "title": "【にじさんじ 8th】ぷにぷにシール",
+      "date": "",
+      "salesPeriod": "",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw4cf2bbe5/physical/SSZS000073604_1.png",
+      "url": "https://shop.nijisanji.jp/SSZS-73604.html"
+    },
+    {
+      "type": "goods",
+      "title": "【にじさんじ 8th】キーホルダー Berry Crown",
+      "date": "",
+      "salesPeriod": "",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw347117cf/physical/SSZS000073608_01.png",
+      "url": "https://shop.nijisanji.jp/SSZS-73608.html"
+    },
+    {
+      "type": "goods",
+      "title": "【にじさんじ 8th】コレクトブック Berry Crown",
+      "date": "",
+      "salesPeriod": "",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw5e11c287/physical/SSZS000073648_01.png",
+      "url": "https://shop.nijisanji.jp/SSZS-73648.html"
+    }
+  ]
 }
