@@ -3,11 +3,15 @@ name: Update YouTube Schedule
 
 on:
   schedule:
-    - cron: "17 * * * *"
+    - cron: "17 */3 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: update-youtube-schedule
+  cancel-in-progress: false
 
 jobs:
   update:
@@ -38,4 +42,3 @@ jobs:
           else
             git commit -m "Update Kanae and Kuzuha schedules"
             git push
-          fi
