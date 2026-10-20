@@ -1,186 +1,162 @@
 
 import re
-import html
 import urllib.request
 from html.parser import HTMLParser
 from urllib.parse import urljoin
 
-BASE_URL = "https://shop.nijisanji.jp"
+BASE = "https://shop.nijisanji.jp"
 
 SOURCES = {
-    "叶": (
-        "https://shop.nijisanji.jp/"
-        "searchAjax?cgid=1019&secondCgid=M01"
-    ),
-    "葛葉": (
-        "https://shop.nijisanji.jp/"
-        "searchAjax?cgid=1042&secondCgid=M01"
-    ),
+    "叶": BASE + "/searchAjax?cgid=1019&secondCgid=M01-04-0100",
+    "葛葉": BASE + "/searchAjax?cgid=1042&secondCgid=M01-04-0009",
 }
 
 
-class ProductParser(HTMLParser):
+class Inspector(HTMLParser):
     def __init__(self):
         super().__init__()
         self.links = []
-        self.images = []
-        self.prices = []
-        self.current_link = None
-        self.link_text = []
+        self.blocks = []
+        self.current = None
 
     def handle_starttag(self, tag, attrs):
-        attrs = dict(attrs)
+        a = dict(attrs)
 
         if tag == "a":
-            href = attrs.get("href", "")
-            if href:
-                self.current_link = href
-                self.link_text = []
+            self.current = {
+                "href": a.get("href", ""),
+                "class": a.get("class", ""),
+                "text": [],
+            }
 
-        if tag == "img":
-            src = (
-                attrs.get("data-src")
-                or attrs.get("src")
-                or ""
-            )
-            alt = attrs.get("alt", "")
-
-            if src:
-                self.images.append({
-                    "alt": alt.strip(),
-                    "url": urljoin(BASE_URL, src),
-                })
+        cls = a.get("class", "")
+        if any(x in cls.lower() for x in [
+            "product", "tile", "search-result",
+            "price", "grid"
+        ]):
+            self.blocks.append((tag, cls[:160]))
 
     def handle_data(self, data):
-        text = " ".join(data.split())
-
-        if not text:
-            return
-
-        if self.current_link is not None:
-            self.link_text.append(text)
-
-        if re.search(
-            r"(?:¥|￥|円)\s*[\d,]+",
-            text
-        ):
-            self.prices.append(text)
+        if self.current is not None:
+            value = " ".join(data.split())
+            if value:
+                self.current["text"].append(value)
 
     def handle_endtag(self, tag):
-        if tag == "a" and self.current_link:
-            title = " ".join(self.link_text).strip()
-
-            if title:
-                self.links.append({
-                    "title": title,
-                    "url": urljoin(
-                        BASE_URL,
-                        self.current_link
-                    ),
-                })
-
-            self.current_link = None
-            self.link_text = []
+        if tag == "a" and self.current is not None:
+            item = self.current
+            item["text"] = " ".join(item["text"])[:100]
+            self.links.append(item)
+            self.current = None
 
 
-def fetch_page(url):
-    request = urllib.request.Request(
+def fetch(url):
+    req = urllib.request.Request(
         url,
         headers={
-            "User-Agent": (
-                "Mozilla/5.0 "
-                "(iPhone; CPU iPhone OS 17_0 "
-                "like Mac OS X) "
-                "AppleWebKit/605.1.15 "
-                "Version/17.0 Mobile Safari/604.1"
-            ),
+            "User-Agent": "Mozilla/5.0",
             "Accept-Language": "ja-JP,ja;q=0.9",
         },
     )
-
-    with urllib.request.urlopen(
-        request,
-        timeout=30
-    ) as response:
-        return response.read().decode(
-            "utf-8",
-            errors="replace"
-        )
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return r.read().decode("utf-8", "replace")
 
 
 def main():
     for name, url in SOURCES.items():
-        print(f"\n========== {name} ==========")
+        print("\n==========", name, "==========")
+        print("URL:", url)
 
         try:
-            page = fetch_page(url)
-            parser = ProductParser()
+            page = fetch(url)
+            parser = Inspector()
             parser.feed(page)
 
             print("HTML文字数:", len(page))
             print("リンク数:", len(parser.links))
-            print("画像数:", len(parser.images))
-            print("価格候補数:", len(parser.prices))
 
-            print("\n--- 商品リンク候補 ---")
+            print("\n--- 商品関連HTMLクラス ---")
+            for tag, cls in list(dict.fromkeys(
+                parser.blocks
+            ))[:20]:
+                print(tag, cls)
 
-            candidates = [
-                item
-                for item in parser.links
-                if (
-                    "/products/" in item["url"]
-                    or "/product/" in item["url"]
-                    or "Product-Show" in item["url"]
-                )
-            ]
+            print("\n--- 商品らしいリンク ---")
+            matches = []
+            for item in parser.links:
+                href = item["href"]
+                cls = item["class"]
+                if any(x in (href + cls).lower() for x in [
+                    "product", "item", "detail",
+                    "pid", "sku", "tile"
+                ]):
+                    matches.append(item)
 
-            for item in candidates[:10]:
-                print(
-                    item["title"][:100],
-                    "=>",
-                    item["url"]
-                )
+            print("候補数:", len(matches))
+            for item in matches[:12]:
+                print("TEXT:", item["text"])
+                print("HREF:", item["href"][:220])
+                print("CLASS:", item["class"][:120])
 
-            print(
-                "商品リンク候補数:",
-                len(candidates)
-            )
-
-            print("\n--- 画像候補 ---")
-
-            for item in parser.images[:10]:
-                print(
-                    item["alt"][:80],
-                    "=>",
-                    item["url"][:200]
-                )
-
-            print("\n--- 価格候補 ---")
-
-            for price in parser.prices[:10]:
-                print(price[:150])
-
-            print("\n--- HTML内の識別子 ---")
-
+            print("\n--- HTML内のキーワード ---")
             for keyword in [
                 "product-tile",
                 "product-name",
                 "product-price",
-                "productId",
+                "product-id",
+                "data-pid",
                 "search-result",
                 "product-grid",
+                "product-list",
+                "¥",
+                "税込",
+                "商品一覧",
             ]:
-                count = page.lower().count(
-                    keyword.lower()
+                print(
+                    keyword,
+                    page.lower().count(keyword.lower())
                 )
-                print(keyword, ":", count)
+
+            print("\n--- 商品表示部分のHTML抜粋 ---")
+            for keyword in [
+                "product-tile",
+                "product-name",
+                "data-pid",
+                "商品一覧",
+            ]:
+                pos = page.lower().find(keyword.lower())
+                if pos >= 0:
+                    start = max(0, pos - 200)
+                    end = min(len(page), pos + 500)
+                    snippet = re.sub(
+                        r"\s+", " ", page[start:end]
+                    )
+                    print(keyword, ":", snippet[:700])
+
+            print("\n--- 検出されたURL形式 ---")
+            urls = re.findall(
+                r'''(?:href|data-url)=["']([^"']+)''',
+                page,
+                re.I,
+            )
+            seen = set()
+            count = 0
+
+            for path in urls:
+                full = urljoin(BASE, path)
+                if full in seen:
+                    continue
+                seen.add(full)
+                if any(x in full.lower() for x in [
+                    "search", "product", "item"
+                ]):
+                    print(full[:220])
+                    count += 1
+                    if count >= 15:
+                        break
 
         except Exception as error:
-            print(
-                "取得エラー:",
-                type(error).__name__,
-                str(error)
-            )
+            print("ERROR:", repr(error))
 
 
 if __name__ == "__main__":
