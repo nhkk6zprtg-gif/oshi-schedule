@@ -3,26 +3,32 @@
     {
       "type": "goods",
       "title": "【葛葉 ワンマン LIVE】にじぱぺっと",
-      "date": "",
-      "salesPeriod": "",
+      "date": "2026/10/12(月) 21:00",
+      "salesPeriod": "2026/10/12(月) 21:00 ～ 2026/10/25(日) 23:59",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw321754b7/physical/SSZS000071650_01.png",
-      "url": "https://shop.nijisanji.jp/SSZS-71650.html"
+      "url": "https://shop.nijisanji.jp/SSZS-71650.html",
+      "salesType": "受注販売",
+      "deliveryDate": "2027年3月上旬以降"
     },
     {
       "type": "goods",
       "title": "【葛葉 ワンマン LIVE】ダイカットビジュアルパネル",
-      "date": "",
-      "salesPeriod": "",
+      "date": "2026/10/12(月) 21:00",
+      "salesPeriod": "2026/10/12(月) 21:00 ～ 2026/10/25(日) 23:59",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw5fd9949a/physical/SSZS000071651.png",
-      "url": "https://shop.nijisanji.jp/SSZS-71651.html"
+      "url": "https://shop.nijisanji.jp/SSZS-71651.html",
+      "salesType": "受注販売",
+      "deliveryDate": "2027年3月上旬以降"
     },
     {
       "type": "goods",
       "title": "【葛葉 ワンマン LIVE】メモリアルセット",
-      "date": "",
-      "salesPeriod": "",
+      "date": "2026/10/12(月) 21:00",
+      "salesPeriod": "2026/10/12(月) 21:00 ～ 2026/10/25(日) 23:59",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw0381e4b2/physical/SSZS000071652_01.png",
-      "url": "https://shop.nijisanji.jp/SSZS-71652.html"
+      "url": "https://shop.nijisanji.jp/SSZS-71652.html",
+      "salesType": "受注販売",
+      "deliveryDate": "2027年3月上旬以降"
     },
     {
       "type": "goods",
@@ -30,7 +36,9 @@
       "date": "",
       "salesPeriod": "",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwa83ef960/physical/NPBC2_SSZS000072675_01.png",
-      "url": "https://shop.nijisanji.jp/SSZS-72675.html"
+      "url": "https://shop.nijisanji.jp/SSZS-72675.html",
+      "salesType": "",
+      "deliveryDate": "2026年9月中旬以降"
     },
     {
       "type": "goods",
@@ -38,7 +46,9 @@
       "date": "",
       "salesPeriod": "",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw28ff94b1/physical/SSZS000072587_1.png",
-      "url": "https://shop.nijisanji.jp/SSZS-72587.html"
+      "url": "https://shop.nijisanji.jp/SSZS-72587.html",
+      "salesType": "",
+      "deliveryDate": "2026年9月中旬以降"
     },
     {
       "type": "goods",
@@ -46,7 +56,9 @@
       "date": "",
       "salesPeriod": "",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwa01026e9/physical/SSZS000072627_1.png",
-      "url": "https://shop.nijisanji.jp/SSZS-72627.html"
+      "url": "https://shop.nijisanji.jp/SSZS-72627.html",
+      "salesType": "",
+      "deliveryDate": "2026年9月中旬以降"
     },
     {
       "type": "goods",
@@ -54,7 +66,9 @@
       "date": "",
       "salesPeriod": "",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw594db30f/physical/new_SSZS000072667_1.png",
-      "url": "https://shop.nijisanji.jp/SSZS-72667.html"
+      "url": "https://shop.nijisanji.jp/SSZS-72667.html",
+      "salesType": "",
+      "deliveryDate": "2026年9月中旬以降"
     },
     {
       "type": "goods",
@@ -62,7 +76,9 @@
       "date": "",
       "salesPeriod": "",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw03f8e16e/physical/SSZS000073599.png",
-      "url": "https://shop.nijisanji.jp/SSZS-73599.html"
+      "url": "https://shop.nijisanji.jp/SSZS-73599.html",
+      "salesType": "",
+      "deliveryDate": "2026年9月中旬以降"
     },
     {
       "type": "goods",
@@ -70,7 +86,9 @@
       "date": "",
       "salesPeriod": "",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw1d622114/physical/SSZS000073603_1.png",
-      "url": "https://shop.nijisanji.jp/SSZS-73603.html"
+      "url": "https://shop.nijisanji.jp/SSZS-73603.html",
+      "salesType": "",
+      "deliveryDate": "2026年9月中旬以降"
     },
     {
       "type": "goods",
@@ -78,7 +96,9 @@
       "date": "",
       "salesPeriod": "",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw4cf2bbe5/physical/SSZS000073604_1.png",
-      "url": "https://shop.nijisanji.jp/SSZS-73604.html"
+      "url": "https://shop.nijisanji.jp/SSZS-73604.html",
+      "salesType": "",
+      "deliveryDate": "2026年9月中旬以降"
     },
     {
       "type": "goods",
@@ -86,7 +106,9 @@
       "date": "",
       "salesPeriod": "",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw347117cf/physical/SSZS000073608_01.png",
-      "url": "https://shop.nijisanji.jp/SSZS-73608.html"
+      "url": "https://shop.nijisanji.jp/SSZS-73608.html",
+      "salesType": "",
+      "deliveryDate": "2026年9月中旬以降"
     },
     {
       "type": "goods",
@@ -94,7 +116,9 @@
       "date": "",
       "salesPeriod": "",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw5e11c287/physical/SSZS000073648_01.png",
-      "url": "https://shop.nijisanji.jp/SSZS-73648.html"
+      "url": "https://shop.nijisanji.jp/SSZS-73648.html",
+      "salesType": "",
+      "deliveryDate": "2026年9月中旬以降"
     }
   ]
 }
