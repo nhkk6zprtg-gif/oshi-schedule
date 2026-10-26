@@ -2,36 +2,6 @@
   "announcements": [
     {
       "type": "goods",
-      "title": "【葛葉 ワンマン LIVE】にじぱぺっと",
-      "date": "2026/10/12(月) 21:00",
-      "salesPeriod": "2026/10/12(月) 21:00 ～ 2026/10/25(日) 23:59",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw321754b7/physical/SSZS000071650_01.png",
-      "url": "https://shop.nijisanji.jp/SSZS-71650.html",
-      "salesType": "受注販売",
-      "deliveryDate": "2027年3月上旬以降"
-    },
-    {
-      "type": "goods",
-      "title": "【葛葉 ワンマン LIVE】ダイカットビジュアルパネル",
-      "date": "2026/10/12(月) 21:00",
-      "salesPeriod": "2026/10/12(月) 21:00 ～ 2026/10/25(日) 23:59",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw5fd9949a/physical/SSZS000071651.png",
-      "url": "https://shop.nijisanji.jp/SSZS-71651.html",
-      "salesType": "受注販売",
-      "deliveryDate": "2027年3月上旬以降"
-    },
-    {
-      "type": "goods",
-      "title": "【葛葉 ワンマン LIVE】メモリアルセット",
-      "date": "2026/10/12(月) 21:00",
-      "salesPeriod": "2026/10/12(月) 21:00 ～ 2026/10/25(日) 23:59",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw0381e4b2/physical/SSZS000071652_01.png",
-      "url": "https://shop.nijisanji.jp/SSZS-71652.html",
-      "salesType": "受注販売",
-      "deliveryDate": "2027年3月上旬以降"
-    },
-    {
-      "type": "goods",
       "title": "【にじピンバッジコレクション Vol.2】モチーフピンバッジ 葛葉",
       "date": "",
       "salesPeriod": "",
@@ -119,6 +89,66 @@
       "url": "https://shop.nijisanji.jp/SSZS-73648.html",
       "salesType": "",
       "deliveryDate": "2026年9月中旬以降"
+    },
+    {
+      "type": "goods",
+      "title": "【常設】ダイエットボイス - Bグループ",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw5ea36bc2/digital/dig-00047_B_0.png",
+      "url": "https://shop.nijisanji.jp/dig-00047_B.html",
+      "date": "",
+      "salesPeriod": "",
+      "salesType": "",
+      "deliveryDate": ""
+    },
+    {
+      "type": "goods",
+      "title": "【常設】逃亡ボイス - Bグループ",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwff93cca5/digital/dig-00048_B_0.png",
+      "url": "https://shop.nijisanji.jp/dig-00048_B.html",
+      "date": "",
+      "salesPeriod": "",
+      "salesType": "",
+      "deliveryDate": ""
+    },
+    {
+      "type": "goods",
+      "title": "【常設】同窓会ボイス - Bグループ",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw9572f9be/digital/dig-00049_B_0.png",
+      "url": "https://shop.nijisanji.jp/dig-00049_B.html",
+      "date": "",
+      "salesPeriod": "",
+      "salesType": "",
+      "deliveryDate": ""
+    },
+    {
+      "type": "goods",
+      "title": "【葛葉 ワンマン LIVE】にじぱぺっと",
+      "date": "2026/10/12(月) 21:00",
+      "salesPeriod": "2026/10/12(月) 21:00 ～ 2026/10/25(日) 23:59",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw321754b7/physical/SSZS000071650_01.png",
+      "url": "https://shop.nijisanji.jp/SSZS-71650.html",
+      "salesType": "受注販売",
+      "deliveryDate": "2027年3月上旬以降"
+    },
+    {
+      "type": "goods",
+      "title": "【葛葉 ワンマン LIVE】ダイカットビジュアルパネル",
+      "date": "2026/10/12(月) 21:00",
+      "salesPeriod": "2026/10/12(月) 21:00 ～ 2026/10/25(日) 23:59",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw5fd9949a/physical/SSZS000071651.png",
+      "url": "https://shop.nijisanji.jp/SSZS-71651.html",
+      "salesType": "受注販売",
+      "deliveryDate": "2027年3月上旬以降"
+    },
+    {
+      "type": "goods",
+      "title": "【葛葉 ワンマン LIVE】メモリアルセット",
+      "date": "2026/10/12(月) 21:00",
+      "salesPeriod": "2026/10/12(月) 21:00 ～ 2026/10/25(日) 23:59",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw0381e4b2/physical/SSZS000071652_01.png",
+      "url": "https://shop.nijisanji.jp/SSZS-71652.html",
+      "salesType": "受注販売",
+      "deliveryDate": "2027年3月上旬以降"
     }
   ]
 }
