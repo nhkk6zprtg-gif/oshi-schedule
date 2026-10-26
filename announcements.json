@@ -219,7 +219,23 @@
       "url": "https://shop.nijisanji.jp/dig-00075_B.html",
       "salesType": "通常販売",
       "deliveryDate": ""
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "ChroNoiRシングル「タイトル未定」初回限定盤 ¥3,520~¥6,270 税込",
+      "date": "確認日：2026-10-26",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/ACN-10096.html",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw9e8bb215/physical/now printing.jpg"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "ChroNoiRシングル「タイトル未定」通常盤 ¥1,760~¥4,510 税込",
+      "date": "確認日：2026-10-26",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/ACN-10098.html",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw9e8bb215/physical/now printing.jpg"
     }
   ],
-  "updatedAt": "2026-10-26T16:13:02+09:00"
+  "updatedAt": "2026-10-26T23:58:59+09:00"
 }
