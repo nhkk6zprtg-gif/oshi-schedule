@@ -2,6 +2,26 @@
   "announcements": [
     {
       "type": "goods",
+      "title": "ChroNoiRシングル「タイトル未定」初回限定盤",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw9e8bb215/physical/now printing.jpg",
+      "url": "https://shop.nijisanji.jp/ACN-10096.html",
+      "date": "2027年1月27日(水)12:00",
+      "salesPeriod": "2027年1月27日(水)12:00 ～ 2027年2月17日(水)23:59",
+      "salesType": "通常販売",
+      "deliveryDate": ""
+    },
+    {
+      "type": "goods",
+      "title": "ChroNoiRシングル「タイトル未定」通常盤",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw9e8bb215/physical/now printing.jpg",
+      "url": "https://shop.nijisanji.jp/ACN-10098.html",
+      "date": "2027年1月27日(水)12:00",
+      "salesPeriod": "2027年1月27日(水)12:00 ～ 2027年2月17日(水)23:59",
+      "salesType": "通常販売",
+      "deliveryDate": ""
+    },
+    {
+      "type": "goods",
       "title": "【にじピンバッジコレクション Vol.2】モチーフピンバッジ 葛葉",
       "date": "",
       "salesPeriod": "",
