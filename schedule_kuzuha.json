@@ -4,7 +4,7 @@
     "title": "Kuzuha Channel",
     "url": "https://www.youtube.com/@kuzuha"
   },
-  "updatedAt": "2026-10-27T15:55:16.223806+00:00",
+  "updatedAt": "2026-10-27T18:53:53.794441+00:00",
   "streams": [
     {
       "videoId": "QmLp-GbmNpU",
@@ -24,11 +24,11 @@
       "videoId": "JmoqCllodpw",
       "title": "【LTK 本番 Day4】今日３ポイントとれば２位【k4sen,昏昏アリア,龍巻ちせ3、やうじ コーチ：セロス氏】CCC",
       "description": "￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣\n配信に関するツイートは「#くずなま」へ\n【お願い】\n　・ほかのチャンネルでは内輪ネタは控えてください\n　・人を不快にさせるような発言はご遠慮下さい\n　・話題が出ていないときに他の配信で名前を出さないでください\n\n￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣\n〇X（Twitter）\nhttps://twitter.com/Vamp_Kuzu\n\n￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣\n〇 にじさんじ公式X（Twitter）\nhttps://twitter.com/Nijisanji_app\n\n￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣\n【ファンレター等の送り先】\n〒107-0052\n東京都港区赤坂9-7-2 \nミッドタウン・イースト11F\nhttps://www.nijisanji.jp/contact\n\n※未成年者の視聴者の方々は、下記リンク先の注意事項もご覧ください。\nhttps://www.anycolor.co.jp/notice-for-minors",
-      "thumbnail": "https://i.ytimg.com/vi/JmoqCllodpw/hqdefault.jpg?v=6ae06d6f",
+      "thumbnail": "https://i.ytimg.com/vi/JmoqCllodpw/hqdefault.jpg",
       "scheduledAt": "2026-10-27T08:36:02Z",
       "actualStartTime": "2026-10-27T08:36:02Z",
-      "actualEndTime": null,
-      "durationSeconds": null,
+      "actualEndTime": "2026-10-27T16:38:15Z",
+      "durationSeconds": 28933,
       "game": null,
       "url": "https://www.youtube.com/watch?v=JmoqCllodpw"
     },
@@ -3649,8 +3649,8 @@
     "2026-10": [
       {
         "game": "未分類",
-        "seconds": 342920,
-        "hours": 95.26
+        "seconds": 371853,
+        "hours": 103.29
       },
       {
         "game": "League of Legends",
