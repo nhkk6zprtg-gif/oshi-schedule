@@ -2,9 +2,9 @@
   "announcements": [
     {
       "type": "公式ストア新着",
-      "title": "ChroNoiRシングル「タイトル未定」初回限定盤",
-      "date": "2027年1月27日(水)12:00",
-      "salesPeriod": "2027年1月27日(水)12:00 ～ 2027年2月17日(水)23:59",
+      "title": "ChroNoiRシングル「タイトル未定」初回限定盤 ¥3,520~¥6,270 税込",
+      "date": "確認日：2026-10-31",
+      "salesPeriod": "",
       "url": "https://shop.nijisanji.jp/ACN-10096.html",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw9e8bb215/physical/now printing.jpg",
       "salesType": "通常販売",
@@ -12,9 +12,9 @@
     },
     {
       "type": "公式ストア新着",
-      "title": "ChroNoiRシングル「タイトル未定」通常盤",
-      "date": "2027年1月27日(水)12:00",
-      "salesPeriod": "2027年1月27日(水)12:00 ～ 2027年2月17日(水)23:59",
+      "title": "ChroNoiRシングル「タイトル未定」通常盤 ¥1,760~¥4,510 税込",
+      "date": "確認日：2026-10-31",
+      "salesPeriod": "",
       "url": "https://shop.nijisanji.jp/ACN-10098.html",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw9e8bb215/physical/now printing.jpg",
       "salesType": "通常販売",
@@ -22,7 +22,7 @@
     },
     {
       "type": "公式ストア新着",
-      "title": "ナイショのお願いボイス - Bグループ",
+      "title": "まもなく終了 ナイショのお願いボイス - Bグループ ¥600~¥1,200 税込",
       "date": "確認日：2026-10-31",
       "salesPeriod": "",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw178de070/digital/dig-00099_B_0.png",
@@ -32,7 +32,7 @@
     },
     {
       "type": "公式ストア新着",
-      "title": "妖怪パロディボイス - Bグループ",
+      "title": "まもなく終了 妖怪パロディボイス - Bグループ ¥600~¥1,200 税込",
       "date": "確認日：2026-10-31",
       "salesPeriod": "",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwe56b5baa/digital/dig-00100_B_0.png",
@@ -42,7 +42,7 @@
     },
     {
       "type": "公式ストア新着",
-      "title": "【にじさんじ ノスタルジアコレクション2026】アクリルブロックキーホルダー Cグループ",
+      "title": "【にじさんじ ノスタルジアコレクション2026】アクリルブロックキーホルダー Cグループ ¥1,400 税込",
       "date": "確認日：2026-10-31",
       "salesPeriod": "",
       "url": "https://shop.nijisanji.jp/SSZS-76807.html",
@@ -52,7 +52,7 @@
     },
     {
       "type": "公式ストア新着",
-      "title": "【にじさんじ ノスタルジアコレクション2026】ランダムコレクションカード Cグループ",
+      "title": "【にじさんじ ノスタルジアコレクション2026】ランダムコレクションカード Cグループ ¥400 税込",
       "date": "確認日：2026-10-31",
       "salesPeriod": "",
       "url": "https://shop.nijisanji.jp/SSZS-76945.html",
@@ -62,7 +62,7 @@
     },
     {
       "type": "公式ストア新着",
-      "title": "【Another Style Goods vol.1】アクリルスタンド",
+      "title": "【Another Style Goods vol.1】アクリルスタンド ¥1,900 税込",
       "date": "確認日：2026-10-31",
       "salesPeriod": "",
       "url": "https://shop.nijisanji.jp/SSZS-72587.html",
@@ -72,7 +72,7 @@
     },
     {
       "type": "公式ストア新着",
-      "title": "【Another Style Goods vol.1】缶バッジ",
+      "title": "【Another Style Goods vol.1】缶バッジ ¥650 税込",
       "date": "確認日：2026-10-31",
       "salesPeriod": "",
       "url": "https://shop.nijisanji.jp/SSZS-72627.html",
@@ -82,7 +82,7 @@
     },
     {
       "type": "公式ストア新着",
-      "title": "【Another Style Goods vol.1】ランダムチェキ風カード Aグループ",
+      "title": "【Another Style Goods vol.1】ランダムチェキ風カード Aグループ ¥350 税込",
       "date": "確認日：2026-10-31",
       "salesPeriod": "",
       "url": "https://shop.nijisanji.jp/SSZS-72667.html",
@@ -92,7 +92,7 @@
     },
     {
       "type": "公式ストア新着",
-      "title": "【にじさんじ 8th】ランダムメタルカード Aグループ",
+      "title": "【にじさんじ 8th】ランダムメタルカード Aグループ ¥400 税込",
       "date": "確認日：2026-10-31",
       "salesPeriod": "",
       "url": "https://shop.nijisanji.jp/SSZS-73599.html",
@@ -102,7 +102,7 @@
     },
     {
       "type": "公式ストア新着",
-      "title": "【にじさんじ 8th】メモリアルブック",
+      "title": "在庫なし 【にじさんじ 8th】メモリアルブック ¥4,000 税込",
       "date": "確認日：2026-10-31",
       "salesPeriod": "",
       "url": "https://shop.nijisanji.jp/SSZS-73603.html",
@@ -112,7 +112,7 @@
     },
     {
       "type": "公式ストア新着",
-      "title": "【にじさんじ 8th】ぷにぷにシール",
+      "title": "【にじさんじ 8th】ぷにぷにシール ¥1,000 税込",
       "date": "確認日：2026-10-31",
       "salesPeriod": "",
       "url": "https://shop.nijisanji.jp/SSZS-73604.html",
@@ -240,5 +240,6 @@
       "salesType": "通常販売",
       "deliveryDate": ""
     }
-  ]
+  ],
+  "updatedAt": "2026-10-31T16:16:29+09:00"
 }
