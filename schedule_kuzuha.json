@@ -4,7 +4,7 @@
     "title": "Kuzuha Channel",
     "url": "https://www.youtube.com/@kuzuha"
   },
-  "updatedAt": "2026-11-02T13:19:50.124213+00:00",
+  "updatedAt": "2026-11-02T16:10:11.264517+00:00",
   "streams": [
     {
       "videoId": "QmLp-GbmNpU",
@@ -27,8 +27,8 @@
       "thumbnail": "https://i.ytimg.com/vi/YJ6nL07c0kI/hqdefault.jpg?v=6ae848dc",
       "scheduledAt": "2026-11-02T08:30:08Z",
       "actualStartTime": "2026-11-02T08:30:08Z",
-      "actualEndTime": null,
-      "durationSeconds": null,
+      "actualEndTime": "2026-11-02T15:54:00Z",
+      "durationSeconds": 26632,
       "game": null,
       "url": "https://www.youtube.com/watch?v=YJ6nL07c0kI"
     },
@@ -3697,8 +3697,8 @@
     "2026-11": [
       {
         "game": "未分類",
-        "seconds": 23937,
-        "hours": 6.65
+        "seconds": 50569,
+        "hours": 14.05
       }
     ],
     "2026-10": [
