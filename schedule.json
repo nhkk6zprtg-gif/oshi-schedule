@@ -4,7 +4,7 @@
     "title": "Kanae Channel",
     "url": "https://www.youtube.com/@kanae"
   },
-  "updatedAt": "2026-11-06T10:12:45.993780+00:00",
+  "updatedAt": "2026-11-06T13:15:44.211684+00:00",
   "streams": [
     {
       "videoId": "9WY3dRIZ76w",
@@ -27,8 +27,8 @@
       "thumbnail": "https://i.ytimg.com/vi/0woVrwu-fL8/hqdefault.jpg?v=6adafef9",
       "scheduledAt": "2026-11-06T07:49:11Z",
       "actualStartTime": "2026-11-06T07:49:11Z",
-      "actualEndTime": null,
-      "durationSeconds": null,
+      "actualEndTime": "2026-11-06T11:47:55Z",
+      "durationSeconds": 14324,
       "game": null,
       "url": "https://www.youtube.com/watch?v=0woVrwu-fL8"
     },
@@ -3985,8 +3985,8 @@
     "2026-11": [
       {
         "game": "未分類",
-        "seconds": 67190,
-        "hours": 18.66
+        "seconds": 81514,
+        "hours": 22.64
       }
     ],
     "2026-10": [
