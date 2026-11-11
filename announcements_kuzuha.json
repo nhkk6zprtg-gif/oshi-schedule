@@ -2,6 +2,16 @@
   "announcements": [
     {
       "type": "goods",
+      "title": "葛葉誕生日グッズ＆ボイス2026",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw5d295520/physical/SSZS-81435_0.png",
+      "url": "https://shop.nijisanji.jp/SSZS-81435.html",
+      "date": "",
+      "salesPeriod": "",
+      "salesType": "受注販売",
+      "deliveryDate": "2027年2月中旬"
+    },
+    {
+      "type": "goods",
       "title": "ChroNoiRシングル「タイトル未定」初回限定盤",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw9e8bb215/physical/now printing.jpg",
       "url": "https://shop.nijisanji.jp/ACN-10096.html",
