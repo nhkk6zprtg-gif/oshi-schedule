@@ -1,6 +1,26 @@
 {
   "announcements": [
     {
+      "type": "goods",
+      "title": "バディボイス - Bグループ",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw7eb085d6/digital/dig-00101_B_0.png",
+      "url": "https://shop.nijisanji.jp/dig-00101_B.html",
+      "date": "",
+      "salesPeriod": "",
+      "salesType": "",
+      "deliveryDate": ""
+    },
+    {
+      "type": "goods",
+      "title": "よしよし全肯定ボイス - Bグループ",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw646347d6/digital/dig-00102_B_0.png",
+      "url": "https://shop.nijisanji.jp/dig-00102_B.html",
+      "date": "",
+      "salesPeriod": "",
+      "salesType": "",
+      "deliveryDate": ""
+    },
+    {
       "type": "公式ストア新着",
       "title": "ChroNoiRシングル「タイトル未定」初回限定盤",
       "date": "2027年1月27日(水)12:00",
