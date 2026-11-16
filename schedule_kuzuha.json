@@ -4,7 +4,7 @@
     "title": "Kuzuha Channel",
     "url": "https://www.youtube.com/@kuzuha"
   },
-  "updatedAt": "2026-11-16T01:34:52.211578+00:00",
+  "updatedAt": "2026-11-16T04:34:35.562089+00:00",
   "streams": [
     {
       "videoId": "QmLp-GbmNpU",
@@ -27,8 +27,8 @@
       "thumbnail": "https://i.ytimg.com/vi/coGfGK-qvA0/hqdefault.jpg?v=6afa5056",
       "scheduledAt": "2026-11-16T00:43:39Z",
       "actualStartTime": "2026-11-16T00:43:39Z",
-      "actualEndTime": null,
-      "durationSeconds": null,
+      "actualEndTime": "2026-11-16T04:32:39Z",
+      "durationSeconds": 13740,
       "game": "League of Legends",
       "url": "https://www.youtube.com/watch?v=coGfGK-qvA0"
     },
@@ -3822,8 +3822,8 @@
       },
       {
         "game": "League of Legends",
-        "seconds": 41298,
-        "hours": 11.47
+        "seconds": 55038,
+        "hours": 15.29
       }
     ],
     "2026-10": [
