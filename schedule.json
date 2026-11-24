@@ -4,20 +4,8 @@
     "title": "Kanae Channel",
     "url": "https://www.youtube.com/@kanae"
   },
-  "updatedAt": "2026-11-24T02:12:34.326542+00:00",
+  "updatedAt": "2026-11-24T13:42:57.694507+00:00",
   "streams": [
-    {
-      "videoId": "3Jt0Ca5Pj98",
-      "title": "【#ゼンブ叶のイチオシ 】この日のための、ちょっとしたプチ差分もあります。【にじさんじ / 叶】",
-      "description": "提供：株式会社ZENB JAPAN\n▷https://zenb.jp/products/subscription164?utm_source=youtubelive&utm_medium=cpa&utm_campaign=kanae_2611y&utm_term=bread\n\nみんなの「今年のうちに綺麗にしたいものや心残り」も募集中！\nhttps://forms.gle/b1BxDuLUYUeZfu5B6\n気軽に送ってね〜！\n\n\n叶のイチオシセットが、\n初回限定60％OFFでオトクにGETできます！\n【2026年12月23日(水)23時59分までの期間限定です！】\n\n2回目以降、ラインナップは自分好みにカスタマイズも可能です！\nまずはオススメセットを食べてみて、\n気に入ったら自分だけの特別セットを作ってみてね！\n\n\n※この配信は、株式会社ZENB JAPANとのタイアップです。\n\n\n#PR #ゼンブ叶のイチオシ #ゼンブブレッド ＃グルテンフリー #ZENB\nーーーーーーーーーーーーーーーーーーーーー\n\n※未成年者の視聴者の方々は、下記リンク先の注意事項もご覧ください。\nhttps://www.anycolor.co.jp/notice-for-minors",
-      "thumbnail": "https://i.ytimg.com/vi/3Jt0Ca5Pj98/hqdefault.jpg?v=6afd6373",
-      "scheduledAt": "2026-11-24T10:00:00Z",
-      "actualStartTime": null,
-      "actualEndTime": null,
-      "durationSeconds": null,
-      "game": null,
-      "url": "https://www.youtube.com/watch?v=3Jt0Ca5Pj98"
-    },
     {
       "videoId": "cjtGpwyYR8A",
       "title": "【#かなえ新衣装】新衣装お披露目！今回のヒントは・・・冬！ 【にじさんじ/叶】",
@@ -56,6 +44,18 @@
     }
   ],
   "pastStreams": [
+    {
+      "videoId": "3Jt0Ca5Pj98",
+      "title": "【#ゼンブ叶のイチオシ 】この日のための、ちょっとしたプチ差分もあります。【にじさんじ / 叶】",
+      "description": "提供：株式会社ZENB JAPAN\n▷https://zenb.jp/products/subscription164?utm_source=youtubelive&utm_medium=cpa&utm_campaign=kanae_2611y&utm_term=bread\n\nみんなの「今年のうちに綺麗にしたいものや心残り」も募集中！\nhttps://forms.gle/b1BxDuLUYUeZfu5B6\n気軽に送ってね〜！\n\n\n叶のイチオシセットが、\n初回限定60％OFFでオトクにGETできます！\n【2026年12月23日(水)23時59分までの期間限定です！】\n\n2回目以降、ラインナップは自分好みにカスタマイズも可能です！\nまずはオススメセットを食べてみて、\n気に入ったら自分だけの特別セットを作ってみてね！\n\n\n※この配信は、株式会社ZENB JAPANとのタイアップです。\n\n\n#PR #ゼンブ叶のイチオシ #ゼンブブレッド ＃グルテンフリー #ZENB\nーーーーーーーーーーーーーーーーーーーーー\n\n※未成年者の視聴者の方々は、下記リンク先の注意事項もご覧ください。\nhttps://www.anycolor.co.jp/notice-for-minors",
+      "thumbnail": "https://i.ytimg.com/vi/3Jt0Ca5Pj98/hqdefault.jpg",
+      "scheduledAt": "2026-11-24T10:02:53Z",
+      "actualStartTime": "2026-11-24T10:02:53Z",
+      "actualEndTime": "2026-11-24T11:06:13Z",
+      "durationSeconds": 3800,
+      "game": null,
+      "url": "https://www.youtube.com/watch?v=3Jt0Ca5Pj98"
+    },
     {
       "videoId": "uL0V4_OhrVQ",
       "title": "やばい、本番迫ってきた・・・。 | LTK練習【にじさんじ/叶】",
@@ -4141,8 +4141,8 @@
     "2026-11": [
       {
         "game": "未分類",
-        "seconds": 181686,
-        "hours": 50.47
+        "seconds": 185486,
+        "hours": 51.52
       }
     ],
     "2026-10": [
