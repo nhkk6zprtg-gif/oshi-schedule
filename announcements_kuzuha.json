@@ -2,6 +2,36 @@
   "announcements": [
     {
       "type": "goods",
+      "title": "【オリジナルグッズ】Cellmates アクリルスタンド A",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwc3d9c3a3/physical/SSZS000083763_01.png",
+      "url": "https://shop.nijisanji.jp/SSZS-83763.html",
+      "date": "",
+      "salesPeriod": "",
+      "salesType": "受注販売",
+      "deliveryDate": "2027年4月中旬以降"
+    },
+    {
+      "type": "goods",
+      "title": "【オリジナルグッズ】Cellmates 缶バッジ A",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw7e8fcc72/physical/SSZS000083766_01.png",
+      "url": "https://shop.nijisanji.jp/SSZS-83766.html",
+      "date": "",
+      "salesPeriod": "",
+      "salesType": "受注販売",
+      "deliveryDate": "2027年4月中旬以降"
+    },
+    {
+      "type": "goods",
+      "title": "【オリジナルグッズ】Cellmates チェキ風カード A",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw54f0f491/physical/SSZS000083769_01.png",
+      "url": "https://shop.nijisanji.jp/SSZS-83769.html",
+      "date": "",
+      "salesPeriod": "",
+      "salesType": "受注販売",
+      "deliveryDate": "2027年4月中旬以降"
+    },
+    {
+      "type": "goods",
       "title": "ChroNoiRシングル「タイトル未定」初回限定盤",
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw9e8bb215/physical/now printing.jpg",
       "url": "https://shop.nijisanji.jp/ACN-10096.html",
