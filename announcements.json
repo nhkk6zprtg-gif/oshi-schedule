@@ -2,16 +2,6 @@
   "announcements": [
     {
       "type": "公式ストア新着",
-      "title": "【再販】恋愛ゲームパロディボイス - Bグループ",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw29043a1e/digital/dig-00078_B_0.png",
-      "url": "https://shop.nijisanji.jp/dig-00078_B.html",
-      "date": "2026年11月20日(金)18:00",
-      "salesPeriod": "2026年11月20日(金)18:00 ～ 2026年11月27日(金)23:59",
-      "salesType": "通常販売",
-      "deliveryDate": ""
-    },
-    {
-      "type": "公式ストア新着",
       "title": "【オリジナルグッズ】七次元生徒会！夏服ver. Side-A アクリルスタンド",
       "date": "確認日：2026-11-27",
       "salesPeriod": "",
@@ -122,6 +112,26 @@
     },
     {
       "type": "公式ストア新着",
+      "title": "【Another Style Goods vol.1】缶バッジ",
+      "date": "確認日：2026-11-19",
+      "salesPeriod": "",
+      "url": "https://shop.nijisanji.jp/SSZS-72627.html",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwa01026e9/physical/SSZS000072627_1.png",
+      "salesType": "",
+      "deliveryDate": "2026年9月中旬以降"
+    },
+    {
+      "type": "公式ストア新着",
+      "title": "【再販】恋愛ゲームパロディボイス - Bグループ",
+      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dw29043a1e/digital/dig-00078_B_0.png",
+      "url": "https://shop.nijisanji.jp/dig-00078_B.html",
+      "date": "2026年11月20日(金)18:00",
+      "salesPeriod": "2026年11月20日(金)18:00 ～ 2026年11月27日(金)23:59",
+      "salesType": "通常販売",
+      "deliveryDate": ""
+    },
+    {
+      "type": "公式ストア新着",
       "title": "【再販】エスコートボイス - Bグループ",
       "date": "2026年11月16日(月)11:00",
       "salesPeriod": "2026年11月16日(月)11:00 ～ 2026年11月23日(月)23:59",
@@ -129,16 +139,6 @@
       "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwf8811f3b/digital/dig-00077_B_0.png",
       "salesType": "通常販売",
       "deliveryDate": ""
-    },
-    {
-      "type": "公式ストア新着",
-      "title": "【Another Style Goods vol.1】缶バッジ ¥650 税込",
-      "date": "確認日：2026-11-19",
-      "salesPeriod": "",
-      "url": "https://shop.nijisanji.jp/SSZS-72627.html",
-      "imageUrl": "https://shop.nijisanji.jp/on/demandware.static/-/Sites-nijisanji-master-catalog/default/dwa01026e9/physical/SSZS000072627_1.png",
-      "salesType": "",
-      "deliveryDate": "2026年9月中旬以降"
     },
     {
       "type": "公式ストア新着",
